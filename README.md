@@ -27,6 +27,23 @@ all of these methods share the same API, but provide different ways to use it in
 
 * Aids you you in being a decent human being by correctly genering persons in your automated emails!
 
+## Table of content:
+
+1. [Template syntax](#template-syntax)
+2. Describing pronoun-use with json data
+3. Installing and using the renderer (implementation-specific)
+3. The renderer API (not implementation-specific)
+
+## Content:
+
+### Template syntax
+
+### Describing pronoun-use with json data
+
+### Installing and using the renderer
+
+### The renderer API
+
 ## Developement:
 
 This tool uses [README-driven developement](https://tom.preston-werner.com/2010/08/23/readme-driven-development.html). Issues are welcome and addressed as fast as possible, especially is they address political issues with the project.
