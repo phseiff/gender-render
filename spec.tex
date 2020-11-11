@@ -1,0 +1,41 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{graphics}
+%\usepackage{accsupp}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\chead{\includegraphics[width=1cm]{images/icon.pdf}}
+\cfoot{\thepage}
+
+\author{phseiff\\ \href{https://phseiff.com}{phseiff.com}}
+
+\title{\begin{center}
+           %\BeginAccSupp{method=plain,Alt={\{gender*render\}\\Specification}}
+           \includegraphics{images/title-black.pdf}
+           %\EndAccSupp{}
+\end{center} Template system and implementation specification for rendering gender-neutral email templates with pronoun information}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Abstract}
+
+    Our society, as well as the way we perceive gender, are steadily evolving.
+    This evolution does not hold in front of technological question, and it is our -the "IT people"'s duty- to address do our best to solve social that arise from our technology.
+    One such technology are email- and other text templates, which are becoming increasingly popular to automate customer interactions of any kind, be it in newsletters, notifications or program menus.
+    Many such templates are gender-specific, meaning that they address the reader in a gender-specific fashion ("Dear Mrs. Dursley, ...").
+    Those templates relatively easily implemented by providing two versions of the email, one for every binary gender.
+    However, some texts are far more complicated, because they address multiple people (each with their own unknown at the time of writing), or people in the third person (throwing their pronouns into the mix).
+    In addition, an increasingly height amount of people use non-binary pronouns, or gender-neutral pronouns, many of whom might now yet be discovered at the time of writing.\\
+    This creates the requirement for creating template systems for the english language, and, in extention, any language (since all languages work differently), that support writing complex texts in a gender-neutral fashion and later "render" them to correctly gendered texts.\\
+    \{gender*render\} is an attempt at creating one such template language, including a Specification, to serve as a proof of concept as well as a starting point for people who want to implement similar things.
+
+
+
+\section{Lorem Ipsum}
+\end{document}
