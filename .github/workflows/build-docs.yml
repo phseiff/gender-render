@@ -17,6 +17,7 @@ jobs:
       - name: Build Documentation 🔧
         run: |
           sudo apt-get install texlive-latex-base
+          cd docks
           python3 texliveonthefly.py spec.tex
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
