@@ -30,9 +30,9 @@ all of these methods share the same API, but provide different ways to use it in
 ## Table of content:
 
 1. [Template syntax](#template-syntax)
-2. Describing pronoun-use with json data
-3. Installing and using the renderer (implementation-specific)
-3. The renderer API (not implementation-specific)
+2. [Describing pronoun-use with json data](#describing-pronoun-use-with-json-data)
+3. [Installing and using the renderer](#installing-and-using-the-renderer) (implementation-specific)
+3. [The renderer API](#the-renderer-api) (not implementation-specific)
 
 ## Content:
 
