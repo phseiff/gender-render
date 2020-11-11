@@ -7,8 +7,6 @@ Ever had the struggle of correctly gendering people in your automated emails? Ar
 
 Advantages include:
 
-* Works even if your text mentions or addresses *multiple* individuals with unknown genders.
-
 * Syntax definitions for a template language to describe which individual is addressed at which point and in which grammatical form.
 
 * Different implementation for rendering said templates based on data describing the pronoun differences of all people referenced in the template. These include:
@@ -22,6 +20,8 @@ all of these methods share the same API, but provide different ways to use it in
 * The data describing which persons use which pronouns is accepted in JSON syntax (and, of cause, as a python dict or javascript object, when using the respective APIs).
 
 * Easy, yet powerful and sleek syntax.
+
+* Works even if your text mentions or addresses *multiple* individuals with unknown genders.
 
 * Supports ANY pronoun-sets or forms of addressing, including pronoun-less identities (as long as you include additional information to render those).
 
