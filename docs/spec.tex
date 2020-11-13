@@ -7,14 +7,11 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{xcolor}
-\usepackage{xparse}
+%\usepackage{xparse}
 \usepackage{tabularx}
 \usepackage{longtable}
 \fancyhf{}
 
-\NewDocumentCommand{\codeword}{v}{%
-\texttt{\textcolor{gray}{#1}}%
-}
 
 \chead{\includegraphics[width=1cm]{images/icon-black.pdf}}
 \cfoot{\thepage}
@@ -99,7 +96,8 @@
 
     Any text that follows the syntax of the following definition is considered a valid \{gender*render\}-template.
     Any text that does not follow the following is not considered a valid \{gender*render\}-template.
-    Files whose content is a valid \{gender*render\}-template are referred to as files containing \{gender*render\}-templates in the following section, and \emph{not} as \{gender*render\}-templates on their own.\\
+    Files whose content is a valid \{gender*render\}-template are referred to as files containing \{gender*render\}-templates in the following section, and \emph{not} as \{gender*render\}-templates on their own.
+    It is recommended to save such files with the file type \texttt{.grt} (short for "gender render template").\\
 
     The purpose of \{gender*render\}-templates is to write texts in a gender-neutral way (at least in regards to some of the individuals they refer to), and to be valid input for the \{gender*render\}-renderer, who is described in a later section.\\
 
@@ -111,17 +109,21 @@
     A backslash which is not escaped is called an escape-character.
     A template which contains backslashes which are neither escaped nor escape characters is not considered a valid \{gender*render\}-template, as is any template which contains unescaped curly brackets who are not part of any valid \{gender*render\}-tag.\\
 
-    Every character of a \{gender*render\}-tag except the first and last characters is considered part of its content.
+    Every character of a \{gender*render\}-tag except the first and last characters (the brackets) is considered part of its content.
     Said content is divided into sections through unescaped asterisks ("\texttt{*}", \texttt{U+002A}).
-    A section of a \{gender*render\}-tag may not contain any unescaped asterisks, and it must contain at least one character.
-    Colons ("\texttt{:}", \texttt{U+003A}) are considered special characters in sections, and may thus appear at most once per section, and neither as the first nor as the last character of the section.
-    If a section contains a colon, the characters of the section beforehand the colon (minus all whitespace contained\footnote{"Whitespace" as defined by the \href{https://infra.spec.whatwg.org/\#ascii-whitespace}{HTML Living Standard}.}) are called the sections \emph{type descriptors}, and the characters following the colon (after having all their whitespace collapsed into one \texttt{U+0020}-space each, except for whitespace at both ends, which is removed completely) are called the sections \emph{value}.
-    If a section does not contain a colon, it is treated as if its type descriptor was \texttt{context}\\
+    A section of a \{gender*render\}-tag does not contain any unescaped asterisks, and it must contain at least one non-whitespace\footnote{"Whitespace" as defined by the \href{https://infra.spec.whatwg.org/\#ascii-whitespace}{HTML Living Standard}.} character.
+    Colons ("\texttt{:}", \texttt{U+003A}) are considered special characters in sections, and may thus appear at most once per section, and neither as the first nor as the last non-whitespace  character of the section.
+    If a section contains a colon, the characters of the section beforehand the colon (minus all leading or trailing whitespace) are called the sections \emph{type descriptors}, and the characters following the colon (after having all their whitespace collapsed into one \texttt{U+0020}-space each, except for trailing and leading whitespace, which is removed completely) are called the sections \emph{value}.
+    If a section does not contain a colon, its \emph{value} is defined as all of its characters (having all their whitespace collapsed into one \texttt{U+0020}-space each, except for trailing and leading whitespace, which is removed completely).\\
 
-    There are multiple types of section.
-    The type of a section is described by the sections type descriptor.
+    There are multiple different types of section, assigned to sections by their type descriptor.
     A section whose type is "foo" is called a "foo-section".
-    Every \{gender*render\}-tag must have at least one section, and may only have one section of every type.
+    Every type of section has a unique priority, as a real number between 0 and 1000, assigned by this specification.
+    The right-most section with no type descriptor and no assigned section type is assigned the section type with the highest priority of all section types that no section of the tag is assigned by this rule or its section descriptor yet.
+    Every \{gender*render\}-tag must have at least one section, and may only have one section of every type;
+    this takes into account the assigned section type of sections without a type descriptor.
+    In addition, a tag may not contain more sections than there are section types defined by the spec.\\
+
     The most basic type of section is the \texttt{context}-type, which describes the syntactic context of the \{gender*render\}-tag.
     Every \{gender*render\}-tag must have one context-section.
     The following table lists the possible values a \texttt{context}-section's value may have, as well as their meanings, though the syntactic validity of the template does not depend on whether the values and types of the the \{gender*render\}-tags are listed in this spec:
@@ -136,7 +138,7 @@
                  \hline
                  Object & them, object, obj & \\
                  \hline
-                 Depandant possessive\linebreak Determiner & their, dposs, dpossessive & \\
+                 Dependant possessive\linebreak Determiner & their, dposs, dpossessive & \\
                  \hline
                  Independent possessive\linebreak Determiner & theirs, iposs, ipossessive & \\
                  \hline
@@ -157,6 +159,7 @@
         \end{center}
     \end{flushleft}
 
+    The priority the \texttt{context}-section type is \texttt{1000}.
     If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\}\{foo:bar * context:Smith\}}". \\
 
     The other section type supported by this version of this Specification is the \texttt{id}-type.
@@ -165,5 +168,15 @@
     Two \{gender*render\}-tags with the same id-value refer to the same individual.
     The id-value can be omitted by the user if there is only one individual mentioned in the whole template, and in some other cases;
     this is explored further in the renderer section.
+    Whether there is an \texttt{id}-section is not part of the template specification, since it is not clear until the pronoun information is given.\\
+
+    Since there are only two section types defined by this specification, and one of them is mandatory, there is no practical need to use any section descriptors.
+    They are still defined as a language feature in this template to provide a way to port the template language to other natural languages that might require additional information without having to introduce new syntax elements for every language.\\
+
+    To end this section of the spec, here is a graphic of the \{gender*render\}-template syntax described as a finite state machine (not taking into account the fact that not every section type is valid, and the rules about assigned sections and every type of section only existing once):\\
+
+    \includegraphics[width=12cm]{images/template-as-finite-state-machine.png}
+
+    \subsection{Pronoun Description Data}
 
 \end{document}
