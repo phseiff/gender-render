@@ -124,7 +124,7 @@
     Every \{gender*render\}-tag must have at least one section, and may only have one section of every type.
     The most basic type of section is the \texttt{context}-type, which describes the syntactic context of the \{gender*render\}-tag.
     Every \{gender*render\}-tag must have one context-section.
-    The following table lists the possible values a context-section's value may have, as well as their meanings:
+    The following table lists the possible values a \texttt{context}-section's value may have, as well as their meanings, though the syntactic validity of the template does not depend on whether the values and types of the the \{gender*render\}-tags are listed in this spec:
 
     \begin{flushleft}
         \begin{center}
@@ -157,7 +157,7 @@
         \end{center}
     \end{flushleft}
 
-    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\}\{foo:bar * context:Smith\}}".\\
+    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\}\{foo:bar * context:Smith\}}". \\
 
     The other section type supported by this version of this Specification is the \texttt{id}-type.
     The value of an \texttt{id}-section may take any value as long as it does not contain any whitespace.
