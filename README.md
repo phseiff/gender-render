@@ -33,7 +33,7 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 ## Table of content:
 
-0. [How To - in examples](#example-usages)
+0. [Usage examples](#example-usages)
 1. [Template syntax](#template-syntax)
 2. [Describing pronoun-use with json data](#describing-pronoun-use-with-json-data)
 3. [Installing and using the renderer](#installing-and-using-the-renderer)
@@ -50,6 +50,8 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 ### The renderer API
 
-## Developement:
+## Development:
 
-This tool uses [README-driven developement](https://tom.preston-werner.com/2010/08/23/readme-driven-development.html). Issues are welcome and addressed as fast as possible, especially is they address political issues with the project.
+This tool used [README-driven developement](https://tom.preston-werner.com/2010/08/23/readme-driven-development.html), except with a spec instead of a README. Give it a try, it really works!
+ 
+ Issues are welcome and addressed as fast as possible, especially is they address political issues with the project.
