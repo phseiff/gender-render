@@ -316,6 +316,19 @@
          stdDeviation="67.15174"
          id="feGaussianBlur2767-4" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1384-5"
+       x="-0.13184881"
+       width="1.2636976"
+       y="-0.21829268"
+       height="1.4365854">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="45.423169"
+         id="feGaussianBlur1386-6" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -363,6 +376,12 @@
        id="path12"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc" />
+    <path
+       style="fill:#50ba25;fill-opacity:1;stroke:#1f7c31;stroke-width:25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1384-5)"
+       d="m 3275.807,-314.33026 13.2292,426.6407 773.9061,23.151 39.6875,-358.5104 -101.2029,-140.89065 z"
+       id="path822-3-1-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:79.375px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#aaaaa9;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -376,13 +395,6 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:881.94445801px;font-family:'Abyssinica SIL';-inkscape-font-specification:'Abyssinica SIL, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#aaaaa9;fill-opacity:1;stroke-width:0.26458332">🡢 <tspan
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:352.77780151px;font-family:'Abyssinica SIL';-inkscape-font-specification:'Abyssinica SIL, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
    id="tspan964-7"> </tspan></tspan></text>
-    <rect
-       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect997"
-       width="187.86932"
-       height="386.02777"
-       x="2219.8389"
-       y="-333.76733" />
     <path
        style="fill:#50ba25;fill-opacity:1;stroke:#1f7c31;stroke-width:25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 335.35937,-334.03127 13.22917,426.640626 773.90616,23.151044 39.6875,-358.51042 -101.203,-140.89063 z"
@@ -797,7 +809,7 @@
        transform="matrix(1.0315407,0,0,0.26293298,236.18522,1363.0714)" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64.09105682px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke:none;stroke-width:0.21363683;"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64.09105682px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke:none;stroke-width:0.21363683"
        x="4424.8735"
        y="-442.87888"
        id="text2811"><tspan
@@ -805,21 +817,23 @@
          id="tspan2809"
          x="4424.8735"
          y="-442.87888"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.21363683;fill:#6c6c6b;fill-opacity:1;">gender*render allows you to</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke-width:0.21363683">gender*render allows you to</tspan><tspan
          sodipodi:role="line"
          x="4424.8735"
          y="-264.84818"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.21363683;fill:#6c6c6b;fill-opacity:1;"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke-width:0.21363683"
          id="tspan2813">write gender-neutral emails </tspan><tspan
          sodipodi:role="line"
          x="4424.8735"
          y="-86.817474"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.21363683;fill:#6c6c6b;fill-opacity:1;"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke-width:0.21363683"
          id="tspan2815">and does all the gendering for</tspan><tspan
          sodipodi:role="line"
          x="4424.8735"
-         y="91.213226"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.21363683;fill:#6c6c6b;fill-opacity:1;"
-         id="tspan2817">you.</tspan></text>
+         y="91.558212"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke-width:0.21363683"
+         id="tspan2817">you - for <tspan
+   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42344666px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+   id="tspan3216">any</tspan> pronouns!</tspan></text>
   </g>
 </svg>
