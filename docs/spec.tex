@@ -90,7 +90,9 @@
     It is divided into three subsections;
     one for defining the template language and how gender-neutral texts are described with it,
     one for defining the data structure used to describe the pronoun preferences of all people mentioned in a template,
-    and one for guidelines and specification on implementing a renderer for the template language.
+    and one for guidelines and specification on implementing a renderer for the template language.\\
+
+    The terms "MUST", "MUST NOT", "SHOULD", "SHOULD NOT" and "MAY" in this document are used as defined by the \href{https://tools.ietf.org/html/rfc2119}{RFC 4627}.
 
     \subsection{Template Language}
 
@@ -132,9 +134,9 @@
         \begin{center}
             \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
                  \hline
-                 {syntactic context indicated by the value} & {possible values,\linebreak comma separated} & {short explanation, where\linebreak necessary} \\
+                 {syntactic context indicated by the value(s)} & {possible values,\linebreak synonymous to each other} & {short explanation, where\linebreak necessary} \\
                  \hline\hline
-                 Subject & they, subject, subj &  \\
+                 Subject & they, subject, subj & \\
                  \hline
                  Object & them, object, obj & \\
                  \hline
@@ -152,7 +154,10 @@
                  Personal name & Avery, personal-name, first-name & (It should be mentioned that Avery is the most popular unisex name in the US today\footnote{according to \href{https://nameberry.com/unisex-names}{nameberry.com}})\\
                  \hline
                  \hline
-                 Any Noun & \emph{any nominative}, with whitespaces replaced by hyphens ("\texttt{-}", \texttt{U+002D}) & If the value of the \texttt{section} does not match any of the above, its content is understood as being a noun which either server as a substitution or as a description of a person.
+                 Custom property & "\texttt{<}" \emph{property} "\texttt{>}" & \emph{property} can be any string without whitespace, and refers to a property of an individual that is defined by its pronoun data as a string, yet not part of the spec. \\
+                 \hline
+                 \hline
+                 Gender-specific Noun & any nominative, with whitespaces replaced by underscores ("\texttt{\_}", \texttt{U+005F}) & If the value of the \texttt{section} does not match any of the above, its content is understood as being a noun which either server as a substitution or as a description of a person.
                  For example, the sentence "\{name\} is an \{actor\}" or "the \{actor\} asked for applause" would be good candidates for using said type of value since "actor" has two different gendered forms ("actor" and "actress") in english. \\
                  \hline
             \end{longtable}
@@ -178,5 +183,54 @@
     \includegraphics[width=12cm]{images/template-as-finite-state-machine.png}
 
     \subsection{Pronoun Description Data}
+
+     Pronouns description data, to which we will refer as \{gender*render\}-pronoun-data for the rest of this essay to spare us some words, is the way the user tells the render the pronouns of all people mentioned in a template so the renderer can render it.
+     Any piece of text that fits the criteria described below is considered \{gender*render\}-pronoun-data, yet not every such piece of text nessesarily works with every template, since it must provide the information required by the template for the rendering to work.
+    Files that contain \{gender*render\}-pronoun-data should use the file extension \texttt{.grpd}.\\
+
+    \{gender*render\}-pronoun-data is a type of json data, which makes it easily parsable by any language.\\
+
+    To describe a single individuals pronouns (to which we will refer to as individual pronoun data), a json object is used;
+    several of these are then combined to provide pronoun data for all individuals.
+    If a piece of individual pronoun data is written into a file, the file extension \texttt{.gripd} should be used.
+    Any json object whose properties are strings without whitespace, and whose items are strings, is valid individual pronoun data, though it might not work with every template depending on the information the template requires.\\
+
+    The following table describes the properties a piece of individual pronoun data may use to give you a rough overview of the way individual pronoun data corresponds to the information provided by the \texttt{context}-section of \{gender*render\}-pronoun tags, which will be relevant in the next section (about the way renderers work):
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
+                 \hline
+                 information provided by properties & property name(s), \linebreak synonymous to each other & short explanation, where necessary\\
+                 \hline\hline
+                 Subject & they, subject, subj & \\
+                 \hline
+                 Object & them, object, obj & \\
+                 \hline
+                 Dependant possessive\linebreak Determiner & their, dposs, dpossessive & \\
+                 \hline
+                 Independent possessive\linebreak Determiner & theirs, iposs, ipossessive & \\
+                 \hline
+                 Reflexive & themself, reflexive, reflex & \\
+                 \hline
+                 \hline
+                 Form of Address & Mr, Mrs, Mr\_s, address & \\
+                 \hline
+                 Surname & Smith, name, surname, family-name & \\
+                 \hline
+                 Personal name & Avery, personal-name, first-name & \\
+                 \hline
+                 \hline
+                 Gender-specific Noun handling & gender-nouns, gender\_nouns & Describes whether the person wants gender-specific nouns to use the female version where possible (e.g.\ "actress" instead of "actor"), the male version where possible (e.g.\ "fireman" instead of "firefighter"), or the gender-neutral version where possible (e.g.\ "firefighter").
+                 Possible values for this property are \texttt{"female"}, \texttt{"male"} and \texttt{"neutral"}. \\
+                 \hline
+                 \hline
+                 Custom property & \emph{property\_name} & Corresponds to "\texttt{<}\emph{property\_name}\texttt{>}" in \{gender*render\}-tags. \\
+                 \hline
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    \{gender*render\}-pronoun-data is simply a json object whose properties are
 
 \end{document}
