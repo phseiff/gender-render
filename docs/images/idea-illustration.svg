@@ -421,15 +421,15 @@
        id="text848-3"
        y="-539.5022"
        x="2038.2025"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:79.375px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#774476;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:79.375px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#774476;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"><tspan
          id="tspan850-2"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:79.375px;font-family:monospace;-inkscape-font-specification:'monospace, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr;text-anchor:middle;fill:#774476;fill-opacity:1;stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:79.375px;font-family:monospace;-inkscape-font-specification:'monospace, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#774476;fill-opacity:1;stroke-width:0.26458332"
          y="-539.5022"
-         x="2038.2025">prenoun</tspan><tspan
+         x="2038.2025">pronoun</tspan><tspan
          id="tspan956"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:79.375px;font-family:monospace;-inkscape-font-specification:'monospace, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr;text-anchor:middle;fill:#774476;fill-opacity:1;stroke-width:0.26458332"
-         y="-439.41217"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:79.375px;font-family:monospace;-inkscape-font-specification:'monospace, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#774476;fill-opacity:1;stroke-width:0.26458332"
+         y="-438.38873"
          x="2038.2025">preferences data</tspan></text>
     <path
        id="path822-0"
@@ -666,9 +666,7 @@
          x="4424.8735">and does all the gendering for</tspan><tspan
          id="tspan2817"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42456055px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#6c6c6b;fill-opacity:1;stroke-width:0.21363683"
-         y="91.558212"
-         x="4424.8735">you - for <tspan
-   id="tspan3216"
-   style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:142.42344666px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">any</tspan> pronouns!</tspan></text>
+         y="91.213226"
+         x="4424.8735">you.</tspan></text>
   </g>
 </svg>
