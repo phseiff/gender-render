@@ -18,9 +18,9 @@
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="icon.inkspace.svg"
-   inkscape:export-filename="/home/philipp/PycharmProjects/gender-render/images/icon.png"
-   inkscape:export-xdpi="246"
-   inkscape:export-ydpi="246">
+   inkscape:export-filename="/home/philipp/PycharmProjects/gender-render/docs/images/icon.png"
+   inkscape:export-xdpi="25.4"
+   inkscape:export-ydpi="25.4">
   <defs
      id="defs2">
     <linearGradient
@@ -179,7 +179,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.087500001"
-     inkscape:cx="2800.6986"
+     inkscape:cx="2023.5557"
      inkscape:cy="106.41011"
      inkscape:document-units="mm"
      inkscape:current-layer="g5420"
@@ -239,12 +239,14 @@
          d="m 28.643525,282.91904 v -2.25712 h 3.45876 q 1.47769,0 2.12723,-0.73073 0.66578,-0.71449 0.66578,-2.43575 v -5.63471 q 0,-1.65632 1.03923,-2.85794 1.03926,-1.20164 2.69558,-1.59136 v -0.0324 q -1.65632,-0.40596 -2.69558,-1.62383 -1.03923,-1.21786 -1.03923,-2.79299 v -5.61847 q 0,-1.70502 -0.64954,-2.43575 -0.64954,-0.73073 -2.14347,-0.73073 h -3.45876 v -2.25712 h 4.30316 q 2.15971,0 3.45876,1.34777 1.31531,1.34779 1.31531,3.57244 v 5.71589 q 0,1.70504 1.1854,2.69556 1.18539,0.97431 3.28014,1.0555 v 2.22467 q -2.11099,0.0811 -3.29637,1.07171 -1.16917,0.97431 -1.16917,2.69558 v 5.69964 q 0,2.19218 -1.33155,3.55621 -1.33153,1.364 -3.44252,1.364 z" />
     </g>
     <rect
-       style="opacity:1;vector-effect:none;fill:#ffffe3;fill-opacity:1;stroke:#faffff;stroke-width:15.05077744;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;vector-effect:none;fill:#ffffe3;fill-opacity:1;stroke:#faffff;stroke-width:16.03113937;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect6776"
-       width="1263.521"
-       height="630.22925"
-       x="8.2452679"
-       y="-338.11078" />
+       width="1339.356"
+       height="674.52173"
+       x="-19.741049"
+       y="-364.79276"
+       inkscape:export-xdpi="25.4"
+       inkscape:export-ydpi="25.4" />
   </g>
   <g
      inkscape:label="bg - blue"
