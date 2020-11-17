@@ -41,7 +41,7 @@
     This creates the requirement for creating template systems for the english language, and, in extention, any language (since all languages work differently), that support writing complex texts in a gender-neutral fashion and later "render" them to correctly gendered texts.\\
 
     \{gender*render\} is an attempt at creating one such template language, including a Specification, to serve as a proof of concept as well as a starting point for people who want to implement similar things.
-    The vision behind this proof of concept is not only to show \emph{how} addressing people with unconventional preferred pronouns can be automized, but also to show \emph{that} it can be easily automized, to debunk the myth that properly addressing nonbinary people in an automated fashion is simply technically impossible.
+    The vision behind this proof of concept is not only to show \emph{how} addressing people with unconventional preferred pronouns can be automized, but also to show \emph{that} it can be easily automized, to debunk the myth that properly addressing non-binary people in an automated fashion is simply technically impossible.
 
 \section{Requirements}
 
@@ -130,6 +130,8 @@
     Every \{gender*render\}-tag must have one context-section.
     The following table lists the possible values a \texttt{context}-section's value may have, as well as their meanings, though the syntactic validity of the template does not depend on whether the values and types of the the \{gender*render\}-tags are listed in this spec:
 
+    %\begin{minipage}{\linewidth}
+    %\pagebreak[5]
     \begin{flushleft}
         \begin{center}
             \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
@@ -163,6 +165,7 @@
             \end{longtable}
         \end{center}
     \end{flushleft}
+    %\end{minipage}
 
     The priority the \texttt{context}-section type is \texttt{1000}.
     If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\}\{foo:bar * context:Smith\}}". \\
@@ -185,7 +188,7 @@
     \subsection{Pronoun Description Data}
 
      Pronouns description data, to which we will refer as \{gender*render\}-pronoun-data for the rest of this essay to spare us some words, is the way the user tells the render the pronouns of all people mentioned in a template so the renderer can render it.
-     Any piece of text that fits the criteria described below is considered \{gender*render\}-pronoun-data, yet not every such piece of text nessesarily works with every template, since it must provide the information required by the template for the rendering to work.
+     Any piece of text that fits the criteria described below is considered \{gender*render\}-pronoun-data, yet not every such piece of text necessarily works with every template, since it must provide the information required by the template for the rendering to work.
     Files that contain \{gender*render\}-pronoun-data should use the file extension \texttt{.grpd}.\\
 
     \{gender*render\}-pronoun-data is a type of json data, which makes it easily parsable by any language.\\
@@ -197,6 +200,8 @@
 
     The following table describes the properties a piece of individual pronoun data may use to give you a rough overview of the way individual pronoun data corresponds to the information provided by the \texttt{context}-section of \{gender*render\}-pronoun tags, which will be relevant in the next section (about the way renderers work):
 
+
+    %\pagebreak[5]
     \begin{flushleft}
         \begin{center}
             \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
@@ -231,6 +236,94 @@
         \end{center}
     \end{flushleft}
 
-    \{gender*render\}-pronoun-data is simply a json object whose properties are
+    \{gender*render\}-pronoun-data is simply a json object whose properties are ids (strings without whitespace) corresponding to ids of \{gender*render\}-tags, and whose items are the individual pronoun data corresponding to their respective ids.
+    Since the ids used by the \{gender*render\}-pronoun-data need to correspond to those used by the template, not every valid piece of \{gender*render\}-pronoun-data worked with every template.
+    As specified later in the spec, renderers accept \{gender*render\}-pronoun-data as well as individual pronoun data in cases where no or only one id is used.
+
+    \subsection{Pronoun Renderer}
+
+    This section describes the way \{gender*render\}-specification conforming pronoun renderers work.
+    It is divided into two subsections, one defining a \{gender*render\}-renderer, and one defining (additional) implementation guidelines that should be followed to ensure that all renderers use similar interfaces and users understand the renderer even if they used to work with a different implementation beforehand.
+    The \{gender*render\} implementation that comes with this specification (\url{https://github.com/phseiff/gender-render}) also follows all of these guidelines.
+
+    \subsubsection{Pronoun Renderer specification}
+
+    Any program that follows the specifications below is considered a \{gender*render\}-renderer.
+    The purpose of such programs is to take \{gender*render\}-templates and \{gender*render\}-pronoun data and render them to texts that are gendered correctly according to the preferences voiced in the pronoun data.
+    We will refer to \{gender*render\}-renderers simply as renderers for the rest of this section to aid the reading flow.\\
+
+    A renderer must take at least two inputs, a \{gender*render\}-template and a piece of pronoun data.
+    As for the piece of pronoun data a renderer accepts, every renderer must accept \{gender*render\}-pronoun data as well as individual pronoun data, which is then processed into full \{gender*render\}-pronoun data following a number of steps explained below.
+    The renderer may also be written in a way that allows to pass it a path to a \texttt{.gr}-file containing a \{gender*render\}-template instead of the template directly, or even in a way which exclusively allows this way of usage, though the later is not recommended and does not comply with the implementation suggestions given by this document.
+    Analogously, the renderer may be written in a way that allows to pass it a path to a \texttt{.grpd}-file containing \{gender*render\}-pronoun data or a path to a \texttt{.gripd}-file containing individual pronoun data instead of the content of the \{gender*render\}-pronoun data directly, or even in a way which exclusively allows this way of usage, though the later is not recommended and does not comply with the implementation suggestions given by this document.\\
+
+    Along the rendering process, several errors might occur for several reasons.
+    The way errors are classified and communicated to the user is not an implementation detail, but a part of the specification, since classifying errors is especially important due the logical, yet sometimes contra intuitive way \{gender*render\} renders templates.
+    This specification thus defines not only what should raise an error, but also suggests different error names for different types of errors.\\
+
+    If the language of the implementation allows defining and raising custom error types, these error types must be defined and risen accordingly.
+    If the language does not allow to define custom error types, yet allows to return information even if the execution of a program or function fails, the program or function must return information indicating what type of error occurred in a reasonable way.
+    However, if the language of the implementation provides a standardized way to indicate a function failed to run, yet does not provide a way to return additional information about the cause of this failure, the implementation should use the standardized way of failing if an error occurs instead of returning information about the cause of failure.\\
+
+    The following types of errors are defined by this specification, and are used as described below.
+    Please note that whilst the names of the errors are always written in camel case throughout this specification, the way they are written should be according to the official style guide of the language they are implemented in, if there is any.
+    If the naming conventions of the language comply with the names of the errors defined in this specification, or if the language does not have any naming conventions, the names defined in this specification must be used.
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|p{13em} | p{19em} |}
+                 \hline
+                 Error name & commonly used for \\
+                 \hline\hline
+                 \texttt{SyntaxError} & Used if the input not a valid template and pronoun data aren't valid, independent of the way they relate to each other. \\
+                 \hline
+                 \texttt{IdResolutionError} & Used if matching individual pronoun data to tags does not wo out.\\
+                 \hline
+                 \texttt{MissingInformationError} & Used if the individual pronoun data a tag refers to does not contain the information the tag requires.\\
+                 \hline
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    If the language of the implementation already has an error type of the name \texttt{SyntaxError}, and this error can be raised by the implementation manually, the implementation does not need to define a custom equivalent of this error type in their own namespace, and may instead use the pre-defined type.
+    This is applicable for some languages like Python, and you can safely ige it if it isn't applicable to your language of choice.
+    If the language is object-oriented, including custom errors, the errors defined by this specification may be derived from pre-existing error types, where fitting.
+    This may be preferable to using pre-defined error types depending on the way your language implements custom error handling.
+    Where possible, additional information regarding the cause of failure and how to fix it should be included, but the way this is done is considered an implementation detail.\\
+
+    The rendering process uses different steps, described as follows.
+    Please note that the order in which these steps are executed is not relevant;
+    as long as the renderer is guaranteed to produce the same input-output-pairs as any render that accords to this definition does, it is up to the programmer how the renderer works internally.
+    Each of these steps vaguely corresponds to one of the error types defined above, and raises almost exclusively said error if it happens to be unfinisheable.\\
+
+    The first step is parsing the input values (template and pronoun data) and checking it for correctness.
+    If the received pronoun data is neither valid \{gender*render\}-pronoun data nor individual pronoun data, or if the received template is not a valid \{gender*render\}-template, a \texttt{SyntaxError} is risen.
+    Please note that for a \{gender*render\}-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
+
+    The second step matches \{gender*render\}-tags to individual pronoun data passed to the rnderer.
+    The crux of this is checking whether all ids used by the pronoun data match ids used by the template and vice versa, and making sense of individual pronoun data passed to the renderer.
+    This step as well as the next one check not only whether the passed information are valid each on their own, but also whether they are matching.
+    The procedures defined during this part of the specification walk a thin, yet clear, line between being too static and therefore forcing the user to provide not required information and reduce the ease of use of \{gender*render\}, and being to lash and therefore making debugging unnecessarily difficult.
+    Understanding this part of the specification is crucial for using \{gender*render\}, and the information it gives should therefore be part of communicating the way \{gender*render\} can be used by implementation documentations.\\
+
+    The first part of this step is to deal with the fact that different amounts of \texttt{id} values can be used by different tags, and some tags don't have id values specified, and the given pronoun data might be individual pronoun data and therefore not specify any id values.
+    To resolve this issue, the renderer assigns every \{gender*render\}-tag an id value if it doesn't have one already, and converts the given pronoun data to \{gender*render\}-pronoun data if it is individual pronoun data.
+    The way this is done is described by the following table, which refers to the amount of id values specified by all \{gender*render\}-tags used in the given template as \#ids:
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|p{6em} | p{7em} | p{7em} | p{7em} | p{7em} |}
+                 \hline
+                 & \textbf{\#ids = 0} & \textbf{all tags have the same id assigned} & \textbf{all tags have ids assigned, but not all the same} & \textbf{some tags have ids assigned, some not}\\
+                 \hline
+                 \textbf{only individual pronoun data is given} & & & &\\
+                 \hline
+                 \textbf{pronoun data is given for one id (="foo")} & & & &\\
+                 \hline
+                 \textbf{pronoun data is given for n ($\geq$ 1) ids} & & & &\\
+                 \hline
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
 
 \end{document}
