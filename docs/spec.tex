@@ -10,6 +10,8 @@
 %\usepackage{xparse}
 %\usepackage{tabularx}
 \usepackage{longtable}
+\usepackage{caption}
+\captionsetup{justification=raggedright,singlelinecheck=false}
 \fancyhf{}
 
 
@@ -75,7 +77,7 @@
         \item If tags contain IDs to annotate which person is referred to, a mapping of IDs to pronoun preferences is accepted for rendering.
         If no such IDs are added to the document because only one person of unknown gender is addressed in the document, the pronoun preferences are directly accepted by the renderer, without having to be part of a person-to-pronoun-mapping.
         This supports referring to multiple persons in one text without making the writing of texts that refer to only one person any more troublesome.
-        \item The pronoun information is given to the renderer as a piece of JSON data (or a similar object if the language used by the implementation supports such objects, e.g. dicts in Python).
+        \item The pronoun information is given to the renderer as a piece of JSON data (or a similar object if the language used by the implementation supports such objects, e.g. dicts in Python, but strings of JSON data should always be supported).
         Information that is not required by the template may be left out in the template.
         \item Templates can be parsed before being rendered and then used for multiple renderings.
         This should debunk the idea that gender-sensitive template systems are to inefficient to use them.
@@ -162,6 +164,7 @@
                  Gender-specific Noun & any nominative, with whitespaces replaced by underscores ("\texttt{\_}", \texttt{U+005F}) & If the value of the \texttt{section} does not match any of the above, its content is understood as being a noun which either server as a substitution or as a description of a person.
                  For example, the sentence "\{name\} is an \{actor\}" or "the \{actor\} asked for applause" would be good candidates for using said type of value since "actor" has two different gendered forms ("actor" and "actress") in english. \\
                  \hline
+                \caption{Types of context values in tags}
             \end{longtable}
         \end{center}
     \end{flushleft}
@@ -198,15 +201,17 @@
     If a piece of individual pronoun data is written into a file, the file extension \texttt{.gripd} should be used.
     Any json object whose properties are strings without whitespace, and whose items are strings, is valid individual pronoun data, though it might not work with every template depending on the information the template requires.\\
 
-    The following table describes the properties a piece of individual pronoun data may use to give you a rough overview of the way individual pronoun data corresponds to the information provided by the \texttt{context}-section of \{gender*render\}-pronoun tags, which will be relevant in the next section (about the way renderers work):
-
+    The following table describes the properties a piece of individual pronoun data may use to give you a rough overview of the way individual pronoun data corresponds to the information provided by the \texttt{context}-section of \{gender*render\}-pronoun tags, which will be relevant in the next section (about the way renderers work).
+    Every information that can be provided by individual pronoun data (referred to as an "attribute" here) has multiple properties that can be used to refer to it, as long as only one of them is used in the JSON object;
+   otherwise, the individual pronoun data is invalid.
+    Note that the last line of the table is a catch-it-all and does not refer to one specific attribute in particular:
 
     %\pagebreak[5]
     \begin{flushleft}
         \begin{center}
             \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
                  \hline
-                 information provided by properties & property name(s), \linebreak synonymous to each other & short explanation, where necessary\\
+                 information provided by properties (attribute) & property name(s), \linebreak synonymous to each other & short explanation, where necessary\\
                  \hline\hline
                  Subject & they, subject, subj & \\
                  \hline
@@ -226,12 +231,15 @@
                  Personal name & Avery, personal-name, first-name & \\
                  \hline
                  \hline
+                 Gender-specific addressing & gendered-addressing, gendered\_addressing & If set to 0, "False" or "false", the first name of an individual is used instead of its adressation.\\
+                 \hline
                  Gender-specific Noun handling & gender-nouns, gender\_nouns & Describes whether the person wants gender-specific nouns to use the female version where possible (e.g.\ "actress" instead of "actor"), the male version where possible (e.g.\ "fireman" instead of "firefighter"), or the gender-neutral version where possible (e.g.\ "firefighter").
                  Possible values for this property are \texttt{"female"}, \texttt{"male"} and \texttt{"neutral"}. \\
                  \hline
                  \hline
                  Custom property & \emph{property\_name} & Corresponds to "\texttt{<}\emph{property\_name}\texttt{>}" in \{gender*render\}-tags. \\
                  \hline
+                \caption{Supported properties in individual pronoun data}
             \end{longtable}
         \end{center}
     \end{flushleft}
@@ -281,15 +289,19 @@
                  \hline
                  \texttt{MissingInformationError} & Used if the individual pronoun data a tag refers to does not contain the information the tag requires.\\
                  \hline
+                 \texttt{DoubledInformationError} & Used if individual pronoun data defines a property multiple times with different names (possible since \{gender*render\} defines multiple different names for each property). \\
+                 \hline
+                \caption{Types of errors whilst rendering}
             \end{longtable}
         \end{center}
     \end{flushleft}
 
     If the language of the implementation already has an error type of the name \texttt{SyntaxError}, and this error can be raised by the implementation manually, the implementation does not need to define a custom equivalent of this error type in their own namespace, and may instead use the pre-defined type.
-    This is applicable for some languages like Python, and you can safely ige it if it isn't applicable to your language of choice.
-    If the language is object-oriented, including custom errors, the errors defined by this specification may be derived from pre-existing error types, where fitting.
-    This may be preferable to using pre-defined error types depending on the way your language implements custom error handling.
-    Where possible, additional information regarding the cause of failure and how to fix it should be included, but the way this is done is considered an implementation detail.\\
+    This is applicable for some languages like Python, and you can safely ignore it if it isn't applicable to your language of choice.\\
+    The errors (in languages where errors are objects) do not need to be defined as part of the global scope, if libraries or modules in this language commonly use their own scope (as is the case wit most common languages), and should default to the best practices for their respective language.\\
+    If the language is object-oriented, including custom errors, the errors defined by this specification may be derived from pre-existing error types, where fitting, as long as catching the exception based on the name defined by this specification is still possible.\\
+    Where possible, additional information regarding the cause of failure and how to fix it should be included, but the way this is done is considered an implementation detail.
+    Implementations should keep in mind that people using \{gender*render\} might not neccessarily have read the spec, and might profit from self-explanatory detailed Tracebacks.\\
 
     The rendering process uses different steps, described as follows.
     Please note that the order in which these steps are executed is not relevant;
@@ -300,7 +312,7 @@
     If the received pronoun data is neither valid \{gender*render\}-pronoun data nor individual pronoun data, or if the received template is not a valid \{gender*render\}-template, a \texttt{SyntaxError} is risen.
     Please note that for a \{gender*render\}-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
 
-    The second step matches \{gender*render\}-tags to individual pronoun data passed to the rnderer.
+    The second step matches \{gender*render\}-tags to individual pronoun data passed to the renderer.
     The crux of this is checking whether all ids used by the pronoun data match ids used by the template and vice versa, and making sense of individual pronoun data passed to the renderer.
     This step as well as the next one check not only whether the passed information are valid each on their own, but also whether they are matching.
     The procedures defined during this part of the specification walk a thin, yet clear, line between being too static and therefore forcing the user to provide not required information and reduce the ease of use of \{gender*render\}, and being to lash and therefore making debugging unnecessarily difficult.
@@ -312,18 +324,70 @@
 
     \begin{flushleft}
         \begin{center}
-            \begin{longtable}{|p{6em} | p{7em} | p{7em} | p{7em} | p{7em} |}
+            \begin{longtable}{|p{5em} | p{8em} | p{8em} | p{8em} | p{8em} |}
                  \hline
-                 & \textbf{\#ids = 0} & \textbf{all tags have the same id assigned} & \textbf{all tags have ids assigned, but not all the same} & \textbf{some tags have ids assigned, some not}\\
+                 & \textbf{\#ids = 0} & \textbf{all tags have the same id (="bar") assigned} & \textbf{all tags have ids assigned, but not all the same} & \textbf{some tags have ids assigned, some not}\\
                  \hline
-                 \textbf{only individual pronoun data is given} & & & &\\
+
+                 \textbf{only individual pronoun data is given (\texttt{idpd})} & \texttt{pronoun\_data = \{"usr": idpd\}};\linebreak\linebreak Assign id "usr" to every tag. & \texttt{pronoun\_data = \{"bar": idpd\}} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
                  \hline
-                 \textbf{pronoun data is given for one id (="foo")} & & & &\\
+
+                 \textbf{pronoun data is given for one id (="foo")} & Assign id "foo" to every tag. & if "foo" $\neq$ "bar":\linebreak raise\linebreak IdResolutionError & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
                  \hline
-                 \textbf{pronoun data is given for n ($\geq$ 1) ids} & & & &\\
+
+                 \textbf{pronoun data is given for n ($\geq$ 1) ids} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError & \emph{nothing to do here} & if \#ids + 1 $\neq$ n:\linebreak raise\linebreak IdResolutionError\linebreak else:\linebreak assign every tag without an id the id in the pronoun data that isn't assigned to any tag.\\
                  \hline
+                \caption{Id resolution}
             \end{longtable}
         \end{center}
     \end{flushleft}
+
+    After the instructions in this table are followed, every \{gender*render\}-tag in the template will have an id, and the given pronoun data will be converte to actual \{gender*render\}-pronoun information instead of potentially being individual pronoun data.
+    The only thing left to do in this step is recreating the set of ids used by the template and the set of ids used by the pronoun data and raising an \texttt{IdResolutionError} if the ids in the template are not a subset of the ids in the pronoun data.\\
+
+    The third step does for the context-value of the tags what the second does for the id-value of the tags.
+    It corresponds to the \texttt{Missing-/DoubledInformation}-error like the second step corresponds to the the \texttt{IdResolutionError}.
+    This task is also finally the one that involves actually rendering the template.\\
+
+    Fist, the all individual pronoun data needs to be checked for doubled information.
+    If any individual pronoun data uses multiple different property names to refer to one attribute, a \texttt{DoubledInformationError} is raised;
+    see table 2 for information about which properties refer to which attribute.
+    This step is necessary since \{gender*render\} defines multiple ways to describe each attribute.\\
+
+    Then, the renderer iterates over all tags in the template, and for each tag, the tags context value and the individual pronoun data provided for the tags id value is taken, processed according to the following table, and the result then replaces the tag in the actual template.
+    If an attribute is required for this yet not defined in the individual pronoun data, a \texttt{MissingInformationError} must be risen risen.
+    Note that we will refer to attributes of the individual pronoun data simply as "attributes" in the following:
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|p{8em} | p{28em} |}
+                 \hline
+                 syntactic context of the \{gender*render\}-tag & procedure\\
+                 \hline
+                 \hline
+                 Subject, Object, (In)dependant possessive, Reflexive, Surname, Personal name, "\texttt{<}" + \emph{foo} + "\texttt{>}" & tag is replaced with the value of the corresponding attribute. \\
+                 \hline
+                 Form of Address & If the \emph{gender-specific addressing}-attribute  is set to false (or undefined), tag is replaced with the value of the \emph{Personal name}-attribute.  \\
+                 \hline
+                 Gender-specific Noun & See below. \\
+                 \hline
+                \caption{Rendering procedures for each syntactic context}
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    As we can see, the only non-trivial case is correctly gendering gender-specific nouns, these being nouns that imply a specific natural gender of the person they refer to.
+    Depending on the value of the \emph{Gender-specific Noun handling} attribute, such nouns, when given as the context value of a \{gender*render\}-tag, will be replaced by their correct equivalent for the specified gender.
+    How these equivalents are determined is intentionally left vague since the english language is constantly shifting and unambigiously defining every rule for this would require to curate extensive lists.
+    However, the recommended approach would be to use a graph of nouns that links every noun that refers to a person (for example based on WordNet\footnote{Princeton University "About WordNet." \href{https://wordnet.princeton.edu/}{WordNet}. Princeton University. 2010.}) to their synonyms according the gender implied by the synonyms.
+    There are (not necessarily complete) datasets available\footnote{for example \url{https://github.com/ecmonsen/gendered_words} on GitHub} that do exactly this.
+    It might be a good idea to test these sets if they contain a gender-neutral version for every gendered noun, and if they have only a version ending with "-man" and one version ending with "-women", to manually insert a version ending with "person".\\
+
+    If a word is given as a gendered noun which isn't one according to the used data set, no error must be risen to ensure that every implementation terminates successfully for the same input data, but a (possibly suppressible) warning should be risen.
+    If the implementation is also capable of determining if something is a word for a person a noun or a word at all, it may raise warnings for these as well.\\
+
+    After all of these steps are concluded, every \{gender*render\}-tag in the template should be replaced with a correctly gendered word for it.
+    Afterwards, the template must be unescaped to remove single backslashes and replace double backslashes with single ones.
+    If the implementation does not operate on a mutable string object (like they exist in some languages), the result should then be returned or outputted in another way, though this is not a must since some implications might not be capsulated into their own function or program.\\
 
 \end{document}
