@@ -391,4 +391,15 @@
     Afterwards, the template must be unescaped to remove single backslashes and replace double backslashes with single ones.
     If the implementation does not operate on a mutable string object (like they exist in some languages), the result should then be returned or outputted in another way, though this is not a must since some implications might not be encapsulated into their own function or program.\\
 
+    \subsection{Additional guidelines}
+
+    In addition  to the "should"s defined above, this sections lists some additional "should"s and guidelines for implementing \{gender*render\} renderers.
+    Renderers that follow all of these "should"s can call themselves conforming to the \{gender*render\} \emph{implementation standard}.\\
+
+    In general, the purpose of this implementation standard is to define standardized interfaces and behaviors (function names, parameter names, additional behaviors and parameters, optional optimizations, test functions for the user to find potential caveats in their templates etc.) so that every user who is comfortable with one implementation of \{gender*render\} is capable of using any implementation in any other language without having to refer to the documentation to get started.
+    It is acceptable that not every implementaon might be able to follow these guidelines, though, and they are admittedly optimized for object-oriented languages, though they also contains alternate suggestions for non-object oriented languages.\\
+
+    In addition to being a guideline for other implementations, this standard served as a basic outline for writing the exemplary implementation that comes with this specification.
+    Whilst said implementation strictly follows all of these guidelines, it should be mentioned that was written after the standard, so these guidelines are in no way based on the original implementation or, even worse, written to justify this implementations design choices.\\
+
 \end{document}
