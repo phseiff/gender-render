@@ -95,6 +95,7 @@
     and one for guidelines and specification on implementing a renderer for the template language.\\
 
     The terms "MUST", "MUST NOT", "SHOULD", "SHOULD NOT" and "MAY" in this document are used as defined by the \href{https://tools.ietf.org/html/rfc2119}{RFC 4627}.
+    Additionally, the term *does* implies that it *must do*, not that it *can do*.
 
     \subsection{Template Language}
 
@@ -136,7 +137,7 @@
     %\pagebreak[5]
     \begin{flushleft}
         \begin{center}
-            \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
+            \begin{longtable}{| >{\raggedright\arraybackslash}p{7em} | >{\raggedright\arraybackslash}p{9em} | >{\raggedright\arraybackslash}p{14em} |}
                  \hline
                  {syntactic context indicated by the value(s)} & {possible values,\linebreak synonymous to each other} & {short explanation, where\linebreak necessary} \\
                  \hline\hline
@@ -209,7 +210,7 @@
     %\pagebreak[5]
     \begin{flushleft}
         \begin{center}
-            \begin{longtable}{|p{7em} | p{9em} | p{14em} |}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{7em} | >{\raggedright\arraybackslash}p{9em} | >{\raggedright\arraybackslash}p{14em} |}
                  \hline
                  information provided by properties (attribute) & property name(s), \linebreak synonymous to each other & short explanation, where necessary\\
                  \hline\hline
@@ -279,7 +280,7 @@
 
     \begin{flushleft}
         \begin{center}
-            \begin{longtable}{|p{13em} | p{19em} |}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{13em} | >{\raggedright\arraybackslash}p{19em} |}
                  \hline
                  Error name & commonly used for \\
                  \hline\hline
@@ -324,7 +325,7 @@
 
     \begin{flushleft}
         \begin{center}
-            \begin{longtable}{|p{5em} | p{8em} | p{8em} | p{8em} | p{8em} |}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{5em} | >{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{8em} |}
                  \hline
                  & \textbf{\#ids = 0} & \textbf{all tags have the same id (="bar") assigned} & \textbf{all tags have ids assigned, but not all the same} & \textbf{some tags have ids assigned, some not}\\
                  \hline
@@ -360,7 +361,7 @@
 
     \begin{flushleft}
         \begin{center}
-            \begin{longtable}{|p{8em} | p{28em} |}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{28em} |}
                  \hline
                  syntactic context of the \{gender*render\}-tag & procedure\\
                  \hline
@@ -386,8 +387,8 @@
     If a word is given as a gendered noun which isn't one according to the used data set, no error must be risen to ensure that every implementation terminates successfully for the same input data, but a (possibly suppressible) warning should be risen.
     If the implementation is also capable of determining if something is a word for a person a noun or a word at all, it may raise warnings for these as well.\\
 
-    After all of these steps are concluded, every \{gender*render\}-tag in the template should be replaced with a correctly gendered word for it.
+    After all of these steps are concluded, every \{gender*render\}-tag in the template will be replaced with a correctly gendered word for it.
     Afterwards, the template must be unescaped to remove single backslashes and replace double backslashes with single ones.
-    If the implementation does not operate on a mutable string object (like they exist in some languages), the result should then be returned or outputted in another way, though this is not a must since some implications might not be capsulated into their own function or program.\\
+    If the implementation does not operate on a mutable string object (like they exist in some languages), the result should then be returned or outputted in another way, though this is not a must since some implications might not be encapsulated into their own function or program.\\
 
 \end{document}
