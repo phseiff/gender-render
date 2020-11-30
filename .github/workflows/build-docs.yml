@@ -19,6 +19,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install xzdec
           sudo apt-get install texlive-latex-base
+          mkdir ~/ texmf
           sudo tlmgr option repository ftp://tug.org/historic/systems/texlive/2017/tlnet-final
           tlmgr init-usertree
           tlmgr install caption
