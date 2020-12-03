@@ -19,6 +19,7 @@ jobs:
       - name: Build Documentation 🔧
         run: |
           cd docs
+          sudo chmod +x build-docs.sh
           ./build-docs.sh
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
