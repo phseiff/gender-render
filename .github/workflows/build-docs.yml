@@ -16,6 +16,10 @@ jobs:
 
       - name: Build Documentation 🔧
         run: |
+          # Create new version of specification:
+          python3 create_new_version.py ${{ GITHUB_SHA }}
+
+          # Install LaTeX:
           sudo apt-get update
           sudo apt-get install xzdec
           sudo apt-get install texlive-latex-base
@@ -23,7 +27,10 @@ jobs:
           tlmgr init-usertree
           sudo tlmgr option repository ftp://tug.org/historic/systems/texlive/2017/tlnet-final
           tlmgr install caption
+
           cd docs
+
+          # Convert specifications:
           python3 texliveonthefly.py spec.tex
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3

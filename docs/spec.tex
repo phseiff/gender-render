@@ -15,6 +15,9 @@
 \fancyhf{}
 \captionsetup{justification=raggedright,singlelinecheck=false}
 
+
+\newcommand{\version}{v0.1.0}
+
 % Text to make one more indention level:
 
 
@@ -61,13 +64,14 @@
 \chead{\includegraphics[width=1cm]{images/icon-black.pdf}}
 \cfoot{\thepage}
 
-\author{phseiff\\ \href{https://phseiff.com}{from phseiff.com}}
+\author{phseiff\\ \href{https://phseiff.com}{from phseiff.com}\\ {\href{https://phseiff.com/gender-render/spec.html}{\version}}}
 
 \title{\begin{center}
            %\BeginAccSupp{method=plain,Alt={\{gender*render\}\\Specification}}
            \includegraphics{images/title-black.pdf}
            %\EndAccSupp{}
 \end{center} Template system and implementation specification for rendering gender-neutral email templates with pronoun information}
+
 
 \begin{document}
 \maketitle
@@ -596,7 +600,8 @@
 
     Recent versions will always be accessible via the releases-page of the projects GitHub page\footnote{\url{https://github.com/phseiff/gender-render/releases}}.\\
 
-    The current versions major number is 0, since there might be need changes according to the feedback it receives.\\
+    The current versions major number is 0, since there might be need changes according to the feedback it receives.
+    Further versions of this spec will be located at \url{https://phseiff.com/gender-render/spec.html}.\\
 
 \section{Exemplary Implementation}
 
