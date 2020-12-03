@@ -2,7 +2,7 @@
 
 # default options; feel free to change!
 defaultCompiler = "pdflatex"
-defaultArguments = "-synctex=1 -interaction=nonstopmode"
+defaultArguments = ""  # "-synctex=1 -interaction=nonstopmode"
 defaultSpeechSetting = "never"
 
 #
@@ -34,7 +34,7 @@ defaultSpeechSetting = "never"
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/copyleft/gpl.html>.
 
-import re, subprocess, os, time,  optparse, sys, shlex
+import re, subprocess, os, time,  optparse, sys, shlex, requests
 
 scriptName = os.path.basename(__file__)     #the name of this script file
 py3 = sys.version_info[0]  >= 3
@@ -329,7 +329,7 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
-        parser.error( "{0}: You must specify a .tex file to compile.".format(scriptName) )
+        parser.error( "{0}: You must specify a .tex file to compile.".format(scriptName))
 
     texDoc = args[0]
     compiler_path = os.path.join( options.texlive_bin, options.compiler)

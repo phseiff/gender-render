@@ -1,9 +1,0 @@
-\babel@toc {english}{}
-\contentsline {section}{\numberline {1}Abstract}{1}{section.1}
-\contentsline {section}{\numberline {2}Requirements}{2}{section.2}
-\contentsline {section}{\numberline {3}Design Decisions}{3}{section.3}
-\contentsline {section}{\numberline {4}Standard}{3}{section.4}
-\contentsline {subsection}{\numberline {4.1}Template Language}{4}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Pronoun Description Data}{7}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Pronoun Renderer}{9}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}Pronoun Renderer specification}{9}{subsubsection.4.3.1}
