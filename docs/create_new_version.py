@@ -19,5 +19,4 @@ with open(out_file_name, "w"):
             "<!--new:" + in_file_prefix + "-->"
             + '<li><a href="https://github.com/phseiff/gender-render/raw/' + github_sha + "/docs/" + in_file_name + '">'
             + version + "</a></li>"
-            + version + "</a>"
         )

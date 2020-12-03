@@ -1,7 +1,9 @@
 name: Build the Documentation
 
 on:
-  push
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
