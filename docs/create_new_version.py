@@ -1,5 +1,6 @@
 import sys
 import requests
+import time
 
 github_sha = sys.argv[1]
 in_file_name = "spec.tex"
@@ -9,7 +10,7 @@ out_file_name = in_file_name.split(".")[0] + ".html"
 with open(out_file_name, "w") as f:
     try:
         former_content = requests.get("https://phseiff.com/gender-render/" + out_file_name).text
-        raise Exception("wuwu")
+        # raise Exception("wuwu")
     except:
         former_content = open("spec-blueprint.html", "r").read()
     content_of_tex_file = open(in_file_name, "r").read()
@@ -22,3 +23,5 @@ with open(out_file_name, "w") as f:
             + '.pdf">' + version + "</a></li>"
         )
     f.write(former_content)
+
+time.sleep(3)
