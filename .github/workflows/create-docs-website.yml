@@ -1,4 +1,4 @@
-name: Build the Documentation
+name: Build the Download Page
 
 on:
   push:
@@ -19,6 +19,7 @@ jobs:
       - name: Build Documentation 🔧
         run: |
           # Create new version of specification:
+          cd docs
           python3 create_new_version.py $GITHUB_SHA
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
