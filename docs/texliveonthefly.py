@@ -304,7 +304,7 @@ def generateCompiler(compiler, arguments, texDoc, exiter):
 if __name__ == '__main__':
     if open(sys.argv[1], "r").read() == requests.get("https://github.com/phseiff/gender-render/tree/main/docs/"
                                                      + sys.argv[1]).text:
-        sys.exit()
+        sys.exit(0)
 
     # Parse command line
     parser = optparse.OptionParser(
