@@ -11,7 +11,7 @@ with open(out_file_name, "w") as f:
         former_content = requests.get("https://phseiff.com/gender-render/" + out_file_name).text
         raise Exception("wuwu")
     except:
-        former_content = open("spec.html", "r").read()
+        former_content = open("spec-blueprint.html", "r").read()
     content_of_tex_file = open(in_file_name, "r").read()
     version = content_of_tex_file.split("\\newcommand{\\version}{", 1)[-1].split("}", 1)[0]
     if not ">" + version + "<" in former_content:
