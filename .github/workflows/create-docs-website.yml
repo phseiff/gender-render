@@ -16,26 +16,12 @@ jobs:
 
       - name: Build Documentation 🔧
         run: |
-
-          # Update packages:
-          sudo apt-get update
-
           # Create new version of specification:
-          sudo apt-get install xzdec
-          sudo apt-get install texlive-latex-base
-          mkdir ~/texmf
-          tlmgr init-usertree
-          sudo tlmgr option repository ftp://tug.org/historic/systems/texlive/2017/tlnet-final
-          tlmgr install caption
-
-          cd docs
-
-          # Convert specifications:
-          python3 texliveonthefly.py spec.tex
+          python3 create_new_version.py ${ GITHUB_SHA }
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
-          BRANCH: master
+          BRANCH: gh-pages
           FOLDER: .
