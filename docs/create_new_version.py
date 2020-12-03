@@ -18,7 +18,7 @@ with open(out_file_name, "w") as f:
         finished_content = former_content.replace(
             "<!--new:" + in_file_prefix + "-->",
             "<!--new:" + in_file_prefix + "-->"
-            + '<li><a href="https://github.com/phseiff/gender-render/raw/' + github_sha + "/docs/" + in_file_name + '">'
-            + version + "</a></li>"
+            + '<li><a href="https://github.com/phseiff/gender-render/raw/' + github_sha + "/docs/" + in_file_prefix
+            + '.pdf">' + version + "</a></li>"
         )
         f.write(finished_content)
