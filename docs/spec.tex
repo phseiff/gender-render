@@ -10,9 +10,52 @@
 %\usepackage{xparse}
 %\usepackage{tabularx}
 \usepackage{longtable}
+\usepackage{array}
 \usepackage{caption}
-\captionsetup{justification=raggedright,singlelinecheck=false}
 \fancyhf{}
+\captionsetup{justification=raggedright,singlelinecheck=false}
+
+% Text to make one more indention level:
+
+
+\usepackage{titlesec}
+
+\titleclass{\subsubsubsection}{straight}[\subsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+
+\makeatletter
+\newcommand{\definestring}[2]{\@ifdefinable{#1}{\gdef#1{#2}}}
+\makeatother
+
+% end.
 
 
 \chead{\includegraphics[width=1cm]{images/icon-black.pdf}}
@@ -172,7 +215,7 @@
     %\end{minipage}
 
     The priority the \texttt{context}-section type is \texttt{1000}.
-    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\}\{foo:bar * context:Smith\}}". \\
+    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", in the form of two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}) and different only in their context value. \\
 
     The other section type supported by this version of this Specification is the \texttt{id}-type.
     The value of an \texttt{id}-section may take any value as long as it does not contain any whitespace.
@@ -313,6 +356,8 @@
     If the received pronoun data is neither valid \{gender*render\}-pronoun data nor individual pronoun data, or if the received template is not a valid \{gender*render\}-template, a \texttt{SyntaxError} is risen.
     Please note that for a \{gender*render\}-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
 
+    This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).\\
+
     The second step matches \{gender*render\}-tags to individual pronoun data passed to the renderer.
     The crux of this is checking whether all ids used by the pronoun data match ids used by the template and vice versa, and making sense of individual pronoun data passed to the renderer.
     This step as well as the next one check not only whether the passed information are valid each on their own, but also whether they are matching.
@@ -330,7 +375,7 @@
                  & \textbf{\#ids = 0} & \textbf{all tags have the same id (="bar") assigned} & \textbf{all tags have ids assigned, but not all the same} & \textbf{some tags have ids assigned, some not}\\
                  \hline
 
-                 \textbf{only individual pronoun data is given (\texttt{idpd})} & \texttt{pronoun\_data = \{"usr": idpd\}};\linebreak\linebreak Assign id "usr" to every tag. & \texttt{pronoun\_data = \{"bar": idpd\}} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
+                 \textbf{only individual pronoun data is given (=\texttt{idpd})} & \texttt{pronoun\_data = \{"usr": idpd\}};\linebreak\linebreak Assign id "usr" to every tag. & \texttt{pronoun\_data = \{"bar": idpd\}} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
                  \hline
 
                  \textbf{pronoun data is given for one id (="foo")} & Assign id "foo" to every tag. & if "foo" $\neq$ "bar":\linebreak raise\linebreak IdResolutionError & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
@@ -390,5 +435,187 @@
     After all of these steps are concluded, every \{gender*render\}-tag in the template will be replaced with a correctly gendered word for it.
     Afterwards, the template must be unescaped to remove single backslashes and replace double backslashes with single ones.
     If the implementation does not operate on a mutable string object (like they exist in some languages), the result should then be returned or outputted in another way, though this is not a must since some implications might not be encapsulated into their own function or program.\\
+
+    \subsubsection{Implementation guidelines}
+
+    In addition  to the "should"s defined above, this sections lists some additional "should"s and guidelines for implementing \{gender*render\} renderers.
+    This completed the previous section in that the previous section is about the way \{gender*render\}-implementations must work internally, whilst this section is about the way \{gender*render\}-implementation interfaces should be exposed to the outside, to encourage uniformity not only on the inside, but also on the outside.\\
+    Renderers that follow all of these "should"s can call themselves conforming to the \{gender*render\} \emph{implementation standard}.\\
+
+    In general, the purpose of this implementation standard is to define standardized interfaces and behaviors (function names, parameter names, additional behaviors and parameters, optional optimizations, test functions for the user to find potential caveats in their templates etc.) so that every user who is comfortable with one implementation of \{gender*render\} is capable of using any implementation in any other language without having to refer to the documentation to get started.
+    It is acceptable that not every implementaon might be able to follow these guidelines, though, and they are admittedly optimized for object-oriented languages, though they also contains alternate suggestions for non-object oriented languages.\\
+
+    In addition to being a guideline for other implementations, this standard served as a basic outline for writing the exemplary implementation that comes with this specification.
+    Whilst said implementation strictly follows all of these guidelines, it should be mentioned that was written after the standard, so these guidelines are in no way based on the original implementation or, even worse, written to justify this implementations design choices.\\
+
+    The terms "suggestions" and "guidelines" are used interchangeably here.
+
+    \subsubsubsection{Naming Guidelines}
+
+    All naming suggestions given in this section follow Python coding conventions, these being \texttt{CamelCase} for classes, \texttt{snake\_case} for variables, functions, arguments and methods, and \texttt{kebab-case} for package names.
+    Whilst the names are part of these suggestions, their case is not, and every implementation should follow the naming conventions of its respective language depending on the type of things the names refer to.
+
+    \subsubsubsection{Object Orientation}
+
+    The guidelines are mainly targeted towards object-oriented languages, since most high-level languages are object oriented and there is not much reason to implement \{gender*render\} using a low-level language.
+    However, they can and should be applied to non-object oriented languages as well, following the following table of analogies;
+    in cases where the left-sided concept is available for use, it should be used, otherwise, the right-sided concept should replace it:
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{28em} |}
+                 \hline
+                 object-oriented term & not object-oriented equivalent\\
+                 \hline
+                 \hline
+                 object representing a foo & data structure representing a foo \\
+                 \hline
+                 class constructor & function that returns the data structure that compensates for the object \\
+                 \hline
+                 method of an object representing a foo;\linebreak takes e.g. a, b, c as arguments & function that manipulates a data structure representing a foo or returns a manipulated version of it (depending on whether it is mutable or not);\linebreak takes e.g. the data structure, a, b, c as arguments\\
+                 \hline
+                 function that mutates foo & function that returns a modified copy of foo \\
+                 \hline
+                 function \texttt{f},\linebreak which accepts some optional arguments & function \texttt{f\_ext} where all those optional arguments are required, and function \texttt{f}, which does not require the optional arguments and internally calls \texttt{f\_ext} with the default values for the omitted arguments;\linebreak unless there is a standard way to deal with issues like this in the given language, which should then be preferred to this approach.\\
+                 \hline
+                 boolean type & 0 or 1 as integers \\
+                 \hline
+                \caption{OOP equivalents for low-level languages}
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    \subsubsubsection{Naming the package}
+
+    Packages (as in, modules or libraries that can be installed via a package manager, be it language specific or general) should be called "\texttt{gender-render}" if they target the english language.
+    If they target a different language, they should be extended with a hyphen and the corresponding language code (e.g. "\texttt{gender-render-de}").
+    In case the implementation is highly language specific (e.g. intended to be used from within one specific language rather than as a tool via the command line), and the package manager it is uploaded to is not language-specific (unlike e.g. nvm or pypi), the package name should be extended with a hyphen and the common file extension of the language (e.g. "\texttt{gender-render-js}" or "\texttt{gender-render-de-js}").
+    In cases where other packages of the same name already exist, a name should be chosen with good judgement.
+
+    \subsubsubsection{Naming the module/ library}
+
+    Most languages support writing modules and libraries that can be imported, embedded or otherwise injected into any piece of code usg a simple statement that contains the name of the module somewhere in it (e.g. "\texttt{import gender-render}" or "\texttt{\#include <gender\_render>}").
+    Whilst some languages come with their own packet manager, some don't, and some that do support using different names for the package and the module that it installs.
+    Therefore, a separate naming convention for module names is necessary.\\
+
+    Module names are formed like package names, except without the appendix for the language name, and using the case conventions for module names rather than package names.
+    In cases where the package name differs from the scheme above, the module name should be based on the package name, but also without the additional information regarding the implementation language.
+
+    \subsubsubsection{Core functionality}
+
+    This is the functionality that every \{gender*render\} implementation should expose, if appropriate (within good judgement) its main namespace.\\
+
+    \begin{description}
+        \item[object \texttt{Template}:] A class representing a parsed, but not yet rendered, \{gender*render\}-template.
+                                         Its constructor takes the template-related information that any \{gender*render\}-renderer takes, parses and processes it as far as possible, and an additional \texttt{render}-method accepts the pronoun-related information that any \{gender*render\}-renderer takes and renders both, with the result then being returned.
+                                         This practice of implementing an object or data structure just for processing the template and separating this process from the actual render is motivated by the need for increased performance in case of multiple subsequent renders of one identical template.\\
+                                         The constructor accepts one positional argument, "\texttt{template}", which accepts a string, and one optional argument "\texttt{takes\_file\_path}", which defaults to false and accepts a boolean.
+                                         If \texttt{takes\_file\_path is true}, the \texttt{template}-argument is interpreted as a file path to a \texttt{.gr}-file containing the template;
+                                         otherwise, it is interpreted as a string containing the template.
+        \item[method \texttt{render()}:] A method of the aforementioned \texttt{Template}-object.
+                                        It accepts a piece of pronoun data and returns the rendered template.
+                                        Accepted arguments are "\texttt{pronoun\_data}", which accepts a string, and one optional argument "\texttt{takes\_file\_path}", which defaults to false and accepts a boolean.
+                                        If \texttt{takes\_file\_path is true}, the \texttt{pronoun\_data}-argument is interpreted as a file path to a \texttt{.grpd}- or \texttt{.gripd}-file containing the pronoun data;
+                                        otherwise, it is interpreted as a string containing the pronoun data.
+                                        Implementations may write \texttt{render} as a method that accepts a JSON-like object (like a \texttt{dict} in Python or an object in Javascript) if it receives one instead of a string containing json.
+        \item[function \texttt{render\_template()}:] \texttt{render\_template()} is a shorthand for \texttt{Template().render()}.
+                                                     Order in which arguments are passed to \texttt{render\_plate()} is first required arguments for Template(), then required arguments for render(), then optional arguments shared by Template(), then optional arguments for Template() and then optional arguments for render().
+        \item[object \texttt{PronounData}:] A class representing a parsed piece of individual pronoun data, with all calculations that can be done before knowing which template it will be inserted in already done.
+                                            This type of object is accepted by every function which accepts pronoun data, such as \texttt{Template().render()} or \texttt{render\_template()} wherever these functions accept a piece of pronoun data (the \texttt{pronoun \_data}-argument).
+                                            Its constructor accepts the same arguments as the  \texttt{render()}-method as described in the preceding sections of this list.
+    \end{description}
+
+    \subsubsubsection{Warnings}
+
+    As in every program, there are multiple scenarios that can arise along the render process that might warrant raising a warning.
+    This specification does not define any warnings that must be risen to comply with these standards;
+    rather, it suggests some warnings that should be implemented if the architecture of the program warrants it, was well as guidelines on how to handle the disabling and enabling of warnings.\\
+
+    Every warning suggested by this section comes with a name that should, like every other name specified here, adjusted to the styleguides of the implementation language.
+    All of the names of these warnings end on "Warning" as a uniting factor in their names, but this uniting factor should be left out or replaced according to the coding guidelines of the respective language.
+    If, for example, the suggested name is "\texttt{FooBarWarning}", but the language and/or coding guidelines used for the implementation require warnings to be snake\_case and to start with "potential\_problem\" rather than ending with "Warning", the warning should be "\texttt{potential\_problem\_foo\_bar}".\\
+
+    Which function should raise the warning is implementation dependent;
+    however, every function suggested by this specification should have an \texttt{enable\_warnings}-argument which takes a regex-expression which matches every warning that should be risen;
+    all other warnings should be disabled.
+    The design decision behind using regex is that regex allows to describe logical `AND`, 'OR` and `NOT` operations on strings in a way that is well-established, easy to use as well as easy to implement in any language due to the wide spread of regex-libraries, and that regex is very widely used;
+    besides, passing strings to an argument is supported in pretty much every language no matter the paradigm.
+    The default value for the \texttt{enable\_warnings} argument is up to the implementation, but should be chosen to comply with the warning sensitivity common in programs written in the respective language.
+    The value of the argument should be passed from every function to every function it calls (assuming both functions are part of the program and have potential warnings to raise).
+    \texttt{render\_template()}, for example, should pass the users warning preferences on to \texttt{Template()} as well as its \texttt{.render()} method.
+    The regex-expression assumes the warnings to be names according to this specification and in snake\_case, so "\texttt{FooBarWarning}" would be "\texttt{foo\_bar\_warning}".
+    This ensures compatibility of values for the \texttt{enable\_warnings}-argument across all implementations of \{gender*render\}.\\
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{28em} |}
+                 \hline
+                 warning name & warning meaning\\
+                 \hline\hline
+                 \texttt{NotAWordWarning} & The value of a Gendered Noun-tag is not a word known in the english (or implementation-specific) language.
+                 Raising this warning only makes sense for implementations that come with a full dict of the english language.\\
+                 \hline
+                 \texttt{NotANounWarning} & The same as above, but specifically for valid words that are not nouns.\\
+                 \hline
+                 \texttt{NotAPersonNoun Warning} & The same as above, but specifically for valid nouns that do not refer to a type of person or profession and are thus not gendered in any way.\\
+                 \hline
+                 \texttt{FreeUngendered- PersonNoun- Warning} & A noun that refers to a type of person or profession was found outside of any tag.\\
+                 \hline
+                 \texttt{FreeGendered- PersonNoun- Warning} & The same as above, but specifically for nouns for whom more than a single, gender-neutral form exists.\\
+                 \hline
+                 \texttt{FreePronoun- FoundWarning} & A form of "he/him/his", "she/her/hers" or "they/them/their/theirs" was found outside any tag.\\
+                 \hline
+                \caption{Potential Warnings}
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    Not all fo these warnings need to be implemented, and an arbitrary amount of additional warnings may be implemented in addition to them.
+    Warnings should come with the information required to track them down to their cause.
+
+\section{Specification developement}
+
+    This section lays out some details of the way this extension is versioned and may be extended or developed in the future.\\
+
+    As it is now, this specification is nowhere near its full potential, yet it is usable and quite enough to be a valid proof of concept.
+    I consider it to be enough to publish and share, but there will be imperfections or maybe even straight out design faults.
+    Thus, issues and suggestions are very welcome in the GitHub repository where this specification is developed\footnote{\url{https://github.com/phseiff/gender-render/issues}}.\\
+
+    Future development will go two paths in parallel: One path is the steady improvements of this specification in wording as well, if necessary, content.
+    The other path is releasing \emph{extension specifications}, these being additional specifications that introduce new rendering steps and attributes as well as further implementation suggestions to enhance \{gender*render\} implementations with usefull extra functions.
+    The extension specifications will not extend the specification in that every implementation must follow each extension spec to be considered compliant with the main specification, but rather in that every implementation must follow the \emph{must}s defined by this specification and may follow an arbitrary amount of additional extension specifications.
+    An implementation that follows extension specs Foo and Bar in addition to the main spec is therefore not more compliant with the main spec than any other implementation, but it can say of itself that it implements extension specs foo and bar in addition to the main spec, like a program coming with an add-on pre-installed.
+    The idea behind this is to be able to rapidly introduce new features without every implementation having to constantly implement new features to ensure it doesn't become obsolete, and to allow a more organic development of \{gender*render\} driven by public response to its components rather than one person scribbling down their visions into a spec that becomes more and more bloated in the process.\\
+
+    In general, the amount of work and time I plan to put into maintenance and extension of this specification largely depends on the amount of reception it receives;
+    however, issues will definitely be addressed as in any maintained project.
+    Please also note that this specification is developed in the same repository as the exemplary implementation it comes with;
+    but that its development does not depend on said implementation.\\
+
+    This specification uses a variation of semantic versioning, in which the major version increases through each backwards-incompatible change as per usual (this will, however, not happen once the project enters a staple state or after it establishes itself, if it does), the minor version with each feature added (which should usually be done via extension specs, though it might be necessary to merge extension specs into the main spec if it turns out to lack required functionality) and the "bugfix" version with every change that does not affect its content, but its contents wording.\\
+
+    Recent versions will always be accessible via the releases-page of the projects GitHub page\footnote{\url{https://github.com/phseiff/gender-render/releases}}.\\
+
+    The current versions major number is 0, since there might be need changes according to the feedback it receives.\\
+
+\section{Exemplary Implementation}
+
+    To illustrate the specification and approach it in a practical way as (1) the practical side of this proof of concept and (2) to ensure that there is a useful implementation that makes the spec reality, the specification comes with an exemplary implementation written in Python.
+    This implementation is written according to the specification, not the other way around, not even chronologically.
+    The example implementation also follows and demonstrates all the interface and implementation suggestions of this specification, and is well-equipped with automated testing.\\
+
+    Its documentation as well as installation instructions can be found in the repository of this project.\\
+
+\section{Outlook}
+
+    As our world as well as our perspective on society and gender evolves, queer identities and people who openly identify as non-binary genders will become far more common occurrence than they already are.
+    As non-binary people will become less and less ignorable in politics, their ignorability in technology will decrease as well, and it is part of our responsibility as developers to not fail in following these social developments and overcome technical challenges they bring with them like any social development does.
+    Developers and technicians have overcome an incredible amount of challenges and technical limitations in and of the past three decades, many of whom where caused by real-live developments and the natural striving of humans for self-fulfillment.
+    It would be a disgrace to IT if we failed to keep up with social developments and proactively slowed them down for technical pretexts, and IT refusing to find solutions for correctly gendering \emph{every person} in \emph{every} automated text because of technological pretexts really puts a bad light on us;
+    after all, our profession was involved in getting humans to the moon before we even knew we'd ever send an automated email, so how can we fail at making people feel accepted when we made people literally reach for the stars? \\
+
+    This projects goal is by no means to create the one only true way of automated email gendering, but rather to address an issue and demonstrate that solving it would not require sorcery.
+    There will probably be a lot of projects, programs and specification to address the issue of correct automated gendering in the future, and I do not expect this specification to still be around when these take off.
+    This project will hopefully sensibility some people for the issue, show them that and how it can be addressed, and it will hopefully only be the first step in a long line of similar projects great enough to make this one become forgotten.\\
 
 \end{document}

@@ -2,7 +2,7 @@
 
 # default options; feel free to change!
 defaultCompiler = "pdflatex"
-defaultArguments = "-synctex=1 -interaction=nonstopmode"
+defaultArguments = ""  # "-synctex=1 -interaction=nonstopmode"
 defaultSpeechSetting = "never"
 
 #
