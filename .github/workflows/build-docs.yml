@@ -21,7 +21,7 @@ jobs:
           sudo apt-get update
 
           # Create new version of specification:
-          python3 create_new_version.py ${{ GITHUB_SHA }}
+          python3 create_new_version.py ${ GITHUB_SHA }
           sudo apt-get install xzdec
           sudo apt-get install texlive-latex-base
           mkdir ~/texmf
