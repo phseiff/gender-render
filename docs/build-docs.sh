@@ -3,13 +3,16 @@
 LOCALTEX=$(cat spec.tex);
 WEBTEX=$(curl -L "https://phseiff.com/gender-render/spec.tex");
 
-if [ "$LOCALTEX" == "$WEBTEX" ]
+LATEXVERSION=$(tr "\n" "|" < "spec.tex" | tr "{" "_" | tr "}" "_" | xargs | grep -Po "version__\K(.*?)_");
+ONLINELATEXVERSION=$(curl -L "https://phseiff.com/gender-render/spec.version.txt");
+
+if [ "$LATEXVERSION" == "$ONLINELATEXVERSION" ]
 then
   echo "Didn't change:";
-  echo "file:";
-  echo "$LOCALTEX";
-  echo "web:";
-  echo "$WEBTEX";
+  echo "local version:";
+  echo "$LATEXVERSION";
+  echo "web version:";
+  echo "$ONLINELATEXVERSION";
 else
   # Update packages:
   sudo apt-get update --fix-missing;
