@@ -24,4 +24,7 @@ with open(out_file_name, "w") as f:
         )
     f.write(former_content)
 
+with open(in_file_prefix + ".version.txt", "w") as f:
+    f.write(version)
+
 time.sleep(3)
