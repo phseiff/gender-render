@@ -1,12 +1,13 @@
 #!/bin/bash
 
-LOCALTEX=$(cat spec.tex);
-WEBTEX=$(curl -L "https://phseiff.com/gender-render/spec.tex");
-
 LATEXVERSION=$(tr "\n" "|" < "spec.tex" | tr "{" "_" | tr "}" "_" | xargs | grep -Po "version__\K(.*?)_");
 ONLINELATEXVERSION=$(curl -L "https://phseiff.com/gender-render/spec.version.txt");
+  echo "$LATEXVERSION";
+  echo "${ONLINELATEXVERSION}_
+_";
 
-if [ "$LATEXVERSION" == "$ONLINELATEXVERSION" ]
+if [ "$LATEXVERSION" == "${ONLINELATEXVERSION}_
+_" ]
 then
   echo "Didn't change:";
   echo "local version:";
