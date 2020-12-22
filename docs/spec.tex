@@ -218,10 +218,10 @@
     \end{flushleft}
     %\end{minipage}
 
-    The priority the \texttt{context}-section type is \texttt{1000}.
-    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as if it was "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", in the form of two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}) and different only in their context value. \\
+    The priority of the \texttt{context}-section type is \texttt{1000}.
+    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", as sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value. \\
 
-    The other section type supported by this version of this Specification is the \texttt{id}-type.
+    The other section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{700}.
     The value of an \texttt{id}-section may take any value as long as it does not contain any whitespace.
     It describes which individual the \{gender*render\}-tag refers to.
     Two \{gender*render\}-tags with the same id-value refer to the same individual.
@@ -279,13 +279,17 @@
                  Personal name & Avery, personal-name, first-name & \\
                  \hline
                  \hline
-                 Gender-specific addressing & gendered-addressing, gendered\_addressing & If set to 0, "False" or "false", the first name of an individual is used instead of its adressation.\\
+                 Gender-specific addressing & gendered-addressing & If set to "false" or "f", the first name of an individual is used instead of its addressing;
+                 the only other valid values are "true" or "t".
+                 Defaults to true.\\
                  \hline
-                 Gender-specific Noun handling & gender-nouns, gender\_nouns & Describes whether the person wants gender-specific nouns to use the female version where possible (e.g.\ "actress" instead of "actor"), the male version where possible (e.g.\ "fireman" instead of "firefighter"), or the gender-neutral version where possible (e.g.\ "firefighter").
-                 Possible values for this property are \texttt{"female"}, \texttt{"male"} and \texttt{"neutral"}. \\
+                 Gender-specific Noun handling & gender-nouns & Describes whether the person wants gender-specific nouns to use the female version where possible (e.g.\ "actress" instead of "actor"), the male version where possible (e.g.\ "fireman" instead of "firefighter"), or the gender-neutral version where possible (e.g.\ "firefighter").
+                 Possible values for this property are \texttt{"female"}, \texttt{"male"} and \texttt{"neutral"}.
+                 Defaults to neutral.\\
                  \hline
                  \hline
-                 Custom property & \emph{property\_name} & Corresponds to "\texttt{<}\emph{property\_name}\texttt{>}" in \{gender*render\}-tags. \\
+                 Custom property & \emph{property\_name}, \texttt{\_}\emph{property\_name}, \texttt{<}\emph{property\_name}\texttt{>} & Corresponds to "\texttt{<}\emph{property\_name}\texttt{>}" in \{gender*render\}-tags.
+                 Refer to the Warnings-section to see why there are multiple supported syntax.\\
                  \hline
                 \caption{Supported properties in individual pronoun data}
             \end{longtable}
@@ -333,11 +337,15 @@
                  \hline\hline
                  \texttt{SyntaxError} & Used if the input not a valid template and pronoun data aren't valid, independent of the way they relate to each other. \\
                  \hline
+                 \texttt{InvalidPDError} & Used if the given pronoun data is not valid. \\
+                 \hline
                  \texttt{IdResolutionError} & Used if matching individual pronoun data to tags does not wo out.\\
                  \hline
                  \texttt{MissingInformationError} & Used if the individual pronoun data a tag refers to does not contain the information the tag requires.\\
                  \hline
                  \texttt{DoubledInformationError} & Used if individual pronoun data defines a property multiple times with different names (possible since \{gender*render\} defines multiple different names for each property). \\
+                 \hline
+                 \texttt{InvalidInformationError} & Used if a property in a piece of individual pronoun data has a value it does not allow assigned. \\
                  \hline
                 \caption{Types of errors whilst rendering}
             \end{longtable}
@@ -358,9 +366,11 @@
 
     The first step is parsing the input values (template and pronoun data) and checking it for correctness.
     If the received pronoun data is neither valid \{gender*render\}-pronoun data nor individual pronoun data, or if the received template is not a valid \{gender*render\}-template, a \texttt{SyntaxError} is risen.
+    If the given pronoun data is not valid, an \texttt{InvalidPDError} is risen, otherwise a \texttt{SyntaxError} occurs.
     Please note that for a \{gender*render\}-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
 
-    This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).\\
+    This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).
+    If a tags context value is not supported, an error may be risen, but this may differ from implementation to implementation to ensure backwards compatibility with versions that support a smaller set of context values.\\
 
     The second step matches \{gender*render\}-tags to individual pronoun data passed to the renderer.
     The crux of this is checking whether all ids used by the pronoun data match ids used by the template and vice versa, and making sense of individual pronoun data passed to the renderer.
@@ -540,16 +550,16 @@
     If, for example, the suggested name is "\texttt{FooBarWarning}", but the language and/or coding guidelines used for the implementation require warnings to be snake\_case and to start with "potential\_problem\" rather than ending with "Warning", the warning should be "\texttt{potential\_problem\_foo\_bar}".\\
 
     Which function should raise the warning is implementation dependent;
-    however, every function suggested by this specification should have an \texttt{enable\_warnings}-argument which takes a regex-expression which matches every warning that should be risen;
-    all other warnings should be disabled.
-    The design decision behind using regex is that regex allows to describe logical `AND`, 'OR` and `NOT` operations on strings in a way that is well-established, easy to use as well as easy to implement in any language due to the wide spread of regex-libraries, and that regex is very widely used;
-    besides, passing strings to an argument is supported in pretty much every language no matter the paradigm.
-    The default value for the \texttt{enable\_warnings} argument is up to the implementation, but should be chosen to comply with the warning sensitivity common in programs written in the respective language.
+    however, every function suggested by this specification should have an \texttt{warning\_settings}-argument which takes a value defining which warnings should be enabled and which warnings should be enabled for the run.
+    The syntax and type of this warning is up to the implementation;
+    however, it should allow to individually enable and disable every warning, and there should be constant values for setting all warnings as enabled/ all warnings as disabled defined.
+    If the implementation of this feature is string-based, e.g.\ the warning settings get passed as an array of strings describing warning types, the string names representing the warnings should be interpreted according to this specification and in snake\_case, so "\texttt{FooBarWarning}" would be represented by  "\texttt{foo\_bar\_warning}".
+    The default value for the \texttt{warning\_settings} argument is up to the implementation, but should be chosen to comply with the warning sensitivity common in programs written in the respective language.
     The value of the argument should be passed from every function to every function it calls (assuming both functions are part of the program and have potential warnings to raise).
     \texttt{render\_template()}, for example, should pass the users warning preferences on to \texttt{Template()} as well as its \texttt{.render()} method.
     The regex-expression assumes the warnings to be names according to this specification and in snake\_case, so "\texttt{FooBarWarning}" would be "\texttt{foo\_bar\_warning}".
-    This ensures compatibility of values for the \texttt{enable\_warnings}-argument across all implementations of \{gender*render\}.\\
-
+    This ensures compatibility of values for the \texttt{warning\_settings}-argument across all implementations of \{gender*render\}.\\
+every function suggested
     \begin{flushleft}
         \begin{center}
             \begin{longtable}{|>{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{28em} |}
@@ -567,14 +577,22 @@
                  \hline
                  \texttt{FreeGendered- PersonNoun- Warning} & The same as above, but specifically for nouns for whom more than a single, gender-neutral form exists.\\
                  \hline
-                 \texttt{FreePronoun- FoundWarning} & A form of "he/him/his", "she/her/hers" or "they/them/their/theirs" was found outside any tag.\\
+                 \texttt{UnknownProperty- Warning} & A custom property in a piece of individual pronoun data is not using the special syntax for custom properties (\texttt{\_}\emph{property\_name} or \texttt{<}\emph{property\_name}\texttt{>} rather than just \emph{property\_name}).
+                 Using the special syntax is preferable to ensure that the custom property is not named equal to a property introduced in a later version or addition to this specification.\\
+                 \hline
+                 \texttt{FreePronoun- Warning} & A (non-neo) pronoun is found freely outside any \{gender*reder\}-tag.\\
+                 \hline
+                 \texttt{UnexpectedFile- FormatWarning} & A file name specified to Template() or Template().render() does not follow the file extension naming convention of this specification.\\
+                 \hline
+                 \texttt{IdMatchingNecessary} & The set of ids specified in the given pronoun data was not equal to the set of ids used in the given template, but could still be matched.
+                 Since this might happen on accident, a warning should be present.\\
                  \hline
                 \caption{Potential Warnings}
             \end{longtable}
         \end{center}
     \end{flushleft}
 
-    Not all fo these warnings need to be implemented, and an arbitrary amount of additional warnings may be implemented in addition to them.
+    Not all of these warnings need to be implemented, and an arbitrary amount of additional warnings may be implemented in addition to them.
     Warnings should come with the information required to track them down to their cause.
 
 \section{Specification developement}
