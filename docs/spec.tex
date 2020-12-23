@@ -279,7 +279,7 @@
                  Personal name & Avery, personal-name, first-name & \\
                  \hline
                  \hline
-                 Gender-specific addressing & gendered-addressing & If set to "false" or "f", the first name of an individual is used instead of its addressing;
+                 Gender-specific addressing & gender-addressing & If set to "false" or "f", the first name of an individual is used instead of its addressing;
                  the only other valid values are "true" or "t".
                  Defaults to true.\\
                  \hline
@@ -554,11 +554,10 @@
     The syntax and type of this warning is up to the implementation;
     however, it should allow to individually enable and disable every warning, and there should be constant values for setting all warnings as enabled/ all warnings as disabled defined.
     If the implementation of this feature is string-based, e.g.\ the warning settings get passed as an array of strings describing warning types, the string names representing the warnings should be interpreted according to this specification and in snake\_case, so "\texttt{FooBarWarning}" would be represented by  "\texttt{foo\_bar\_warning}".
+    This ensures compatibility of values for the \texttt{warning\_settings}-argument across all implementations of \{gender*render\}.
     The default value for the \texttt{warning\_settings} argument is up to the implementation, but should be chosen to comply with the warning sensitivity common in programs written in the respective language.
     The value of the argument should be passed from every function to every function it calls (assuming both functions are part of the program and have potential warnings to raise).
-    \texttt{render\_template()}, for example, should pass the users warning preferences on to \texttt{Template()} as well as its \texttt{.render()} method.
-    The regex-expression assumes the warnings to be names according to this specification and in snake\_case, so "\texttt{FooBarWarning}" would be "\texttt{foo\_bar\_warning}".
-    This ensures compatibility of values for the \texttt{warning\_settings}-argument across all implementations of \{gender*render\}.\\
+    \texttt{render\_template()}, for example, should pass the users warning preferences on to \texttt{Template()} as well as its \texttt{.render()} method.\\
 every function suggested
     \begin{flushleft}
         \begin{center}
@@ -584,7 +583,7 @@ every function suggested
                  \hline
                  \texttt{UnexpectedFile- FormatWarning} & A file name specified to Template() or Template().render() does not follow the file extension naming convention of this specification.\\
                  \hline
-                 \texttt{IdMatchingNecessary} & The set of ids specified in the given pronoun data was not equal to the set of ids used in the given template, but could still be matched.
+                 \texttt{IdMatching- NecessaryWarning} & The set of ids specified in the given pronoun data was not equal to the set of ids used in the given template, but could still be matched.
                  Since this might happen on accident, a warning should be present.\\
                  \hline
                 \caption{Potential Warnings}

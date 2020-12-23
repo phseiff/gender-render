@@ -1,11 +1,12 @@
 """
 Parser functions for gender*render templates.
 """
+
 from typing import Tuple, Callable, List, Dict, Union, FrozenSet
 
 from . import errors
-from . import parse_pronoun_data
-from . import gendered_nouns
+from . import handle_context_values
+from . import gender_nouns
 
 # Some helpful type hints:
 
@@ -15,7 +16,7 @@ ParsedTemplate = List[Union[str, List[Tuple[str, List[str]]]]]
 Note that not any structure build according to this constructor is valid, since some aspects cannot be described
 by Python type hints."""
 
-ParsedTemplateRefined = List[Union[str, Dict[str, Union[str, List[str], gendered_nouns.GenderedNoun]]]]
+ParsedTemplateRefined = List[Union[str, Dict[str, Union[str, List[str], gender_nouns.GenderedNoun]]]]
 """A type similar to GRParser.ParsedTemplate that makes the sections of tags easier accessible by making them
 dicts instead of lists of tuples."""
 
@@ -380,7 +381,7 @@ class GRParser:
         where every context value is canonical."""
         result = parsed_template.copy()
         for i in range(1, len(parsed_template), 2):
-            result[i]["context"] = parse_pronoun_data.ContextValues.get_canonical(result[i]["context"])
+            result[i]["context"] = handle_context_values.ContextValues.get_canonical(result[i]["context"])
         return result
 
     @staticmethod
@@ -403,7 +404,7 @@ class GRParser:
     @staticmethod
     def pronoun_data_contains_unspecified_ids(parsed_template: ParsedTemplateRefined) -> bool:
         """Returns whether the parsed template contains tags with unspecified id value."""
-        return bool(set(
+        return bool(list(
             parsed_template[i] for i in range(1, len(parsed_template), 2) if "id" not in parsed_template[i]
         ))
 
