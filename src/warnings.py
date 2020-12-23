@@ -7,13 +7,13 @@ By default, all warnings are enabled.
 
 Ready-made sets of values for the "enable_warnings"-parameter include:
 
- * gender_render.ENABLE_ALL_WARNINGS: a set of all warnings
+* ENABLE_ALL_WARNINGS: a set of all warnings
 
- * gender_render.ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
+* ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
 
- * gender_render.DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
+* DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
 
- * gender_render.ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
+* ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
 
 Please note that classes that enable logging rather than actual warnings are not included in the
 gender_render.ENABLE_ALL_WARNINGS set. Every type of warning that would be raised regardless of input at initialization
@@ -155,7 +155,7 @@ ENABLE_DEFAULT_WARNINGS: WarningSettingType = ENABLE_ALL_WARNINGS
 
 class WarningManager:
     """A bundle of functions to handle warning handling."""
-    warning_settings_by_thread_id = {threading.get_ident(): ENABLE_DEFAULT_WARNINGS}
+    warning_settings_by_thread_id = dict()
 
     @staticmethod
     def set_warning_settings(warning_settings: WarningSettingType):

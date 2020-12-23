@@ -21,6 +21,11 @@ jobs:
           pip3 install wheel
           pip3 install setuptools
           pip3 install setuptools_scm
+          pip install vulture
+          pip3 install coverage
+          vulture src/*
+          coverage run --source=./src -m unittest discover -s test/
+          coverage report -m
           sudo pip3 install pdoc3
           pip3 install .
           pdoc3 --html -f -c sort_identifiers=False --output-dir docs/code-doc gender_render
