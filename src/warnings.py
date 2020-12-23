@@ -7,13 +7,13 @@ By default, all warnings are enabled.
 
 Ready-made sets of values for the "enable_warnings"-parameter include:
 
-* gender_render.ENABLE_ALL_WARNINGS: a set of all warnings
+ * gender_render.ENABLE_ALL_WARNINGS: a set of all warnings
 
-* gender_render.ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
+ * gender_render.ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
 
-* gender_render.DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
+ * gender_render.DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
 
-* gender_render.ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
+ * gender_render.ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
 
 Please note that classes that enable logging rather than actual warnings are not included in the
 gender_render.ENABLE_ALL_WARNINGS set. Every type of warning that would be raised regardless of input at initialization
