@@ -151,7 +151,7 @@ class GRenderer:
                 id_value = parsed_template[i]["id"]
                 context_value = parsed_template[i]["context"]
 
-                if type(context_value) is str:
+                if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
                     # render tag by looking it up in the individual pronoun data of the individual:
                     result += ContextValues.get_value(grpd, id_value, context_value)
 
