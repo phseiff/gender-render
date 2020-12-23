@@ -1,8 +1,18 @@
 
 import unittest
 import threading
+import warnings
 
 import src.warnings as gr_warnings
+
+# Some exemplary warnings for testing:
+
+
+test_warning = gr_warnings.NotAWordWarning
+test_warning2 = gr_warnings.NotAPersonNounWarning
+test_warning_text = "warn warn warn"
+
+# testing classes:
 
 
 class TestGlobals(unittest.TestCase):
@@ -36,19 +46,59 @@ class TestWarningManager(unittest.TestCase):
 
     def setUp(self):
         """Returns the thread-id-to-warning-mapping to its initial state."""
-        gr_warnings.WarningManager.warning_settings_by_thread_id = set()
+        gr_warnings.WarningManager.warning_settings_by_thread_id = dict()
 
     def test_set_warning_settings(self):
         # tests if set_warning_settings actually adds a new value with the right key.
-        test_warning = gr_warnings.NotAWordWarning
         gr_warnings.WarningManager.set_warning_settings({test_warning})
         self.assertIn(threading.get_ident(), gr_warnings.WarningManager.warning_settings_by_thread_id)
         self.assertEqual(gr_warnings.WarningManager.warning_settings_by_thread_id[threading.get_ident()],
                          {test_warning})
 
-        # make sure that setting new values under a different thread does not overwrite value:
-        # ToDo
+        # make sure setting new values under a different thread does not overwrite value:
+        def set_different_value_in_different_thread():
+            gr_warnings.WarningManager.set_warning_settings({test_warning2})
+        threading.Thread(target=set_different_value_in_different_thread).start()
+        self.assertEqual(gr_warnings.WarningManager.warning_settings_by_thread_id[threading.get_ident()],
+                         {test_warning})
+
+    def check_if_warning_is_raised(self, text, warning):
+        # tests if raise_warning actually raises a warning if it is given one:
+        with warnings.catch_warnings(record=True) as w:
+            gr_warnings.WarningManager.raise_warning(text, warning)
+            self.assertTrue(
+                len(w) == 1
+                and issubclass(w[-1].category, test_warning)
+                and test_warning_text in str(w[-1].message)
+            )
+
+    def check_if_warning_is_not_raised(self, text, warning):
+        # tests if raise_warning does not raise a warning:
+        with warnings.catch_warnings(record=True) as w:
+            gr_warnings.WarningManager.raise_warning(text, warning)
+            self.assertEqual(len(w), 0)
 
     def test_raise_warning(self):
-        # test if raising a warning
-        pass
+        # test if raising warnings before defining warning settings actually works, and that the values that are raised
+        #  aligns with the warnings in the default settings:
+        with warnings.catch_warnings(record=True) as w:
+            for warning in gr_warnings.ENABLE_ALL_WARNINGS:
+                gr_warnings.WarningManager.raise_warning(test_warning_text, warning)
+        self.assertEqual(len(w), len(gr_warnings.ENABLE_DEFAULT_WARNINGS))
+
+        # test if raising a warning works for enabled warnings and doesn't work for disabled warnings:
+        gr_warnings.WarningManager.set_warning_settings({test_warning})
+        self.check_if_warning_is_raised(test_warning_text, test_warning)
+        self.check_if_warning_is_not_raised(test_warning_text, test_warning2)
+
+        # test if raising warnings in a different (new) thread still works as expected:
+        def check_if_different_thread_still_behaves_according_to_the_default_values():
+            self.check_if_warning_is_raised(test_warning_text, test_warning2)
+        threading.Thread(target=check_if_different_thread_still_behaves_according_to_the_default_values).start()
+
+        # Test if changing warning settings in a thread and raising a warning in it does not affect (older) threads:
+        def check_if_different_thread_does_not_overwrite_ours():
+            gr_warnings.WarningManager.set_warning_settings({test_warning2})
+            gr_warnings.WarningManager.raise_warning(test_warning_text, test_warning2)
+        threading.Thread(target=check_if_different_thread_does_not_overwrite_ours).start()
+        self.check_if_warning_is_raised(test_warning_text, test_warning)
