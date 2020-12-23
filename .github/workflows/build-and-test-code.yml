@@ -21,7 +21,7 @@ jobs:
           pip3 install wheel
           pip3 install setuptools
           pip3 install setuptools_scm
-          pip install vulture
+          pip3 install vulture
           pip3 install coverage
           vulture src/*
           coverage run --source=./src -m unittest discover -s test/
