@@ -18,7 +18,9 @@ jobs:
 
       - name: Build Documentation 🔧
         run: |
+          pip3 install setuptools
           pip3 install pdoc3
+          pip3 install .
           pdoc --html -f -c sort_identifiers=False --output-dir docs/code-doc gender_render
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
