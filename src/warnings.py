@@ -1,15 +1,43 @@
-"""Defines the warnings specified by the spec."""
+"""Defines the warnings specified by the spec.
 
-import warnings
+To enable and disable warnings, pass a set of all warnings you want enabled to the "enable_warnings"-parameter of any
+of the interfaces defined in the specifications. All warnings are declared as classes in this submodule.
+
+By default, all warnings are enabled.
+
+Ready-made sets of values for the "enable_warnings"-parameter include:
+
+* gender_render.ENABLE_ALL_WARNINGS: a set of all warnings
+
+* gender_render.ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
+
+* gender_render.DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
+
+* gender_render.ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
+
+Please note that classes that enable logging rather than actual warnings are not included in the
+gender_render.ENABLE_ALL_WARNINGS set. Every type of warning that would be raised regardless of input at initialization
+time of the module is considered logging rather than warning.
+"""
+
+import warnings as ws
 import threading
 import typing
+import inspect
 
-# General Warning Class:
+# General Warning Classes:
 
 
 class GRWarning(Warning):
     """The base class of all gender*render-warnings.
     All other custom warnings are derived from this one."""
+    pass
+
+
+class GRLogging(Warning):
+    """The base class for all warnings that are actually not warnings, but logs that enable or disable certain types of
+    additional logging.
+    These classes are mostly implementation-specific."""
     pass
 
 # Warning Classes:
@@ -34,9 +62,16 @@ class NotAPersonNounWarning(NotANounWarning):
 
 
 class FreeUngenderedPersonNounWarning(GRWarning):
-    """A noun that refers to a type of person or profession was found
-    outside of any tag.
+    """A noun that refers to a type of person or profession was found outside of any tag.
     This is potentially bad because that noun might be gender-dependant."""
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass
+
+
+class FreeGenderedPersonNounWarning(FreeUngenderedPersonNounWarning):
+    """A noun that refers to a type of person or profession and is not neutral was found outside of any tag.
+    This is probably harmfull if this noun refers to a person whose gender should be determined by pronoun data."""
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
     pass
 
 
@@ -58,9 +93,18 @@ class UnknownPropertyWarning(GRWarning):
     pass
 
 
-class FreePronounFound(GRWarning):
+class FreePronounFoundWarning(GRWarning):
     """A (non-neo) pronoun is found freely outside any
-    gender*reder-tag."""
+    gender*render-tag."""
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass
+
+
+class IdMatchingNecessaryWarning(GRWarning):
+    """Not every tag has an id, or the pronoun data is individual pronoun data, so some matching had to be done.
+    This is intended behavior and completely fine.
+    This warning is only raised to inform you in case this was accidental. If you don't know what it means, you need
+    not worry about it and can safely ignore or disable it."""
     pass
 
 
@@ -70,33 +114,38 @@ class UnexpectedFileFormatWarning(GRWarning):
     pass
 
 
-class IdMatchingNecessary(GRWarning):
-    """Not every tag has an id, or the pronoun data is individual pronoun data, so some matching had to be done.
-    This is intended behavior and completely fine.
-    This warning is only raised to inform you in case this was accidental. If you don't know what it means, you need
-    not worry about it and can safely ignore or disable it."""
-    pass
-
-
-class DefaultValueUsed(GRWarning):
+class DefaultValueUsedWarning(GRWarning):
     """An attribute with a default value was looked up in a piece of individual pronoun data, but not found, so its
     default value was used. This is in itself not a problem and perfectly fine behavior; this warning is only raised
     to inform you in case you forgot to define the property or pythonically prefer explicit to implicit."""
+    # This warning is not part of the specification since it is too specific of a design decision to expect every
+    #  implementation to follow it.
     pass
+
+
+class BuildingGenderedNounDataLogging(GRLogging):
+    """This class enables/disables the logging of information when building the gendered-noun-data from which the
+    gendered versions of nouns are read."""
+    pass
+
+# A helper function to find all warnings in the module:
+
+
+def get_all_subclasses(class_object):
+    """Returns a list of all subclasses of a given class that are defined in the global scope."""
+    return [globals()[w] for w in globals() if inspect.isclass(globals()[w]) and issubclass(globals()[w], class_object)]
 
 
 # Define warning types:
 
-WarningType = typing.Type[GRWarning]
+WarningType = typing.Type[typing.Union[GRWarning, GRLogging]]
 WarningSettingType = typing.Union[typing.Set[WarningType], typing.FrozenSet[WarningType]]
 
 # Define standard values for all warnings enables/ all warnings disabled/ default:
 
-all_warnings = [
-    NotAPersonNounWarning, NotANounWarning, NotAWordWarning, FreeUngenderedPersonNounWarning, NounGenderingGuessingsWarning,
-    UnknownPropertyWarning, FreePronounFound, UnexpectedFileFormatWarning, IdMatchingNecessary, DefaultValueUsed]
 
-ENABLE_ALL_WARNINGS: WarningSettingType = frozenset(all_warnings)
+ENABLE_ALL_LOGGING: WarningSettingType = frozenset(get_all_subclasses(GRLogging))
+ENABLE_ALL_WARNINGS: WarningSettingType = frozenset(get_all_subclasses(GRWarning))
 DISABLE_ALL_WARNINGS: WarningSettingType = frozenset()
 
 ENABLE_DEFAULT_WARNINGS: WarningSettingType = ENABLE_ALL_WARNINGS
@@ -106,15 +155,19 @@ ENABLE_DEFAULT_WARNINGS: WarningSettingType = ENABLE_ALL_WARNINGS
 
 class WarningManager:
     """A bundle of functions to handle warning handling."""
-    warning_settings_by_thread_id = dict()
+    warning_settings_by_thread_id = {threading.get_ident(): ENABLE_DEFAULT_WARNINGS}
 
     @staticmethod
     def set_warning_settings(warning_settings: WarningSettingType):
+        """Sets the warning settings to warning_settings for the current thread (thread-save)."""
         WarningManager.warning_settings_by_thread_id[threading.get_ident()] = warning_settings
 
     @staticmethod
     def raise_warning(text: typing.Union[str, None], warning_type: WarningType):
+        """Raises the given warning type with the given text if it is enabled for the current thread."""
         if text is None:
             text = warning_type.__doc__
+        if threading.get_ident() not in WarningManager.warning_settings_by_thread_id:
+            WarningManager.warning_settings_by_thread_id[threading.get_ident()] = ENABLE_DEFAULT_WARNINGS
         if warning_type in WarningManager.warning_settings_by_thread_id[threading.get_ident()]:
-            warnings.warn(text, warning_type)
+            ws.warn(text, warning_type)

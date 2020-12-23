@@ -1,4 +1,6 @@
-"""Functions to gender nouns with gender bias correctly."""
+"""
+Functions to gender nouns with gender bias correctly.
+"""
 
 import requests
 import json
@@ -51,6 +53,15 @@ except ImportError:
         """Checks whether the given word is a valid english person noun."""
         return True
 
+# a helper function for logging:
+
+
+def lwarn(*text, sep=" ", end="\n"):
+    """Prints the given text, but only if the "BuildingGenderedNounDataLogging"-warning is enabled.
+    The name "lwarn" is supposed to stand for "log warning"."""
+    warnings.WarningManager.raise_warning(sep.join([str(t) for t in text]) + end,
+                                          warnings.BuildingGenderedNounDataLogging)
+
 # a pipeline for creating files that describe differently gendered versions of gendered nouns:
 
 
@@ -63,6 +74,7 @@ class GenderNounDataHandler:
     @staticmethod
     def load_from_web() -> dict:
         """Creates a JSON object describing the differently gendered versions of every gendered noun.
+        Word with no wordnet_senseno-attribute (that are not from wordnet) are ignored.
 
         The data used for this is taken from https://github.com/ecmonsen/gendered_words
         (which is not by me; see the repository for the license)."""
@@ -83,21 +95,24 @@ class GenderNounDataHandler:
                         if short in word["gender_map"]:
                             result[word["word"]]["gender_map"][long] = word["gender_map"][short][0]["word"]
                 if word["gender"] == "o":
-                    print("Found an \"other\"-word! It's \"" + word["word"] + "\".")
+                    lwarn("Found an \"other\"-word! It's \"" + word["word"] + "\".")
                     result[word["word"]]["gender"] = "neutral"
                 else:
                     result[word["word"]]["gender"] = grammatical_genders[word["gender"]]
             else:
-                print("\"" + word["word"] + "\" ignored because it is not part of wordnet and therefore not a hyponym "
+                lwarn("\"" + word["word"] + "\" ignored because it is not part of wordnet and therefore not a hyponym "
                       + "for a person.")
 
-        print(len(result), "words found.")
+        lwarn(len(result), "words found.")
         return result
 
     @staticmethod
     def remove_words_that_are_not_nouns(graph: dict) -> dict:
         """Removes all elements that are not nouns from the graph.
-        Returns the result."""
+        Returns the result.
+        This step should usually do nothing, since all words that are not nouns should already be filtered out when
+        the data is read via load_from_web, but this uses an undocumented feature of the online data set it uses, so
+        this function ensures that changes of that feature don't break this code."""
 
         grammatical_genders = ["male", "female", "neutral"]
 
@@ -108,11 +123,11 @@ class GenderNounDataHandler:
                 if grammatical_gender in word_data["gender_map"]:
                     is_noun = is_noun or is_a_noun(word_data["gender_map"][grammatical_gender])
             if not is_noun:
-                print("Deleting \"" + word_name + "\", since it is not a noun!")
+                lwarn("Deleting \"" + word_name + "\", since it is not a noun!")
                 count += 1
                 del graph[word_name]
 
-        print(count, "words deleted.")
+        lwarn(count, "words deleted.")
         return graph
 
     @staticmethod
@@ -123,16 +138,16 @@ class GenderNounDataHandler:
         for word_name, word_data in list(graph.items()):
             for gender_name, link_name in word_data["gender_map"].items():
                 if link_name not in graph:
-                    print("\"" + word_name + "\" lists \"" + link_name + "\" as its " + gender_name + " version, but \""
+                    lwarn("\"" + word_name + "\" lists \"" + link_name + "\" as its " + gender_name + " version, but \""
                           + link_name + "\" does not exist in the word data file.")
                     count += 1
                     graph[link_name] = {"gender": gender_name, "gender_map": {word_data["gender"]: word_name}}
                 # # Commented out, since it is already covered by create_extra_links_to_gender_ambiguous_words():
                 # if graph[link_name]["gender"] != gender_name:
-                #     print("\"" + link_name + "\" is \"" + word_name + "\"s " + gender_name + "s version, but is not "
+                #     lwarn("\"" + link_name + "\" is \"" + word_name + "\"s " + gender_name + "s version, but is not "
                 #           + gender_name + ".")
 
-        print(count, "new words created.")
+        lwarn(count, "new words created.")
         return graph
 
     @staticmethod
@@ -165,14 +180,20 @@ class GenderNounDataHandler:
                         if link_name != link_name2:
                             if graph[link_name2]["gender"] not in graph[link_name]["gender_map"]:
                                 graph[link_name]["gender_map"][graph[link_name2]["gender"]] = link_name2
-                                print("\"" + link_name + "\" is indirectly linked to \"" + link_name2 + "\", which is "
+                                lwarn("\"" + link_name + "\" is indirectly linked to \"" + link_name2 + "\", which is "
                                       + graph[link_name2]["gender"], " but \"" + link_name + "\" has no "
                                       + graph[link_name2]["gender"] + " version.")
                                 count += 1
+                                # this implies that after all warnings are set, make_all_links_two_sided may only be
+                                # called one more time:
+                                if "warning" in graph[link_name2]:
+                                    if "warning" not in graph[link_name]:
+                                        graph[link_name]["warning"] = ""
+                                    graph[link_name]["warning"] += graph[link_name2]["warning"]
             else:
                 continue
 
-        print(count, "links created.")
+        lwarn(count, "links created.")
         return graph
 
     @staticmethod
@@ -186,12 +207,12 @@ class GenderNounDataHandler:
             for gender_name, link_name in list(world_data["gender_map"].items()):
                 if graph[link_name]["gender"] not in world_data["gender_map"]:
                     world_data["gender_map"][graph[link_name]["gender"]] = link_name
-                    print("\"" + word_name + "\" does not have a " + graph[link_name]["gender"] + " version, but the "
+                    lwarn("\"" + word_name + "\" does not have a " + graph[link_name]["gender"] + " version, but a "
                           + "word it links to as its " + gender_name + " version is " + graph[link_name]["gender"]
                           + ".")
                     count += 1
 
-        print(count, "links created.")
+        lwarn(count, "links created.")
         return graph
 
     @staticmethod
@@ -201,6 +222,10 @@ class GenderNounDataHandler:
         as neutral version."""
 
         # ToDo: better suggestions regarding the maid/maiden/boy/girl-stuff are welcome!
+        # ToDo: running replacement strategies like this when creating a tag with a GenderedNoun-object for an unknown
+        #  noun might be a good idea... this would, however, require figuring out a words gender, so the table we have
+        #  here would have to be accessible outside this function.
+        #  Feel free to submit a pull request for this, or an issue if you see this fitting!
         gender_indicator_tuples_table = [
             ("start", [("female", "female"),   ("male", "male"),       ("neutral", "")]),
 
@@ -215,6 +240,7 @@ class GenderNounDataHandler:
             ("end",   [("female", "niece"),    ("male", "nephew"),     ("neutral", "nibling")]),
             ("end",   [("female", "female"),   ("male", "male"),       ("neutral", "person")]),
             ("end",   [("female", "sister"),   ("male", "brother"),    ("neutral", "sibling")]),
+            ("end",   [("female", "queen"),    ("male", "king"),       ("neutral", "monarch")]),
 
             ("start", [("female", "woman"),    ("male", "man"),        ("neutral", "person")]),
             ("start", [("female", "girl"),     ("male", "boy"),        ("neutral", "person")]),
@@ -226,7 +252,8 @@ class GenderNounDataHandler:
             ("start", [("female", "wife"),     ("male", "husband"),    ("neutral", "spouse")]),
             ("start", [("female", "niece"),    ("male", "nephew"),     ("neutral", "nibling")]),
             ("start", [("female", "female"),   ("male", "male"),       ("neutral", "person")]),
-            ("start", [("female", "sister"),   ("male", "brother"),    ("neutral", "sibling")])
+            ("start", [("female", "sister"),   ("male", "brother"),    ("neutral", "sibling")]),
+            ("start",  [("female", "queen"),    ("male", "king"),       ("neutral", "monarch")])
         ]
 
         words_created = 0
@@ -249,12 +276,12 @@ class GenderNounDataHandler:
                                     else:
                                         new_gendered_version = (other_gender_indicator
                                                                 + word_name[len(gender_indicator):])
-                                    print("\"" + word_name + "\" ends with \"-" + gender_indicator
+                                    lwarn("\"" + word_name + "\" ends with \"-" + gender_indicator
                                           + "\", but it has no " + other_gender_name + " version. ", end="")
                                     word_data["gender_map"][other_gender_name] = new_gendered_version
                                     links_created += 1
                                     if new_gendered_version not in graph:
-                                        print("Creating one as \"" + new_gendered_version + "\"!")
+                                        lwarn("Creating one as \"" + new_gendered_version + "\"!")
                                         words_created += 1
                                         graph[new_gendered_version] = {
                                             "gender": other_gender_name,
@@ -265,14 +292,14 @@ class GenderNounDataHandler:
                                                         + "word.")
                                         }
                                     else:
-                                        print("")
+                                        lwarn("Linking to \"" + new_gendered_version + "\".")
                         created_corresponding_gendered_versions = True
                         break
                 if created_corresponding_gendered_versions:
                     break
 
-        print(words_created, "new words created.")
-        print(links_created, "new links created.")
+        lwarn(words_created, "new words created.")
+        lwarn(links_created, "new links created.")
         return graph
 
     @staticmethod
@@ -288,7 +315,7 @@ class GenderNounDataHandler:
         for word_name, word_data in list(graph.items()):
             if word_data["gender"] != "neutral":
                 if "neutral" not in word_data["gender_map"]:
-                    print("\"" + word_name + "\" is neither neutral, nor does it link to a neutral version.")
+                    lwarn("\"" + word_name + "\" is neither neutral, nor does it link to a neutral version.")
                     count += 1
                     if word_data["gender"] == "male":
                         word_data["gender_map"]["neutral"] = word_name,
@@ -311,12 +338,12 @@ class GenderNounDataHandler:
                         word_data["warning"] = ("\"" + word_name + "\" neither has a male nor a female version, so "
                                                 + "it is used as its own neutral version.")
                         count_used_female += 1
-                    print(word_data["warning"])
+                    lwarn(word_data["warning"])
 
-        print(count, "instances found.")
-        print(count_male, "instances where male words where used as their own neutral version,")
-        print(count_used_male, "instances where a male version of a word was used as its neutral version,")
-        print(count_used_female, "instances where a female word was used as its own neutral version.")
+        lwarn(count, "instances found.")
+        lwarn(count_male, "instances where male words where used as their own neutral version,")
+        lwarn(count_used_male, "instances where a male version of a word was used as its neutral version,")
+        lwarn(count_used_female, "instances where a female word was used as its own neutral version.")
 
         return graph
 
@@ -326,7 +353,7 @@ class GenderNounDataHandler:
         and automatically fill all holes this graph has left open."""
 
         graph = GenderNounDataHandler.load_from_web()
-        print("")
+        lwarn("")
         graph = GenderNounDataHandler.remove_words_that_are_not_nouns(graph)
 
         for method in (
@@ -334,12 +361,12 @@ class GenderNounDataHandler:
                 GenderNounDataHandler.create_extra_links_to_gender_ambiguous_words,
                 GenderNounDataHandler.create_gendered_versions_for_words_that_end_with_gender_indicators,
         ):
-            print("")
+            lwarn("")
             graph = method(graph)
-            print("")
+            lwarn("")
             graph = GenderNounDataHandler.make_all_links_two_sided(graph)
 
-        print("")
+        lwarn("")
         GenderNounDataHandler.find_words_with_no_neutral_form(graph)
         return graph
 
