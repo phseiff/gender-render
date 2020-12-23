@@ -392,11 +392,11 @@ class GenderedNoun:
                                                   + "able to gender it correctly.", warnings.NotAWordWarning)
         elif not is_a_noun(word):
             warnings.WarningManager.raise_warning("\"" + word + "\" is not a known noun, so gender*render might not be "
-                                                  + "able to gender it correctly.", warnings.NotAWordWarning)
+                                                  + "able to gender it correctly.", warnings.NotANounWarning)
         elif not is_a_person_noun(word):
             warnings.WarningManager.raise_warning("\"" + word + "\" is not a known word for a profession or person, so "
                                                   + "gender*render might not be able to gender it correctly.",
-                                                  warnings.NotAWordWarning)
+                                                  warnings.NotAPersonNounWarning)
         elif "warning" in GENDER_DICT[self.word]:
             warnings.WarningManager.raise_warning(GENDER_DICT[self.word]["warning"],
                                                   warnings.NounGenderingGuessingsWarning)

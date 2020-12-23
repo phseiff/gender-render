@@ -23,7 +23,7 @@ jobs:
           pip3 install setuptools_scm
           pip3 install vulture
           pip3 install coverage
-          vulture src/*
+          python3 -m vulture src/*
           coverage run --source=./src -m unittest discover -s test/
           coverage report -m
           sudo pip3 install pdoc3
