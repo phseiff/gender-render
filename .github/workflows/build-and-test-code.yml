@@ -18,10 +18,10 @@ jobs:
 
       - name: Build Documentation 🔧
         run: |
-          pip3 install wheel
-          pip3 install setuptools
-          pip3 install setuptools_scm
-          pip3 install vulture
+          sudo pip3 install wheel
+          sudo pip3 install setuptools
+          sudo pip3 install setuptools_scm
+          sudo pip3 install vulture
           sudo pip3 install coverage
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
