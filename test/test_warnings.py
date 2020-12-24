@@ -69,7 +69,7 @@ class TestWarningManager(unittest.TestCase):
             self.assertTrue(
                 len(w) == 1
                 and issubclass(w[-1].category, test_warning)
-                and test_warning_text in str(w[-1].message)
+                and test_warning_text == str(w[-1].message)
             )
 
     def check_if_warning_is_not_raised(self, text, warning):
@@ -96,9 +96,19 @@ class TestWarningManager(unittest.TestCase):
             self.check_if_warning_is_raised(test_warning_text, test_warning2)
         threading.Thread(target=check_if_different_thread_still_behaves_according_to_the_default_values).start()
 
-        # Test if changing warning settings in a thread and raising a warning in it does not affect (older) threads:
+        # test if changing warning settings in a thread and raising a warning in it does not affect (older) threads:
         def check_if_different_thread_does_not_overwrite_ours():
             gr_warnings.WarningManager.set_warning_settings({test_warning2})
-            gr_warnings.WarningManager.raise_warning(test_warning_text, test_warning2)
+            with warnings.catch_warnings(record=True) as w:
+                gr_warnings.WarningManager.raise_warning(test_warning_text, test_warning2)
         threading.Thread(target=check_if_different_thread_does_not_overwrite_ours).start()
         self.check_if_warning_is_raised(test_warning_text, test_warning)
+
+        # test if passing None as a value for the text prints the warnings description as text:
+        class TestWarning3(gr_warnings.GRWarning):
+            """test test test"""
+            pass
+        gr_warnings.WarningManager.set_warning_settings({TestWarning3})
+        with warnings.catch_warnings(record=True) as w:
+            gr_warnings.WarningManager.raise_warning(None, TestWarning3)
+            self.assertTrue(len(w) == 1 and str(w[-1].message) == TestWarning3.__doc__)

@@ -23,9 +23,10 @@ jobs:
           pip3 install setuptools_scm
           pip3 install vulture
           pip3 install coverage
-          python3 -m vulture src/*
-          coverage run --source=./src -m unittest discover -s test/
-          coverage report -m
+          python3 -m vulture src/* test/vulture_whitelist.py
+          coverage run --branch --source=./src -m unittest discover -s test/
+          coverage report --fail-under=100 --skip-covered -m
+          coverage html
           sudo pip3 install pdoc3
           pip3 install .
           pdoc3 --html -f -c sort_identifiers=False --output-dir docs/code-doc gender_render
