@@ -22,7 +22,7 @@ jobs:
           pip3 install setuptools
           pip3 install setuptools_scm
           pip3 install vulture
-          pip3 install coverage
+          sudo pip3 install coverage
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
           coverage report --fail-under=100 --skip-covered -m
