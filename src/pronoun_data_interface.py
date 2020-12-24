@@ -47,7 +47,3 @@ class PronounData:
     def get_pd(self):
         """Returns the PronounData representations actual pronoun data structure."""
         return self.grpd
-
-    def is_idpd(self):
-        """Checks whether it is a representation of individual pronoun data rather than gender*render pronoun data."""
-        return list(self.grpd.keys()) == [""]
