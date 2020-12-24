@@ -12,9 +12,10 @@ The interfaces defined by the specification can be found as `gender_render.Templ
 To find out how to enable and disable warnings, refer to the documentation of `gender_render.warnings`.
 """
 
-# ToDo: Maybe add header variables?
+__author__ = "phseiff"
+__version__ = "1.0.0"
 
-from typing import Union
+import typing
 from .handle_context_values import GRPD, IDPD
 
 from . import warnings
@@ -24,7 +25,7 @@ from .template_interface import Template
 # the render_template function from the specification:
 
 
-def render_template(template, pronoun_data: Union[str, GRPD, IDPD], takes_file_path=False,
+def render_template(template, pronoun_data: typing.Union[str, GRPD, IDPD], takes_file_path=False,
                     warning_settings: warnings.WarningSettingType = warnings.ENABLE_DEFAULT_WARNINGS):
     """A shortcut for Template(...).render(PronounData(...), ...).
     Returns the rendered template, and passes the values it receives to the proper objects and methods."""

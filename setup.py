@@ -2,14 +2,17 @@
 
 from setuptools import setup
 
+import src as gr
+
 setup(
     name='gender_render',
-    version='1.0.0',
-    description='Easy to use template engine to correctly gender persons of gender in automatically generated emails.',
+    version=gr.__version__,
+    description="Template-system and proof-of-concept for rendering gender-neutral text- and email-templates with \
+the correct pronouns of all people involved.",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
-    author='phseiff',
-    author_email='contact@phseiff.com',
+    author=gr.__author__,
+    author_email="phseiff@phseiff.com",
     url='https://github.com/phseiff/gender-render/',
     packages=['gender_render'],
     package_dir={'gender_render': 'src'},
