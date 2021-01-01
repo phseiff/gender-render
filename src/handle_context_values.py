@@ -64,21 +64,24 @@ class ContextValues:
         "gender-addressing": "t",
         "gender-nouns": "neutral"
     }
+    """A mapping of all (canonical) pronoun data properties who have default values to their default values."""
 
     @staticmethod
     def get_value(grpd: GRPD, id: str, property_name: str) -> str:
         """Returns the value of property_name of the given id in the given grpd, and raises the correct error if this
         id does not have this value defined and there is no default value.
-        If there is a default value to use, however, this default value is returned and a warning is risen."""
+        If there is a default value to use, however, this default value is returned and a warning is risen.
+        This does not check whether the value assigned by the GRPD is allowed for its property, since this should be
+        done by the pd parser on pd initialisation time instead of every time the pd is usd to render a template."""
         if property_name in grpd[id]:
             return grpd[id][property_name]
         else:
             if property_name not in ContextValues.default_values:
-                errors.MissingInformationError("A tag in the template required the \"" + property_name
-                                               + "\"-attribute of individual \"" + id + "\", but their individual "
-                                               + "pronoun data does not define this attribute.")
+                raise errors.MissingInformationError("A tag in the template required the \"" + property_name
+                                                     + "\"-attribute of individual \"" + id + "\", but their "
+                                                     + "individual pronoun data does not define this attribute.")
             else:
-                warnings.WarningManager.raise_warning("Rendeig a template requires the default value of the\""
+                warnings.WarningManager.raise_warning("Rendering a template requires the default value of the\""
                                                       + property_name + "\"-property of individuum \"" + id + "\", but "
                                                       + "this individuum has this value undefined, so its default had "
                                                       + "to be used.", warnings.DefaultValueUsedWarning)
@@ -101,18 +104,11 @@ class ContextValues:
                 ContextValues.properties_to_canonical_property[p] = property_list[0]
 
     @staticmethod
-    def check_if_canonical_property_may_have_certain_value(property_name: str, property_value: str) -> bool:
-        """Checks if canonical property property_name may have a certain value assigned in a piece of individual
-        pronoun data."""
-        if property_name in ContextValues.properties_that_allow_only_some_values_in_pd:
-            if property_value not in ContextValues.properties_that_allow_only_some_values_in_pd[property_name]:
-                return False
-        return True
-
-    @staticmethod
     def property_maps_directly_between_template_and_pronoun_data(property_name: str) -> bool:
-        """Checks whether this property name can be mapped between template and individual pronoun data directly
-        without any additional calculations whatsoever."""
+        """Checks whether this canonical property name can be mapped between template and individual pronoun data
+        directly without any additional calculations whatsoever."""
+        if type(property_name) is not str:
+            return False
         return (
                 property_name in ContextValues.canonical_properties_that_directly_map_between_template_and_pronoun_data
                 or (property_name.startswith("<") and property_name.endswith(">"))
@@ -120,14 +116,14 @@ class ContextValues:
 
     @staticmethod
     def is_a_custom_value(property_name: str) -> bool:
-        """Returns whether the property is a custom value or a value known to ContextValues.
+        """Returns whether the (not necessarily canonical) property is a custom property.
         This function is made for pronoun data analysis, not tag analysis."""
         return property_name not in ContextValues.properties_to_canonical_property
 
     @staticmethod
     def uses_special_custom_value_syntax(property_name: str) -> bool:
         """Returns whether the property uses the special syntax for making custom properties in individual pronoun data
-        distinguishable from standard attributes."""
+        to be distinguishable from standard attributes."""
         return property_name.startswith("<") and property_name.endswith(">") or property_name.startswith("_")
 
     @staticmethod

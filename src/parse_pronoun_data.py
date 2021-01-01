@@ -46,10 +46,17 @@ class GRPDParser:
                                 "A property of a piece of individual pronoun data is assigned a non-string value.")
                 if "" in pd:
                     raise errors.InvalidPDError(
-                        "\"\" is not a valid id value in a piece of gender*render pronoun. data")
+                        "\"\" is not a valid id value in a piece of gender*render pronoun data")
                 return GRPD
             elif all_values_are_strings:
                 return IDPD
+            else:
+                raise errors.InvalidPDError(
+                    "The values of all top-level key-value-pairs of the given pronoun data are neither all objects, nor"
+                    + " are they all strings, but rather, a mixture of multiple types. This is neither allowed for a"
+                    + " piece of individual pronoun data (has only string values), nor a piece of gender*render pronoun"
+                    + " data (which has only object values), and is therefore invalid."
+                )
         else:
             raise errors.InvalidPDError(
                 "This piece of pronoun data is neither individual pronoun data nor gender*render pronoun data."
@@ -71,7 +78,7 @@ class GRPDParser:
         The returned object may be identical to the given object or reference it."""
         if GRPDParser.type_of_pd(pd) is GRPD:
             return pd
-        elif GRPDParser.type_of_pd(pd) is IDPD:
+        else:  # GRPDParser.type_of_pd(pd) is IDPD:
             return {"": pd}
 
     @staticmethod
@@ -98,7 +105,7 @@ class GRPDParser:
                     raise errors.InvalidInformationError("The individual pronoun data for id \"" + id + "\" defines "
                                                          + "\"" + value + "\" as the value for \""
                                                          + canonical_context_value + "\" even though this attribute "
-                                                         + "does not allow this warning.")
+                                                         + "does not allow this value.")
 
                 # raises a warning if a custom attribute does not use the special syntax for custom properties:
                 if (ContextValues.is_a_custom_value(gr_property)
@@ -112,22 +119,10 @@ class GRPDParser:
         return result
 
     @staticmethod
-    def return_canonical_grpd_if_all_values_are_valid(pd: GRPD) -> GRPD:
-        """Takes a gender*render pronoun data dic and raises an error if a property with a defined set of allowed
-        values has a non-allowed value; otherwise, returns the pronoun data."""
-        for idpd in pd.values():
-            for property_name, property_value in idpd.items():
-                if not ContextValues.check_if_canonical_property_may_have_certain_value(property_name, property_value):
-                    raise errors.InvalidPDError("Individual pronoun data property \"" + property_name
-                                                + "\" may not have value \"" + property_value + "\".")
-        return pd
-
-    @staticmethod
     def full_parsing_pipeline(pd: dict) -> GRPD:
         """Parses a dict into a valid piece of grpd following the pipeline defined by GRPDParser, and raises an error if
         this turns out to be impossible."""
         pd = GRPDParser.return_pd_if_it_is_valid(pd)
         pd = GRPDParser.pd_dict_to_grpd_dict(pd)
         pd = GRPDParser.grpd_dict_to_canonical_grpd_dict(pd)
-        pd = GRPDParser.return_canonical_grpd_if_all_values_are_valid(pd)
         return pd
