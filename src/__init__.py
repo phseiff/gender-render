@@ -27,8 +27,10 @@ from .template_interface import Template
 
 def render_template(template, pronoun_data: typing.Union[str, GRPD, IDPD], takes_file_path=False,
                     warning_settings: warnings.WarningSettingType = warnings.ENABLE_DEFAULT_WARNINGS):
-    """A shortcut for Template(...).render(PronounData(...), ...).
-    Returns the rendered template, and passes the values it receives to the proper objects and methods."""
+    """Accepts a gender*render template as a string and a string or dict of pronoun data or, if `takes_file_path` is
+    True, two file paths to both, and returns the template rendered with the given pronoun data.
+    Serves as a shortcut for Template(...).render(PronounData(...), ...)"""
 
-    return Template(template, takes_file_path, warning_settings).render(PronounData(pronoun_data, takes_file_path,
-                                                                                    warning_settings), warning_settings)
+    pd = PronounData(pronoun_data, takes_file_path, warning_settings)
+    tr = Template(template, takes_file_path, warning_settings)
+    return tr.render(pd, warning_settings=warning_settings)

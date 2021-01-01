@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-import src as gr
+import src as gr  # <- read author, version and build the gendered nouns.
 
 setup(
     name='gender_render',
@@ -21,7 +21,8 @@ the correct pronouns of all people involved.",
     install_requires=open("requirements.txt", "r").read().splitlines(),
     license="LICENSE.txt",
     extras_require={
-        'more_warnings': ["nltk"]
+        'more_warnings': ["nltk"],
+        'testing': ["typing_extensions"]
     },
     classifiers=[
         "Programming Language :: Python :: 3",

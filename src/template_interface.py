@@ -25,12 +25,13 @@ class Template:
                 warnings.WarningManager.raise_warning("\"" + template.split(".")[-1] + "\" is not the right file type "
                                                       + "for templates; the right file type would be \".gr\".",
                                                       warnings.UnexpectedFileFormatWarning)
-            template = open(template, "r").read()
+            with open(template, "r") as f_template:
+                template = f_template.read()
 
         # get data from the parsed template:
         self.parsed_template = parse_templates.GRParser.full_parsing_pipeline(template)
         self.used_ids = parse_templates.GRParser.get_all_specified_id_values(self.parsed_template)
-        self.contains_unspecified_ids = parse_templates.GRParser.pronoun_data_contains_unspecified_ids(
+        self.contains_unspecified_ids = parse_templates.GRParser.template_contains_unspecified_ids(
             self.parsed_template)
 
     def render(self, pronoun_data, takes_file_path=False,
@@ -40,6 +41,6 @@ class Template:
 
         warnings.WarningManager.set_warning_settings(warning_settings)
         pronoun_data = pronoun_data_interface.PronounData(pronoun_data, takes_file_path, warning_settings).get_pd()
-        render_pipeline.GRenderer.render_with_full_rendering_pipeline(
+        return render_pipeline.GRenderer.render_with_full_rendering_pipeline(
             self.parsed_template, self.used_ids, self.contains_unspecified_ids, pronoun_data
         )
