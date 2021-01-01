@@ -2,11 +2,13 @@
 Parser functions for gender*render templates.
 """
 
+import copy
 from typing import Tuple, Callable, List, Dict, Union, FrozenSet
 
 from . import errors
 from . import handle_context_values
 from . import gender_nouns
+from . import warnings
 
 # Some helpful type hints:
 
@@ -44,11 +46,14 @@ class Chars:
             return Chars.char
 
     @staticmethod
-    def escape_gr_string(s: str) -> str:
-        """Escapes all special gender*render characters in a string, such as {, }, \\, : and *, with backslashs."""
+    def escape_gr_string(s: str, strict: bool = True) -> str:
+        """Escapes all special gender*render characters in a string, such as {, }, \\, : and *, as well as whitespace,
+        with backslashs.
+        if `strict` is set to False, only {, } and \\ are escaped; this may be used for strings that are supposed to go
+        into gender*render templates, yet not into the inners of the tags themselves."""
         i = len(s) - 1
         while i > -1:
-            if s[i] in Chars.special_chars:
+            if s[i] in ((Chars.special_chars + Chars.whitespace_chars) if strict else {"\\", "{", "}"}):
                 s = s[:i] + "\\" + s[i:]
             i -= 1
         return s
@@ -102,13 +107,17 @@ class StateTransitioner:
     """Translates between states using a finite state machine.
     This does not take into account the ability to escape characters."""
 
-    state_transitions = {
+    state_transitions: Dict[str, Dict[str, Tuple[str, Callable[[ParsedTemplate, str], ParsedTemplate]]]] = {
         States.not_within_tags: {
             "{": (States.in_empty_section,
                 lambda r, c: r+[[("", [])]]),
             Chars.char: (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),
+                lambda r, c: r[:-1]+[r[-1]+c]),  # ToDo: Add this to graphic in spec.tex!
             Chars.ws: (States.not_within_tags,
+                lambda r, c: r[:-1]+[r[-1]+c]),  # ToDo: Add this to graphic in spec.tex!
+            ":": (States.not_within_tags,
+                lambda r, c: r[:-1]+[r[-1]+c]),  # ToDo: Add this to graphic in spec.tex!
+            "*": (States.not_within_tags,
                 lambda r, c: r[:-1]+[r[-1]+c])  # ToDo: Add this to graphic in spec.tex!
         },
         States.in_empty_section: {
@@ -135,11 +144,11 @@ class StateTransitioner:
             "*": (States.in_empty_section,
                 lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]]), ("", [])]]),
             "}": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]]), ("", [])], ""]),
+                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]])], ""]),
             Chars.ws: (States.in_section_with_one_finished_word,
                 lambda r, c: r),
             Chars.char: (States.in_not_empty_value_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]])]])
+                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0], c])]])
         },
         States.in_empty_value_section: {
             Chars.ws: (States.in_empty_value_section,  # ToDo: Add this to graphic in spec.tex!
@@ -151,9 +160,11 @@ class StateTransitioner:
         },
         States.in_not_empty_value_section: {
             "*": (States.in_empty_section,
-                lambda r, c: r[:-1]+[r[-1]+[("", [])]]),
+                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], (r[-1][-1][1]
+                       if r[-1][-1][1][-1] != "" else r[-1][-1][1][:-1])), ("", [])]]),
             "}": (States.not_within_tags,
-                lambda r, c: r+[""]),
+                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], r[-1][-1][1]
+                       if r[-1][-1][1][-1] != "" else r[-1][-1][1][:-1])]]+[""]),
             Chars.ws: (States.in_not_empty_value_section,
                 lambda r, c: r[:-1] + [r[-1][:-1] + [(r[-1][-1][0], r[-1][-1][1]
                        + ([""] if r[-1][-1][1][-1] != "" else []))]]),
@@ -181,7 +192,7 @@ class SectionTypes:
 
     section_types_w_priorities = [
         ("context", 1000., True),
-        ("id", 700., False)
+        ("id", 950., False)
     ]
     """All supported section types as a list of tuples in the form of (name, priority, can_have_multiple_values)"""
 
@@ -246,12 +257,15 @@ class SectionTypes:
 class GRParser:
     """Unites several static methods of a pipeline for parsing gender*render templates from strings into a list format
     and refining this representation to the maximum extend possible without additionally seeing the corresponding
-    gender*render pronoun data."""
+    gender*render pronoun data.
+
+    These functions are written to be executed in the order they are called by `full_parsing_pipeline`, and may or may
+    not behave as expected when called on a value that didn't go through the other functions first."""
 
     @staticmethod
-    def parse_gr_template_from_str(template: str, debug_log=False) -> ParsedTemplate:
+    def parse_gr_template_from_str(template: str) -> ParsedTemplate:
         """Takes a gender*render template as a string and returns it as an easily readable list representation.
-        This does only syntactic parsing in accordance to the defining finite state machine;
+        This does only do syntactic parsing in accordance to the defining finite state machine;
         further steps in the parsing pipeline are implemented by other methods of this parser.
 
         The resulting output is of the following structure:
@@ -278,17 +292,21 @@ class GRParser:
                 char_no += 1
 
             # log:
-            if debug_log:
-                print("c:", c)
-                print("s:", s)
-                print("char type:", Chars.type(c))
-                print("result:", result)
+            warnings.WarningManager.raise_warning(
+                "result: " + str(result) + "\n\n"
+                + "c: \"" + c + "\"\n"
+                + "s: " + s + "\n"
+                + "char type: " + Chars.type(c),
+                warnings.GRSyntaxParsingLogging)
 
             # do the work of the finite state machine:
             type_of_char = Chars.type(c)
             if States.is_escaped(s):
+                # ToDo: Note in finite state machine graphic that escaped chars behave like chars and therefore don't
+                #  lead back to their original state, but rather, the following one.
                 s = States.unescape(s)
-                result = StateTransitioner.state_transitions[s][Chars.char][1](result, c)
+                s, processing_function = StateTransitioner.state_transitions[s][Chars.char]
+                result = processing_function(result, c)
             else:
                 if type_of_char == Chars.escape_char:
                     s = States.escape(s)
@@ -316,11 +334,11 @@ class GRParser:
     def assign_types_to_all_sections(parsed_template: ParsedTemplate) -> ParsedTemplate:
         """Takes a parsed template (as it is created by all methods of GRParser) and assigns every section of undefined
         type a section type."""
-        result = parsed_template.copy()
+        result = copy.deepcopy(parsed_template)
         for i in range(1, len(result), 2):
-            old_section_types = [section[0] for section in result[i]]
-            new_section_types = SectionTypes.create_section_types_for_untyped_tag(old_section_types)
-            result[i] = [(new_section_types[s], result[i][s][1]) for s in range(len(result[i]))]
+            old_section_types: List[str] = [section[0] for section in result[i]]
+            new_section_types: List[str] = SectionTypes.create_section_types_for_untyped_tag(old_section_types)
+            result[i] = [(new_section_types[s], result[i][s][1]) for s in range(len(new_section_types))]
         return result
 
     @staticmethod
@@ -328,8 +346,9 @@ class GRParser:
         """Takes a parsed template (as it is created by all methods of GRParser) and splits every tag into a sequence of
         tags, one for every context value of the tag.
         This assumes that every section was already assigned a type by GRParser.assign_types_to_all_sections, and may
-        lead to wrong results otherwise."""
-        result = parsed_template.copy()
+        lead to wrong results otherwise.
+        The context section is left the end of the tag by this procedure."""
+        result = copy.deepcopy(parsed_template)
         for i in reversed(range(1, len(result), 2)):
             tag_without_context_section = [section for section in result[i] if section[0] != "context"]
             tag_but_only_context_section = [section for section in result[i] if section[0] == "context"]
@@ -337,14 +356,34 @@ class GRParser:
             # split tag into one tag for every context value:
             context_values = tag_but_only_context_section.pop()[1]
             sequence_of_tags = [
-                (tag_without_context_section.copy() + [("context", [context_value])])
+                (copy.deepcopy(tag_without_context_section) + [("context", [context_value])])
                 for context_value in context_values
             ]
             for j in reversed(range(1, len(sequence_of_tags))):
-                sequence_of_tags.insert(j, "")
+                sequence_of_tags.insert(j, " ")
             result[i:i+1] = sequence_of_tags
 
         return result
+
+    @staticmethod
+    def make_sure_that_sections_dont_exceed_allowed_amount_of_values(parsed_template: ParsedTemplate) -> ParsedTemplate:
+        """Takes a parsed template (as it is created by all methods of GRParser) and raises an error if any tag that
+        does not allow multiple values has multiple values. This should always be used before calling
+        convert_tags_to_indxable_dicts.
+        Returns the given dict afterwards."""
+        for i in range(len(parsed_template)):
+            if i % 2:  # is a tag
+                for section_type, section_values in parsed_template[i]:
+                    if SectionTypes.section_type_accepts_multiple_values(section_type):
+                        continue
+                    elif len(section_values) > 1:
+                        raise errors.SyntaxPostprocessingError("Tag no. " + str((i + 1) / 2) + " (\""
+                                                               + ReGRParser.unparse_gr_tag(parsed_template[i])
+                                                               + "\") has multiple values in \""
+                                                               + section_type +
+                                                               "\"-section even though this type of section does"
+                                                               + " not support this.")
+        return parsed_template
 
     @staticmethod
     def convert_tags_to_indexable_dicts(parsed_template: ParsedTemplate) -> ParsedTemplateRefined:
@@ -354,23 +393,15 @@ class GRParser:
         Note that the result returned by this method is different in that it is not accepted by the other methods of
         GRParser, and that this method should thus be the last method in this pipeline to be used.
         Raises an error if a section has multiple values yet accepts only one."""
-        result = parsed_template.copy()
-        for i in range(len(parsed_template)):
+        result = copy.deepcopy(parsed_template)
+        for i in range(len(result)):
             if i % 2:  # is a tag
                 new_tag = dict()
-                for section_type, section_values in parsed_template[i]:
-                    if SectionTypes.section_type_accepts_multiple_values(section_type) and section_type != "context":
-                        new_tag[section_type] = section_values
+                for section_type, section_values in result[i]:
+                    if not SectionTypes.section_type_accepts_multiple_values(section_type) or section_type == "context":
+                        new_tag[section_type] = section_values[0]
                     else:
-                        if len(section_values) > 1:
-                            raise errors.SyntaxPostprocessingError("Tag no. " + str(i / 2) + "("
-                                                                   + ReGRParser.unparse_gr_tag(parsed_template[i])
-                                                                   + ") has multiple values in \""
-                                                                   + section_type +
-                                                                   "\"-section even though this type of section does"
-                                                                   + " not support this.")
-                        else:
-                            new_tag[section_type] = section_values[0]
+                        new_tag[section_type] = section_values
                 result[i] = new_tag
 
         return result
@@ -379,7 +410,7 @@ class GRParser:
     def convert_context_values_to_canonicals(parsed_template: ParsedTemplateRefined) -> ParsedTemplateRefined:
         """Converts a parsed template as returned by GRParser.convert_tags_to_indexable_dicts to a parsed template
         where every context value is canonical."""
-        result = parsed_template.copy()
+        result = copy.deepcopy(parsed_template)
         for i in range(1, len(parsed_template), 2):
             result[i]["context"] = handle_context_values.ContextValues.get_canonical(result[i]["context"])
         return result
@@ -390,6 +421,7 @@ class GRParser:
         template = GRParser.parse_gr_template_from_str(template)
         template = GRParser.assign_types_to_all_sections(template)
         template = GRParser.split_tags_with_multiple_context_values(template)
+        template = GRParser.make_sure_that_sections_dont_exceed_allowed_amount_of_values(template)
         template = GRParser.convert_tags_to_indexable_dicts(template)
         template = GRParser.convert_context_values_to_canonicals(template)
         return template
@@ -402,7 +434,7 @@ class GRParser:
         )
 
     @staticmethod
-    def pronoun_data_contains_unspecified_ids(parsed_template: ParsedTemplateRefined) -> bool:
+    def template_contains_unspecified_ids(parsed_template: ParsedTemplateRefined) -> bool:
         """Returns whether the parsed template contains tags with unspecified id value."""
         return bool(list(
             parsed_template[i] for i in range(1, len(parsed_template), 2) if "id" not in parsed_template[i]
@@ -412,17 +444,17 @@ class GRParser:
 
 
 class ReGRParser:
-    """Bundles methods to get a valid gender*render template from """
+    """Bundles methods to get a valid gender*render template from ParsedTemplate."""
 
     @staticmethod
-    def unparse_gr_tag(tag_representation: list) -> str:
+    def unparse_gr_tag(tag_representation: List[Tuple[str, List[str]]]) -> str:
         return "{" + "*".join([(
                             ((Chars.escape_gr_string(section[0]) + ":") if section[0] else "")
                             + " ".join([Chars.escape_gr_string(value) for value in section[1]])
                         ) for section in tag_representation]) + "}"
 
     @staticmethod
-    def unparse_gr_template_from_parsed_gr_template(parsed_template: list) -> str:
+    def unparse_gr_template(parsed_template: ParsedTemplate) -> str:
         """Takes the result of any method of the GRParser class and returns a template (as a string) that corresponds to
         the given parsed template.
         This may be used for testing purposes or to simplify gender*render templates."""
@@ -431,5 +463,9 @@ class ReGRParser:
             if i % 2:  # is a tag
                 result += ReGRParser.unparse_gr_tag(parsed_template[i])
             else:  # is a string
-                result += Chars.escape_gr_string(parsed_template[i])
+                result += Chars.escape_gr_string(parsed_template[i], strict=False)
         return result
+
+    # ToDo: This set of methods is currently abandoned; if you want to implement some functions to also convert
+    #  ParsedTemplateRefined to strings, feel free to make a pull request/ issue and maybe we can add an interface for
+    #  it!

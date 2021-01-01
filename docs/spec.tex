@@ -219,9 +219,9 @@
     %\end{minipage}
 
     The priority of the \texttt{context}-section type is \texttt{1000}.
-    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", as sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value. \\
+    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value. \\
 
-    The other section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{700}.
+    The other section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{950}.
     The value of an \texttt{id}-section may take any value as long as it does not contain any whitespace.
     It describes which individual the \{gender*render\}-tag refers to.
     Two \{gender*render\}-tags with the same id-value refer to the same individual.
@@ -230,7 +230,8 @@
     Whether there is an \texttt{id}-section is not part of the template specification, since it is not clear until the pronoun information is given.\\
 
     Since there are only two section types defined by this specification, and one of them is mandatory, there is no practical need to use any section descriptors.
-    They are still defined as a language feature in this template to provide a way to port the template language to other natural languages that might require additional information without having to introduce new syntax elements for every language.\\
+    They are still defined as a language feature in this template to provide a way to port the template language to other natural languages that might require additional information without having to introduce new syntax elements for every language.
+    Please keep in mind that further language extensions will break backwards compatibility if they introduce section types with priority values lower than the lowest pre-existing one, which is why priority values are chosen relatively large and closely-spaced.\\
 
     To end this section of the spec, here is a graphic of the \{gender*render\}-template syntax described as a finite state machine (not taking into account the fact that not every section type is valid, and the rules about assigned sections and every type of section only existing once):\\
 
@@ -389,13 +390,13 @@
                  & \textbf{\#ids = 0} & \textbf{all tags have the same id (="bar") assigned} & \textbf{all tags have ids assigned, but not all the same} & \textbf{some tags have ids assigned, some not}\\
                  \hline
 
-                 \textbf{only individual pronoun data is given (=\texttt{idpd})} & \texttt{pronoun\_data = \{"usr": idpd\}};\linebreak\linebreak Assign id "usr" to every tag. & \texttt{pronoun\_data = \{"bar": idpd\}} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
+                 \textbf{only individual pronoun data is given (=\texttt{idpd})} & set\linebreak \texttt{pronoun\_data = \{"usr": idpd\}};\linebreak\linebreak Assign id "usr" to every tag. & set\linebreak \texttt{pronoun\_data = \{"bar": idpd\}} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
                  \hline
 
                  \textbf{pronoun data is given for one id (="foo")} & Assign id "foo" to every tag. & if "foo" $\neq$ "bar":\linebreak raise\linebreak IdResolutionError & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError\\
                  \hline
 
-                 \textbf{pronoun data is given for n ($\geq$ 1) ids} & raise\linebreak IdResolutionError & raise\linebreak IdResolutionError & \emph{nothing to do here} & if \#ids + 1 $\neq$ n:\linebreak raise\linebreak IdResolutionError\linebreak else:\linebreak assign every tag without an id the id in the pronoun data that isn't assigned to any tag.\\
+                 \textbf{pronoun data is given for n ($\geq$ 1) ids} & raise\linebreak IdResolutionError & if "bar" is not an id in the pronoun data:\linebreak\linebreak raise\linebreak IdResolutionError & \emph{nothing to do here} & if \#ids + 1 $\neq$ n:\linebreak raise\linebreak IdResolutionError\linebreak else:\linebreak assign every tag without an id the id in the pronoun data that isn't assigned to any tag.\\
                  \hline
                 \caption{Id resolution}
             \end{longtable}

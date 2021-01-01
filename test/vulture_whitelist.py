@@ -18,4 +18,25 @@ DISABLE_ALL_WARNINGS  # unused variable (src/warnings.py:149)
 
 
 _.switch_escapement  # unused method (src/parse_templates.py:92)
-_.unparse_gr_template_from_parsed_gr_template  # unused method (src/parse_templates.py:424)
+_.unparse_gr_template  # unused method (src/parse_templates.py:424)
+
+# type hints in the gender_nouns submodule:
+
+
+parts_of_speech  # unused variable (src/gender_nouns.py:31)
+m  # unused variable (src/gender_nouns.py:37)
+n  # unused variable (src/gender_nouns.py:38)
+h  # unused variable (src/gender_nouns.py:39)
+wordnet_senseno  # unused variable (src/gender_nouns.py:44)
+gender_map  # unused variable (src/gender_nouns.py:46)
+neutral  # unused variable (src/gender_nouns.py:61)
+male  # unused variable (src/gender_nouns.py:62)
+female  # unused variable (src/gender_nouns.py:63)
+gender_map  # unused variable (src/gender_nouns.py:68)
+warning  # unused variable (src/gender_nouns.py:69)
+
+# unused helper function for testing and development in the gender_nouns submodule:
+
+
+is_a_person_noun  # unused function (src/gender_nouns.py:100)
+is_a_person_noun  # unused function (src/gender_nouns.py:117)

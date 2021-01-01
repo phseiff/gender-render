@@ -7,17 +7,18 @@ By default, all warnings are enabled.
 
 Ready-made sets of values for the "enable_warnings"-parameter include:
 
-* ENABLE_ALL_WARNINGS: a set of all warnings
-
-* ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
-
-* DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
-
-* ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
+- ENABLE_ALL_WARNINGS: a set of all warnings
+- ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
+- DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
+- ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
 
 Please note that classes that enable logging rather than actual warnings are not included in the
 gender_render.ENABLE_ALL_WARNINGS set. Every type of warning that would be raised regardless of input at initialization
 time of the module is considered logging rather than warning.
+
+When calling a function, method or class that isn't specified as a public interface by the specification (currently only
+render_template, Template and PronounData), the warning behavior is unreliable; you therefore shouldn't do this unless
+you explicitly define your preferred warning settings with `WarningManager.set_warning_settings`.
 """
 
 import warnings as ws
@@ -123,9 +124,25 @@ class DefaultValueUsedWarning(GRWarning):
     pass
 
 
+class GenderedNounsBuildFromWebWarning(GRWarning):
+    """The data containing the gendered and especially neutral versions of all english hyponyms for "person" could not
+    be found; therefore, it will be downloaded and saved from the internet now. This should only happen once per
+    installation and only when initializing the module for the first time, and it should not happen at all with the PyPi
+    installation."""
+    # This warning is not part of the specification since it is too dependent on this implementation's architecture to
+    #  expect every implementation to need it.
+    pass
+
+
 class BuildingGenderedNounDataLogging(GRLogging):
     """This class enables/disables the logging of information when building the gendered-noun-data from which the
     gendered versions of nouns are read."""
+    pass
+
+
+class GRSyntaxParsingLogging(GRLogging):
+    """This class enables/disables the logging of state traversion, characters and the step-by-step transforming result
+    value of the part of template parsing that parses according to """
     pass
 
 # A helper function to find all warnings in the module:
@@ -171,3 +188,11 @@ class WarningManager:
             WarningManager.warning_settings_by_thread_id[threading.get_ident()] = ENABLE_DEFAULT_WARNINGS
         if warning_type in WarningManager.warning_settings_by_thread_id[threading.get_ident()]:
             ws.warn(text, warning_type)
+        # ToDo: Make a pull request if you want children of GRLogging to use the logging-module rather than the warnings
+        #  module. Note that this may cause the need to change the unittests, and may not require any changes except to
+        #  this method and the GRLogging-objects parent class.
+        # ToDo: Feel free to make a pull request if you know how to suppress line- and file information in warnings.
+        #  or replace it with the lines from where it was logged
+        #  (https://stackoverflow.com/questions/2654113/how-to-get-the-callers-method-name-in-the-called-method), but
+        #  there would be some design decisions to be made about this since inspect.stack() tends to be very slow,
+        #  amongst other things.

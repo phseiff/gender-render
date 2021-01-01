@@ -1,5 +1,5 @@
 """
-Contains the functions to render templates and pronoun data, bundles together in a class.
+Contains the functions to render templates and pronoun data, bundled together in a class.
 This is the submodule where pronoun data and templates finally come together.
 """
 
@@ -43,15 +43,14 @@ class GRenderer:
 
             # no ids are used in the template:
             if len(ids_used_in_template) == 0:
-                new_grpd = {"usr": grpd[""]}
-                for i in range(len(new_template)):
-                    if not i % 2:  # <- is a tag element
-                        new_template[i]["id"] = "usr"
+                new_grpd = {"usr": new_grpd[""]}
+                for i in range(1, len(new_template), 2):
+                    new_template[i]["id"] = "usr"
 
             # all tags have the same id:
-            elif len(ids_used_in_template) == 1:
+            elif len(ids_used_in_template) == 1 and not template_contains_unspecified_ids:
                 single_id_in_template, = ids_used_in_template
-                new_grpd = {single_id_in_template: grpd[""]}
+                new_grpd = {single_id_in_template: new_grpd[""]}
 
             # there is more than one id used in the template:
             else:
@@ -63,15 +62,16 @@ class GRenderer:
 
             # no ids are used in the template:
             if len(ids_used_in_template) == 0:
-                for i in range(len(new_template)):
-                    if not i % 2:  # <- is a tag element
-                        new_template[i]["id"] = list(grpd.keys())[0]
+                for i in range(1, len(new_template), 2):
+                    new_template[i]["id"] = list(grpd.keys())[0]
 
             # all tags have the same id:
-            elif len(ids_used_in_template) == 1:
+            elif len(ids_used_in_template) == 1 and not template_contains_unspecified_ids:
                 if list(ids_used_in_template)[0] != list(grpd.keys())[0]:
                     raise errors.IdResolutionError("The pronoun contains only pronouns for one id, and the template "
                                                    + "also contains only one id, but they both differ.")
+                else:
+                    ids_matched_without_modification = True
 
             # there is more than one id used in the template:
             else:
@@ -100,10 +100,9 @@ class GRenderer:
                     # there is one id more in the pronoun data than there is in the template:
                     if frozenset(grpd.keys()).issuperset(ids_used_in_template):
                         missing_id_value = list(frozenset(grpd.keys()) - ids_used_in_template)[0]
-                        for i in range(len(new_template)):
-                            if not i % 2:  # <- is a tag
-                                if "id" not in new_template[i]:
-                                    new_template[i]["id"] = missing_id_value
+                        for i in range(1, len(new_template), 2):
+                            if "id" not in new_template[i]:
+                                new_template[i]["id"] = missing_id_value
                     else:
                         raise errors.IdResolutionError("The template contains tags without an id value and the "
                                                        + "pronoun data contains one more id than the template, but "
@@ -124,17 +123,14 @@ class GRenderer:
         already applied and the grpd."""
 
         new_template = copy.deepcopy(parsed_template)
-        for i in range(len(new_template)):
-            if i % 2:  # <- is a tag
-                id_value = new_template[i]["id"]
-                if new_template[i]["context"] == "address":
-                    if ContextValues.get_value(grpd, id_value, "gender-addressing") in ("t", "true"):
-                        pass
-                    else:
-                        new_template[i]["context"] = "personal-name"
+        new_grpd = copy.deepcopy(grpd)
+        for i in range(1, len(new_template), 2):
+            id_value = new_template[i]["id"]
+            if new_template[i]["context"] == "address":
+                if ContextValues.get_value(grpd, id_value, "gender-addressing") in ("f", "false"):
+                    new_template[i]["context"] = "personal-name"
 
-        return new_template, grpd
-
+        return new_template, new_grpd
 
     @staticmethod
     def render_final_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
@@ -155,7 +151,7 @@ class GRenderer:
                     # render tag by looking it up in the individual pronoun data of the individual:
                     result += ContextValues.get_value(grpd, id_value, context_value)
 
-                elif type(context_value) is gender_nouns.GenderedNoun:
+                else:  # type(context_value) is gender_nouns.GenderedNoun:
                     # render tag by correctly gendering the noun it represents.
                     gender = ContextValues.get_value(grpd, id_value, "gender-nouns")
                     result += context_value.render_noun(gender)
