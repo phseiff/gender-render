@@ -16,7 +16,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Build Documentation 🔧
+      - name: Test Code and Build Documentation 🔧
         run: |
           # install test- and installation tools:
           sudo pip3 install wheel
@@ -42,7 +42,7 @@ jobs:
           python3 -m coverage html
           sudo pip3 install pdoc3
           pip3 install .
-          pdoc3 --html -f -c sort_identifiers=False --output-dir docs/code-doc gender_render
+          pdoc3 --html -f -c "sort_identifiers=False" -c "git_link_template='https://github.com/phseiff/gender-render/blob/{commit}/{path}#L{start_line}-L{end_line}'" --output-dir docs/code-doc gender_render
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
