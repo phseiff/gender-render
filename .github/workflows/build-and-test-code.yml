@@ -18,18 +18,32 @@ jobs:
 
       - name: Build Documentation 🔧
         run: |
+          # install test- and installation tools:
           sudo pip3 install wheel
           sudo pip3 install setuptools
           sudo pip3 install setuptools_scm
           sudo pip3 install vulture
           sudo pip3 install coverage
+          sudo pip3 install typing_extensions
+          sudo pip3 install deepdiff[murmur]
+
+          # install optional dependencies of gender-render:
+          sudo pip3 install nltk
+          python3 -m nltk.downloader wordnet
+          python3 -m nltk.downloader words
+
+          # run tests:
+          pip3 install .  # <- make sure the gendered-noun-data is generated!
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
           coverage report --fail-under=100 --skip-covered -m
-          coverage html
+
+          # build documentation:
+          python3 -m coverage html
           sudo pip3 install pdoc3
           pip3 install .
           pdoc3 --html -f -c sort_identifiers=False --output-dir docs/code-doc gender_render
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
