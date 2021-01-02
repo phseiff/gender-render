@@ -26,6 +26,7 @@ jobs:
           sudo pip3 install coverage
           sudo pip3 install typing_extensions
           sudo pip3 install deepdiff[murmur]
+          sudo pip3 install pdoc3
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
@@ -40,8 +41,6 @@ jobs:
 
           # build documentation:
           python3 -m coverage html
-          sudo pip3 install pdoc3
-          pip3 install .
           mv src gender_render  # <- hacky solution
           pdoc3 --html -f -c "sort_identifiers=False" -c "git_link_template='https://github.com/phseiff/gender-render/blob/{commit}/{path}#L{start_line}-L{end_line}'" --output-dir docs/code-doc gender_render
 
