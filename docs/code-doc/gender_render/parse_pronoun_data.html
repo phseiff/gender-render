@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>gender_render.parse_pronoun_data API documentation</title>
+<meta name="description" content="Contains functions for gender*render pronoun data." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>gender_render.parse_pronoun_data</code></h1>
+</header>
+<section id="section-intro">
+<p>Contains functions for gender*render pronoun data.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L0-L127" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Contains functions for gender*render pronoun data.
+&#34;&#34;&#34;
+
+import json
+from typing import Union
+
+from . import errors
+from . import warnings
+from .handle_context_values import ContextValues, IDPD, GRPD
+
+# functions for parsing individual pronoun data:
+
+
+class GRPDParser:
+    &#34;&#34;&#34;Bundles various methods for parsing gender*render pronoun data in a pipeline together.&#34;&#34;&#34;
+
+    @staticmethod
+    def pd_string_to_dict(pd: str) -&gt; dict:
+        &#34;&#34;&#34;Parses a JSON string into a dict and returns it.&#34;&#34;&#34;
+        try:
+            pd_dict = json.loads(pd)
+        except json.decoder.JSONDecodeError:
+            raise errors.InvalidPDError(&#34;The given pronoun data (given as a string) is not a valid piece of JSON data.&#34;)
+        return pd_dict
+
+    @staticmethod
+    def type_of_pd(pd: Union[GRPD, IDPD]) -&gt; Union[GRPD, IDPD]:
+        &#34;&#34;&#34;Returns GRPD or IDPD, depending on what type (if any) of pronoun data the given string is.
+        Raises an error if it is neither of these two.&#34;&#34;&#34;
+        # ToDo: Remove the restrictions for id names from spec and define \ as an escape character more broad.
+        #  However, specify that ids may not be empty strings.
+        if type(pd) is dict:
+            all_values_are_strings = True
+            all_values_are_dicts = True
+            for value in pd.values():
+                if type(value) is not str:
+                    all_values_are_strings = False
+                if type(value) is not dict:
+                    all_values_are_dicts = False
+            if all_values_are_dicts:
+                for idpd in pd.values():
+                    for v in idpd.values():
+                        if type(v) is not str:
+                            raise errors.InvalidPDError(
+                                &#34;A property of a piece of individual pronoun data is assigned a non-string value.&#34;)
+                if &#34;&#34; in pd:
+                    raise errors.InvalidPDError(
+                        &#34;\&#34;\&#34; is not a valid id value in a piece of gender*render pronoun data&#34;)
+                return GRPD
+            elif all_values_are_strings:
+                return IDPD
+            else:
+                raise errors.InvalidPDError(
+                    &#34;The values of all top-level key-value-pairs of the given pronoun data are neither all objects, nor&#34;
+                    + &#34; are they all strings, but rather, a mixture of multiple types. This is neither allowed for a&#34;
+                    + &#34; piece of individual pronoun data (has only string values), nor a piece of gender*render pronoun&#34;
+                    + &#34; data (which has only object values), and is therefore invalid.&#34;
+                )
+        else:
+            raise errors.InvalidPDError(
+                &#34;This piece of pronoun data is neither individual pronoun data nor gender*render pronoun data.&#34;
+            )
+
+    @staticmethod
+    def return_pd_if_it_is_valid(pd: dict) -&gt; Union[GRPD, IDPD]:
+        &#34;&#34;&#34;Takes a dict, raises an error if it is neither a piece of gender*render pronoun data nor a piece of
+        individual pronoun data and returns it otherwise.&#34;&#34;&#34;
+        try:
+            GRPDParser.type_of_pd(pd)
+        except errors.InvalidPDError:
+            raise errors.InvalidPDError(&#34;The given JSON object is not a valid piece of pronoun data.&#34;)
+        return pd
+
+    @staticmethod
+    def pd_dict_to_grpd_dict(pd: Union[GRPD, IDPD]) -&gt; GRPD:
+        &#34;&#34;&#34;Converts a piece of valid pronoun data to a grpd, in case it is an idpd.
+        The returned object may be identical to the given object or reference it.&#34;&#34;&#34;
+        if GRPDParser.type_of_pd(pd) is GRPD:
+            return pd
+        else:  # GRPDParser.type_of_pd(pd) is IDPD:
+            return {&#34;&#34;: pd}
+
+    @staticmethod
+    def grpd_dict_to_canonical_grpd_dict(pd: GRPD) -&gt; GRPD:
+        &#34;&#34;&#34;Takes a gender*render pronoun data dict and returns it with every property made canonical.
+        Raises a DoubledInformationError if a piece of idpd contains two properties for the same attribute.
+        Raises a InvalidInformationError if a property has a value it may not have.
+        Raises a warning if a custom attribute is not recognizable as such.&#34;&#34;&#34;
+        result = dict()
+        for id in pd:
+            new_idpd = dict()
+            for gr_property, value in pd[id].items():
+                canonical_context_value = ContextValues.get_canonical(gr_property, is_from_tag=False)
+
+                # raise an error if two properties for the same attribute exist:
+                if canonical_context_value in new_idpd:
+                    raise errors.DoubledInformationError(&#34;The individual pronoun data for id \&#34;&#34; + id + &#34;\&#34; defines &#34;
+                                                         + &#34;multiple values for the \&#34;&#34; + canonical_context_value
+                                                         + &#34;\&#34; attribute, using different properties. Only one is &#34;
+                                                         + &#34;allowed!&#34;)
+
+                # raises an error if an attribute with a limited set of valid values is used and the value is invalid:
+                if not ContextValues.value_is_allowed(canonical_context_value, value):
+                    raise errors.InvalidInformationError(&#34;The individual pronoun data for id \&#34;&#34; + id + &#34;\&#34; defines &#34;
+                                                         + &#34;\&#34;&#34; + value + &#34;\&#34; as the value for \&#34;&#34;
+                                                         + canonical_context_value + &#34;\&#34; even though this attribute &#34;
+                                                         + &#34;does not allow this value.&#34;)
+
+                # raises a warning if a custom attribute does not use the special syntax for custom properties:
+                if (ContextValues.is_a_custom_value(gr_property)
+                        and not ContextValues.uses_special_custom_value_syntax(gr_property)):
+                    warnings.WarningManager.raise_warning(&#34;The individual pronoun data for individual \&#34;&#34; + id + &#34;\&#34; &#34;
+                                                          + &#34;contains a custom property, but said property does not use&#34;
+                                                          + &#34; special custom property syntax.&#34;,
+                                                          warnings.UnknownPropertyWarning)
+                new_idpd[canonical_context_value] = value
+            result[id] = new_idpd
+        return result
+
+    @staticmethod
+    def full_parsing_pipeline(pd: dict) -&gt; GRPD:
+        &#34;&#34;&#34;Parses a dict into a valid piece of grpd following the pipeline defined by GRPDParser, and raises an error if
+        this turns out to be impossible.&#34;&#34;&#34;
+        pd = GRPDParser.return_pd_if_it_is_valid(pd)
+        pd = GRPDParser.pd_dict_to_grpd_dict(pd)
+        pd = GRPDParser.grpd_dict_to_canonical_grpd_dict(pd)
+        return pd</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="gender_render.parse_pronoun_data.GRPDParser"><code class="flex name class">
+<span>class <span class="ident">GRPDParser</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bundles various methods for parsing gender*render pronoun data in a pipeline together.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L15-L128" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class GRPDParser:
+    &#34;&#34;&#34;Bundles various methods for parsing gender*render pronoun data in a pipeline together.&#34;&#34;&#34;
+
+    @staticmethod
+    def pd_string_to_dict(pd: str) -&gt; dict:
+        &#34;&#34;&#34;Parses a JSON string into a dict and returns it.&#34;&#34;&#34;
+        try:
+            pd_dict = json.loads(pd)
+        except json.decoder.JSONDecodeError:
+            raise errors.InvalidPDError(&#34;The given pronoun data (given as a string) is not a valid piece of JSON data.&#34;)
+        return pd_dict
+
+    @staticmethod
+    def type_of_pd(pd: Union[GRPD, IDPD]) -&gt; Union[GRPD, IDPD]:
+        &#34;&#34;&#34;Returns GRPD or IDPD, depending on what type (if any) of pronoun data the given string is.
+        Raises an error if it is neither of these two.&#34;&#34;&#34;
+        # ToDo: Remove the restrictions for id names from spec and define \ as an escape character more broad.
+        #  However, specify that ids may not be empty strings.
+        if type(pd) is dict:
+            all_values_are_strings = True
+            all_values_are_dicts = True
+            for value in pd.values():
+                if type(value) is not str:
+                    all_values_are_strings = False
+                if type(value) is not dict:
+                    all_values_are_dicts = False
+            if all_values_are_dicts:
+                for idpd in pd.values():
+                    for v in idpd.values():
+                        if type(v) is not str:
+                            raise errors.InvalidPDError(
+                                &#34;A property of a piece of individual pronoun data is assigned a non-string value.&#34;)
+                if &#34;&#34; in pd:
+                    raise errors.InvalidPDError(
+                        &#34;\&#34;\&#34; is not a valid id value in a piece of gender*render pronoun data&#34;)
+                return GRPD
+            elif all_values_are_strings:
+                return IDPD
+            else:
+                raise errors.InvalidPDError(
+                    &#34;The values of all top-level key-value-pairs of the given pronoun data are neither all objects, nor&#34;
+                    + &#34; are they all strings, but rather, a mixture of multiple types. This is neither allowed for a&#34;
+                    + &#34; piece of individual pronoun data (has only string values), nor a piece of gender*render pronoun&#34;
+                    + &#34; data (which has only object values), and is therefore invalid.&#34;
+                )
+        else:
+            raise errors.InvalidPDError(
+                &#34;This piece of pronoun data is neither individual pronoun data nor gender*render pronoun data.&#34;
+            )
+
+    @staticmethod
+    def return_pd_if_it_is_valid(pd: dict) -&gt; Union[GRPD, IDPD]:
+        &#34;&#34;&#34;Takes a dict, raises an error if it is neither a piece of gender*render pronoun data nor a piece of
+        individual pronoun data and returns it otherwise.&#34;&#34;&#34;
+        try:
+            GRPDParser.type_of_pd(pd)
+        except errors.InvalidPDError:
+            raise errors.InvalidPDError(&#34;The given JSON object is not a valid piece of pronoun data.&#34;)
+        return pd
+
+    @staticmethod
+    def pd_dict_to_grpd_dict(pd: Union[GRPD, IDPD]) -&gt; GRPD:
+        &#34;&#34;&#34;Converts a piece of valid pronoun data to a grpd, in case it is an idpd.
+        The returned object may be identical to the given object or reference it.&#34;&#34;&#34;
+        if GRPDParser.type_of_pd(pd) is GRPD:
+            return pd
+        else:  # GRPDParser.type_of_pd(pd) is IDPD:
+            return {&#34;&#34;: pd}
+
+    @staticmethod
+    def grpd_dict_to_canonical_grpd_dict(pd: GRPD) -&gt; GRPD:
+        &#34;&#34;&#34;Takes a gender*render pronoun data dict and returns it with every property made canonical.
+        Raises a DoubledInformationError if a piece of idpd contains two properties for the same attribute.
+        Raises a InvalidInformationError if a property has a value it may not have.
+        Raises a warning if a custom attribute is not recognizable as such.&#34;&#34;&#34;
+        result = dict()
+        for id in pd:
+            new_idpd = dict()
+            for gr_property, value in pd[id].items():
+                canonical_context_value = ContextValues.get_canonical(gr_property, is_from_tag=False)
+
+                # raise an error if two properties for the same attribute exist:
+                if canonical_context_value in new_idpd:
+                    raise errors.DoubledInformationError(&#34;The individual pronoun data for id \&#34;&#34; + id + &#34;\&#34; defines &#34;
+                                                         + &#34;multiple values for the \&#34;&#34; + canonical_context_value
+                                                         + &#34;\&#34; attribute, using different properties. Only one is &#34;
+                                                         + &#34;allowed!&#34;)
+
+                # raises an error if an attribute with a limited set of valid values is used and the value is invalid:
+                if not ContextValues.value_is_allowed(canonical_context_value, value):
+                    raise errors.InvalidInformationError(&#34;The individual pronoun data for id \&#34;&#34; + id + &#34;\&#34; defines &#34;
+                                                         + &#34;\&#34;&#34; + value + &#34;\&#34; as the value for \&#34;&#34;
+                                                         + canonical_context_value + &#34;\&#34; even though this attribute &#34;
+                                                         + &#34;does not allow this value.&#34;)
+
+                # raises a warning if a custom attribute does not use the special syntax for custom properties:
+                if (ContextValues.is_a_custom_value(gr_property)
+                        and not ContextValues.uses_special_custom_value_syntax(gr_property)):
+                    warnings.WarningManager.raise_warning(&#34;The individual pronoun data for individual \&#34;&#34; + id + &#34;\&#34; &#34;
+                                                          + &#34;contains a custom property, but said property does not use&#34;
+                                                          + &#34; special custom property syntax.&#34;,
+                                                          warnings.UnknownPropertyWarning)
+                new_idpd[canonical_context_value] = value
+            result[id] = new_idpd
+        return result
+
+    @staticmethod
+    def full_parsing_pipeline(pd: dict) -&gt; GRPD:
+        &#34;&#34;&#34;Parses a dict into a valid piece of grpd following the pipeline defined by GRPDParser, and raises an error if
+        this turns out to be impossible.&#34;&#34;&#34;
+        pd = GRPDParser.return_pd_if_it_is_valid(pd)
+        pd = GRPDParser.pd_dict_to_grpd_dict(pd)
+        pd = GRPDParser.grpd_dict_to_canonical_grpd_dict(pd)
+        return pd</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="gender_render.parse_pronoun_data.GRPDParser.pd_string_to_dict"><code class="name flex">
+<span>def <span class="ident">pd_string_to_dict</span></span>(<span>pd: str) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parses a JSON string into a dict and returns it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L18-L25" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def pd_string_to_dict(pd: str) -&gt; dict:
+    &#34;&#34;&#34;Parses a JSON string into a dict and returns it.&#34;&#34;&#34;
+    try:
+        pd_dict = json.loads(pd)
+    except json.decoder.JSONDecodeError:
+        raise errors.InvalidPDError(&#34;The given pronoun data (given as a string) is not a valid piece of JSON data.&#34;)
+    return pd_dict</code></pre>
+</details>
+</dd>
+<dt id="gender_render.parse_pronoun_data.GRPDParser.type_of_pd"><code class="name flex">
+<span>def <span class="ident">type_of_pd</span></span>(<span>pd: Union[Dict[str, Dict[str, str]], Dict[str, str]]) ‑> Union[Dict[str, Dict[str, str]], Dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns GRPD or IDPD, depending on what type (if any) of pronoun data the given string is.
+Raises an error if it is neither of these two.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L27-L63" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def type_of_pd(pd: Union[GRPD, IDPD]) -&gt; Union[GRPD, IDPD]:
+    &#34;&#34;&#34;Returns GRPD or IDPD, depending on what type (if any) of pronoun data the given string is.
+    Raises an error if it is neither of these two.&#34;&#34;&#34;
+    # ToDo: Remove the restrictions for id names from spec and define \ as an escape character more broad.
+    #  However, specify that ids may not be empty strings.
+    if type(pd) is dict:
+        all_values_are_strings = True
+        all_values_are_dicts = True
+        for value in pd.values():
+            if type(value) is not str:
+                all_values_are_strings = False
+            if type(value) is not dict:
+                all_values_are_dicts = False
+        if all_values_are_dicts:
+            for idpd in pd.values():
+                for v in idpd.values():
+                    if type(v) is not str:
+                        raise errors.InvalidPDError(
+                            &#34;A property of a piece of individual pronoun data is assigned a non-string value.&#34;)
+            if &#34;&#34; in pd:
+                raise errors.InvalidPDError(
+                    &#34;\&#34;\&#34; is not a valid id value in a piece of gender*render pronoun data&#34;)
+            return GRPD
+        elif all_values_are_strings:
+            return IDPD
+        else:
+            raise errors.InvalidPDError(
+                &#34;The values of all top-level key-value-pairs of the given pronoun data are neither all objects, nor&#34;
+                + &#34; are they all strings, but rather, a mixture of multiple types. This is neither allowed for a&#34;
+                + &#34; piece of individual pronoun data (has only string values), nor a piece of gender*render pronoun&#34;
+                + &#34; data (which has only object values), and is therefore invalid.&#34;
+            )
+    else:
+        raise errors.InvalidPDError(
+            &#34;This piece of pronoun data is neither individual pronoun data nor gender*render pronoun data.&#34;
+        )</code></pre>
+</details>
+</dd>
+<dt id="gender_render.parse_pronoun_data.GRPDParser.return_pd_if_it_is_valid"><code class="name flex">
+<span>def <span class="ident">return_pd_if_it_is_valid</span></span>(<span>pd: dict) ‑> Union[Dict[str, Dict[str, str]], Dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes a dict, raises an error if it is neither a piece of gender*render pronoun data nor a piece of
+individual pronoun data and returns it otherwise.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L65-L73" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def return_pd_if_it_is_valid(pd: dict) -&gt; Union[GRPD, IDPD]:
+    &#34;&#34;&#34;Takes a dict, raises an error if it is neither a piece of gender*render pronoun data nor a piece of
+    individual pronoun data and returns it otherwise.&#34;&#34;&#34;
+    try:
+        GRPDParser.type_of_pd(pd)
+    except errors.InvalidPDError:
+        raise errors.InvalidPDError(&#34;The given JSON object is not a valid piece of pronoun data.&#34;)
+    return pd</code></pre>
+</details>
+</dd>
+<dt id="gender_render.parse_pronoun_data.GRPDParser.pd_dict_to_grpd_dict"><code class="name flex">
+<span>def <span class="ident">pd_dict_to_grpd_dict</span></span>(<span>pd: Union[Dict[str, Dict[str, str]], Dict[str, str]]) ‑> Dict[str, Dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts a piece of valid pronoun data to a grpd, in case it is an idpd.
+The returned object may be identical to the given object or reference it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L75-L82" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def pd_dict_to_grpd_dict(pd: Union[GRPD, IDPD]) -&gt; GRPD:
+    &#34;&#34;&#34;Converts a piece of valid pronoun data to a grpd, in case it is an idpd.
+    The returned object may be identical to the given object or reference it.&#34;&#34;&#34;
+    if GRPDParser.type_of_pd(pd) is GRPD:
+        return pd
+    else:  # GRPDParser.type_of_pd(pd) is IDPD:
+        return {&#34;&#34;: pd}</code></pre>
+</details>
+</dd>
+<dt id="gender_render.parse_pronoun_data.GRPDParser.grpd_dict_to_canonical_grpd_dict"><code class="name flex">
+<span>def <span class="ident">grpd_dict_to_canonical_grpd_dict</span></span>(<span>pd: Dict[str, Dict[str, str]]) ‑> Dict[str, Dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes a gender*render pronoun data dict and returns it with every property made canonical.
+Raises a DoubledInformationError if a piece of idpd contains two properties for the same attribute.
+Raises a InvalidInformationError if a property has a value it may not have.
+Raises a warning if a custom attribute is not recognizable as such.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L84-L119" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def grpd_dict_to_canonical_grpd_dict(pd: GRPD) -&gt; GRPD:
+    &#34;&#34;&#34;Takes a gender*render pronoun data dict and returns it with every property made canonical.
+    Raises a DoubledInformationError if a piece of idpd contains two properties for the same attribute.
+    Raises a InvalidInformationError if a property has a value it may not have.
+    Raises a warning if a custom attribute is not recognizable as such.&#34;&#34;&#34;
+    result = dict()
+    for id in pd:
+        new_idpd = dict()
+        for gr_property, value in pd[id].items():
+            canonical_context_value = ContextValues.get_canonical(gr_property, is_from_tag=False)
+
+            # raise an error if two properties for the same attribute exist:
+            if canonical_context_value in new_idpd:
+                raise errors.DoubledInformationError(&#34;The individual pronoun data for id \&#34;&#34; + id + &#34;\&#34; defines &#34;
+                                                     + &#34;multiple values for the \&#34;&#34; + canonical_context_value
+                                                     + &#34;\&#34; attribute, using different properties. Only one is &#34;
+                                                     + &#34;allowed!&#34;)
+
+            # raises an error if an attribute with a limited set of valid values is used and the value is invalid:
+            if not ContextValues.value_is_allowed(canonical_context_value, value):
+                raise errors.InvalidInformationError(&#34;The individual pronoun data for id \&#34;&#34; + id + &#34;\&#34; defines &#34;
+                                                     + &#34;\&#34;&#34; + value + &#34;\&#34; as the value for \&#34;&#34;
+                                                     + canonical_context_value + &#34;\&#34; even though this attribute &#34;
+                                                     + &#34;does not allow this value.&#34;)
+
+            # raises a warning if a custom attribute does not use the special syntax for custom properties:
+            if (ContextValues.is_a_custom_value(gr_property)
+                    and not ContextValues.uses_special_custom_value_syntax(gr_property)):
+                warnings.WarningManager.raise_warning(&#34;The individual pronoun data for individual \&#34;&#34; + id + &#34;\&#34; &#34;
+                                                      + &#34;contains a custom property, but said property does not use&#34;
+                                                      + &#34; special custom property syntax.&#34;,
+                                                      warnings.UnknownPropertyWarning)
+            new_idpd[canonical_context_value] = value
+        result[id] = new_idpd
+    return result</code></pre>
+</details>
+</dd>
+<dt id="gender_render.parse_pronoun_data.GRPDParser.full_parsing_pipeline"><code class="name flex">
+<span>def <span class="ident">full_parsing_pipeline</span></span>(<span>pd: dict) ‑> Dict[str, Dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parses a dict into a valid piece of grpd following the pipeline defined by GRPDParser, and raises an error if
+this turns out to be impossible.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/blob/802d8ae5786672c4c24ce8d4cbf9ccc128afbe51/gender_render/parse_pronoun_data.py#L121-L128" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def full_parsing_pipeline(pd: dict) -&gt; GRPD:
+    &#34;&#34;&#34;Parses a dict into a valid piece of grpd following the pipeline defined by GRPDParser, and raises an error if
+    this turns out to be impossible.&#34;&#34;&#34;
+    pd = GRPDParser.return_pd_if_it_is_valid(pd)
+    pd = GRPDParser.pd_dict_to_grpd_dict(pd)
+    pd = GRPDParser.grpd_dict_to_canonical_grpd_dict(pd)
+    return pd</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="gender_render" href="index.html">gender_render</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="gender_render.parse_pronoun_data.GRPDParser" href="#gender_render.parse_pronoun_data.GRPDParser">GRPDParser</a></code></h4>
+<ul class="">
+<li><code><a title="gender_render.parse_pronoun_data.GRPDParser.pd_string_to_dict" href="#gender_render.parse_pronoun_data.GRPDParser.pd_string_to_dict">pd_string_to_dict</a></code></li>
+<li><code><a title="gender_render.parse_pronoun_data.GRPDParser.type_of_pd" href="#gender_render.parse_pronoun_data.GRPDParser.type_of_pd">type_of_pd</a></code></li>
+<li><code><a title="gender_render.parse_pronoun_data.GRPDParser.return_pd_if_it_is_valid" href="#gender_render.parse_pronoun_data.GRPDParser.return_pd_if_it_is_valid">return_pd_if_it_is_valid</a></code></li>
+<li><code><a title="gender_render.parse_pronoun_data.GRPDParser.pd_dict_to_grpd_dict" href="#gender_render.parse_pronoun_data.GRPDParser.pd_dict_to_grpd_dict">pd_dict_to_grpd_dict</a></code></li>
+<li><code><a title="gender_render.parse_pronoun_data.GRPDParser.grpd_dict_to_canonical_grpd_dict" href="#gender_render.parse_pronoun_data.GRPDParser.grpd_dict_to_canonical_grpd_dict">grpd_dict_to_canonical_grpd_dict</a></code></li>
+<li><code><a title="gender_render.parse_pronoun_data.GRPDParser.full_parsing_pipeline" href="#gender_render.parse_pronoun_data.GRPDParser.full_parsing_pipeline">full_parsing_pipeline</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
