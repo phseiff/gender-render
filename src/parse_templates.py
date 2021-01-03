@@ -112,13 +112,13 @@ class StateTransitioner:
             "{": (States.in_empty_section,
                 lambda r, c: r+[[("", [])]]),
             Chars.char: (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),  # ToDo: Add this to graphic in spec.tex!
+                lambda r, c: r[:-1]+[r[-1]+c]),
             Chars.ws: (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),  # ToDo: Add this to graphic in spec.tex!
+                lambda r, c: r[:-1]+[r[-1]+c]),
             ":": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),  # ToDo: Add this to graphic in spec.tex!
+                lambda r, c: r[:-1]+[r[-1]+c]),
             "*": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c])  # ToDo: Add this to graphic in spec.tex!
+                lambda r, c: r[:-1]+[r[-1]+c])
         },
         States.in_empty_section: {
             Chars.ws: (States.in_empty_section,
@@ -151,7 +151,7 @@ class StateTransitioner:
                 lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0], c])]])
         },
         States.in_empty_value_section: {
-            Chars.ws: (States.in_empty_value_section,  # ToDo: Add this to graphic in spec.tex!
+            Chars.ws: (States.in_empty_value_section,
                 lambda r, c: r),
             Chars.char: (States.in_not_empty_value_section,
                 lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], r[-1][-1][1][:-1]+[
@@ -302,8 +302,6 @@ class GRParser:
             # do the work of the finite state machine:
             type_of_char = Chars.type(c)
             if States.is_escaped(s):
-                # ToDo: Note in finite state machine graphic that escaped chars behave like chars and therefore don't
-                #  lead back to their original state, but rather, the following one.
                 s = States.unescape(s)
                 s, processing_function = StateTransitioner.state_transitions[s][Chars.char]
                 result = processing_function(result, c)

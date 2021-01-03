@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 The gender*render-python reference implementation.
-For documentation, see ToDo: Add links to generated documentation.
+For documentation and a usage guide, see https://phseiff.com/gender-render/docs/code-doc/gender_render/
 
 This implementation follows the specification found here (ToDo: insert)
 

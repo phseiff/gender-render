@@ -28,8 +28,6 @@ class GRPDParser:
     def type_of_pd(pd: Union[GRPD, IDPD]) -> Union[GRPD, IDPD]:
         """Returns GRPD or IDPD, depending on what type (if any) of pronoun data the given string is.
         Raises an error if it is neither of these two."""
-        # ToDo: Remove the restrictions for id names from spec and define \ as an escape character more broad.
-        #  However, specify that ids may not be empty strings.
         if type(pd) is dict:
             all_values_are_strings = True
             all_values_are_dicts = True

@@ -159,14 +159,21 @@
 
     A character is considered escaped if it is proceeded by an unescaped backslash ("\texttt{\textbackslash}", \texttt{U+005C}) or by a backslash which is not proceeded by other backslash.
     A backslash which is not escaped is called an escape-character.
-    A template which contains backslashes which are neither escaped nor escape characters is not considered a valid \{gender*render\}-template, as is any template which contains unescaped curly brackets who are not part of any valid \{gender*render\}-tag.\\
+    A template which contains backslashes which are neither escaped nor escape characters is not considered a valid \{gender*render\}-template, as is any template which contains unescaped curly brackets who are not part of any valid \{gender*render\}-tag.
+    A template which ends with an escape character, which isn't followed by a character to escape, is also considered invalid.\\
 
     Every character of a \{gender*render\}-tag except the first and last characters (the brackets) is considered part of its content.
     Said content is divided into sections through unescaped asterisks ("\texttt{*}", \texttt{U+002A}).
     A section of a \{gender*render\}-tag does not contain any unescaped asterisks, and it must contain at least one non-whitespace\footnote{"Whitespace" as defined by the \href{https://infra.spec.whatwg.org/\#ascii-whitespace}{HTML Living Standard}.} character.
     Colons ("\texttt{:}", \texttt{U+003A}) are considered special characters in sections, and may thus appear at most once per section, and neither as the first nor as the last non-whitespace  character of the section.
-    If a section contains a colon, the characters of the section beforehand the colon (minus all leading or trailing whitespace) are called the sections \emph{type descriptors}, and the characters following the colon (after having all their whitespace collapsed into one \texttt{U+0020}-space each, except for trailing and leading whitespace, which is removed completely) are called the sections \emph{value}.
-    If a section does not contain a colon, its \emph{value} is defined as all of its characters (having all their whitespace collapsed into one \texttt{U+0020}-space each, except for trailing and leading whitespace, which is removed completely).\\
+    If a section contains a colon, the characters of the section beforehand the colon (minus all leading or trailing whitespace) are called the sections \emph{type descriptors}, and the characters on the right side of the colon (minus all leading or trailing whitespace) are called the sections \emph{values},
+    where every whitespace-separated word is one value, with the order mattering.
+    If a section does not contain a colon, all of its content is considered part of its value-section.
+    Whether a section type allows multiple values or just one depends on the section type.\\
+
+    Colons proceeded by an escape character are not considered to be special chars, and instead behave like any other character;
+    analogously, escaped whitespace behaves like any other character and thereby indirectly enables the usage of whitespace in section values as well as section types.
+    Individual section values as well as section types may therefore not contain whitespace, but may very well contain escaped whitespace, which is then parsed into "normal" whitespace by the parser.\\
 
     There are multiple different types of section, assigned to sections by their type descriptor.
     A section whose type is "foo" is called a "foo-section".
@@ -219,12 +226,12 @@
     %\end{minipage}
 
     The priority of the \texttt{context}-section type is \texttt{1000}.
-    If the \texttt{context}-section's value contains multiple strings, each separated from each other by whitespace, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value. \\
+    If the \texttt{context}-section's value contains multiple values, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \{gender*render\}-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value.\\
 
     The other section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{950}.
-    The value of an \texttt{id}-section may take any value as long as it does not contain any whitespace.
-    It describes which individual the \{gender*render\}-tag refers to.
-    Two \{gender*render\}-tags with the same id-value refer to the same individual.
+    \texttt{id}-sections may take any value, as long as they take only one value, including (but not recommended to users for obvious reasons) values that contain escaped whitespace.
+    Said value describes which individual the \{gender*render\}-tag refers to.
+    Two \{gender*render\}-tags with the same id-value thefore refer to the same individual.
     The id-value can be omitted by the user if there is only one individual mentioned in the whole template, and in some other cases;
     this is explored further in the renderer section.
     Whether there is an \texttt{id}-section is not part of the template specification, since it is not clear until the pronoun information is given.\\
