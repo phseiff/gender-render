@@ -1,4 +1,4 @@
-## 🚗💨 Quick Start
+## Quick Start 🚗💨
 
 [Installation](#installation) • [Usage](#usage) • [Template Syntax](#template-syntax)
 
