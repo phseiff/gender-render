@@ -31,10 +31,12 @@ rendered_template_as_a_str = gr.render_template(
 
 <table>
 <tr>
-<td> Template </td> <td> Pronoun Data (json) </td> <td> Result </td>
+<td> Template & Pronoun Data </td> <td> Result </td>
 </tr>
 
 <tr><td>
+
+**Template**:
 
 Addressing one person:
 
@@ -46,7 +48,7 @@ about {them}?", and I told the
 person who asked that [...]
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -71,6 +73,8 @@ person who asked that [...]
 </td></tr>
 <tr><td>
 
+**Template**:
+
 Addressing multiple persons:
 
 ```
@@ -87,7 +91,7 @@ Best regards,
 {customer_support* Jean Doe}
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -133,6 +137,8 @@ Emma Ackernick
 </td></tr>
 <tr><td>
 
+**Template**:
+
 gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag:
 
 ```
@@ -143,7 +149,7 @@ equals
 "{Mr_s Doe}".
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -165,6 +171,8 @@ Ind. Adams
 </td></tr>
 <tr><td>
 
+**Template**:
+
 Address individuals who don't want to get a special title:
 
 ```
@@ -172,7 +180,7 @@ Dear {Mr_s Doe},
 [...]
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -192,13 +200,15 @@ Dear Joey Chase,
 </td></tr>
 <tr><td>
 
+**Template**:
+
 Refer to individuals with hyponyms for person or by their profession:
 
 ```
 I hope the {actor} is doing well.
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -219,6 +229,8 @@ Note that this also works for words that start with capital letters - "Actor" wo
 </td></tr>
 <tr><td>
 
+**Template**:
+
 *Every* gendered noun has a neutral version available:
 
 ```
@@ -226,7 +238,7 @@ As a {salesman}, {they} had to face
 great hardships!
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -247,6 +259,8 @@ great hardships!
 </td></tr>
 <tr><td>
 
+**Template**:
+
 If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used:
 
 ```
@@ -254,7 +268,7 @@ Since tuesday, {they} serve as a
 {cadet}.
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -271,5 +285,4 @@ cadet.
 ```
 
 </td></tr>
-
 </table>
