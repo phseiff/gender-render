@@ -40,9 +40,10 @@ Addressing one person:
 
 ```
 Dear {Mr_s Doe},
-Yesterday, I was asked about your wellbeing,
-"Is there reason to worry about {them}?",
-and I told the person why asked that [...]
+Yesterday, I was asked about your
+wellbeing, "Is there reason to worry
+about {them}?", and I told the
+person who asked that [...]
 ```
 
 </td><td>
@@ -61,9 +62,10 @@ Having more value in the pronoun data than needed is, of course, also allowed!
 
 ```
 Dear Mrs Smith,
-Yesterday, I was asked about your wellbeing,
-"Is there reason to worry about her?",
-and I told the person why asked that [...]
+Yesterday, I was asked about your
+wellbeing, "Is there reason to worry
+about her?", and I told the
+person who asked that [...]
 ```
 
 </td></tr>
@@ -74,9 +76,10 @@ Addressing multiple persons:
 ```
 Dear {seller* Mr_s Doe},
 
-According to our guidelines, the issue with
-{reseller* Mr_s Doe} is best resolved if
-{reseller*they} publically apologizes to
+According to our guidelines, the
+issue with {reseller* Mr_s Doe} is
+best resolved if {reseller*they}
+publically apologizes to
 {buyer* Mr_s Doe} for {reseller*their}
 behavior.
 
@@ -116,9 +119,10 @@ Note that all these attributes can take any value; not only "Mr" and "Mrs" is va
 ```
 Dear Mrs Brown,
 
-According to our guidelines, the issue with
-Mr Jones is best resolved if
-he publically apologizes to
+According to our guidelines, the
+issue with Mr Jones is
+best resolved if he
+publically apologizes to
 Mx Ainge for his
 behavior.
 
@@ -218,8 +222,8 @@ Note that this also works for words that start with capital letters - "Actor" wo
 *Every* gendered noun has a neutral version available:
 
 ```
-As a {salesman}, {they} had to face great
-hardships!
+As a {salesman}, {they} had to face
+great hardships!
 ```
 
 </td><td>
@@ -236,8 +240,8 @@ hardships!
 </td><td>
 
 ```
-As a salesperson, they had to face great
-hardships!
+As a salesperson, they had to face
+great hardships!
 ```
 
 </td></tr>
@@ -246,7 +250,8 @@ hardships!
 If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used:
 
 ```
-Since tuesday, {they} serve as a {cadet}.
+Since tuesday, {they} serve as a
+{cadet}.
 ```
 
 </td><td>
@@ -261,7 +266,8 @@ Since tuesday, {they} serve as a {cadet}.
 </td><td>
 
 ```
-Since tuesday, they serve as a cadet.
+Since tuesday, they serve as a
+cadet.
 ```
 
 </td></tr>
