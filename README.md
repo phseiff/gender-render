@@ -249,7 +249,8 @@ Note that this also works for words that start with capital letters - "Actor" wo
 *Every* gendered noun has a neutral version available:
 
 ```
-As a {salesman}, {they} had to face great hardships!
+As a {salesman}, {they} had to face great
+hardships!
 ```
 
 </td><td>
@@ -266,7 +267,8 @@ As a {salesman}, {they} had to face great hardships!
 </td><td>
 
 ```
-As a salesperson, they had to face great hardships!
+As a salesperson, they had to face great
+hardships!
 ```
 
 </td></tr>
