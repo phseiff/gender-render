@@ -29,7 +29,7 @@ Using gender\*render offers a set of advantages over traditional "one for men an
 
 If your web forms ask your customers for their pronoun preferences instead of their gender, preferably with text entry boxes instead of dropdowns, and you have these pronoun information in a nice data base, you can easily automate the process of correctly gendering your emails based on the person they are directed to.
 
-## Quick Start
+## 🚗💨 Quick Start
 
 [Installation](#installation) • [Usage](#usage) • [Template Syntax](#template-syntax)
 
