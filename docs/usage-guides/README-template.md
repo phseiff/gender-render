@@ -42,6 +42,7 @@ license | [![implementation license](https://img.shields.io/badge/license-MIT-li
 maintenance | [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render) [![Percentage of issues still open](http://isitmaintained.com/badge/open/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render)
 tests | ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen) ![vulture](https://img.shields.io/badge/vulture-100%25-brightgreen)
 documentation | [here](https://phseiff.com/gender-render/docs/code-doc/gender_render/)
+build | ![build](https://github.com/phseiff/gender-render/workflows/Build%20%uD83D%uDD27/badge.svg)
 installation | `pip3 install gender-render`
 
 ### Specification:
