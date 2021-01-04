@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?><html><head><link href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./github-markdown-css/github-css.css" rel="stylesheet"/>
+<meta charset="utf-8" content="text/html"/>
+</head><body><div class="gist">
+<style class="formula-style">
+        svg.gh-md-to-html-formula {
+            fill: black;
+        }
+    </style>
+<div class="gist-file"> <!-- This is the class that is responsible for the boxing! -->
+<div class="gist-data">
+<div class="js-gist-file-update-container js-task-list-container file-box">
+<div class="file" id="article-README-template">
+<div class="Box-body readme blob js-code-block-container p-5 p-xl-6" id="file-docker-image-pull-md-readme" style="margin-left: 40px; margin-right: 40px; margin-top: 20px; margin-bottom: 20px">
+<article class="markdown-body entry-content container-lg" itemprop="text">
+<p align="center"><!--<a href="https://github.com/phseiff"><img src="https://phseiff.com/images/brought-to-you-by-phseiff.svg" alt="brought to you by phseiff:"></a>-->
+<img alt="{gender*render}" src="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./docs/images/title.svg"/></p>
+<p align="center" color="violet">Template-system for rendering gender-neutral text- and email-templates properly gendered and with the correct pronouns of all people involved.</p>
+<p>Ever had the struggle of correctly gendering people in your automated emails? Are you sick of writing email templates that are unsupportive of non-binary people, gender everyone with ugly underscores, or clumsily avoid pronouns alltogether, costing you hours of work to frickle them together? With gender*render, you can write easy, gender-neutral templates for your emails, and automatically render them into correctly gendered emails, given the pronouns and names of all people concerned! <a href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23example-usages">[Jump to quickstart]</a></p><p><img alt="to quickstart" data-canonical-src="docs/images/idea-illustration.svg" src="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./docs/images/idea-illustration.svg" style="max-width:100%;"/></p><p>Gender*render is not only a piece of software that can definitely come in handy if you want to write progressive automated emails, but also a proof of concept. Many people say that correctly gendering non-binary people, people with unusual pronouns, or people with no pronouns at all in automated fashions is impossible. And many live by said premise. gender*render as a concept is supposed to be a proof that this is simply false, and that any such claims come from a mixture of missing will and laziness, with technical limitations merely being a pretext. Gender*render comes with an in-depth specification, so you can easily implement it in any language of your choice, port it to other (human) languages or read about the thoughts behind this project! <a href="https://github.com/phseiff/gender-render/raw/main/docs/spec.pdf">[Download spec]</a></p><p><img alt="download spec" data-canonical-src="docs/images/download-spec.svg" src="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./docs/images/download-spec.svg" style="max-width:100%;"/></p><h2>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-advantagesfeatures" id="user-content-advantagesfeatures"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advantages/Features:</h2>
+<p>Using gender*render offers a set of advantages over traditional "one for men and one for women"-email templates:</p><ul>
+<li>
+<p><strong>Supportive</strong>: Supports addressing one or multiple people in your texts, talking about them in the first as well as second person and multiple grammatical contexts, supports addressing people with no preferred way of addressing, supports preferences regarding noun gendering, supports neo-pronouns.</p></li>
+<li>
+<p><strong>Easy</strong>: Easy enough for non-tech people to write templates with it - writing one template for all genders with gender*render may actually be easier than writing two templates for two genders.</p></li>
+<li>
+<p><strong>Slim &amp; Handy</strong>: gender*render doesn't get into your way and doesn't cluster up your template with syntax for things you don't need right now.</p></li>
+<li>
+<p><strong>Portable</strong>: Comes as a python-module, but with a full specification that encourages re-implementation in different languages.</p></li>
+<li>
+<p><strong>Reliable</strong>: Tested with 100% code- and branch coverage and a more than 2:1 testing code to actual code ratio.</p></li>
+<li>
+<p><strong>Well-documented</strong>: Written with inspiration from literate programming, gender*render comes with a specification with in-depth elaboration on the underlying concepts, as well as full documentation of all methods and an introduction and getting started guide.</p></li>
+</ul>
+<p>If your web forms ask your customers for their pronoun preferences instead of their gender, preferably with text entry boxes instead of dropdowns, and you have these pronoun information in a nice data base, you can easily automate the process of correctly gendering your emails based on the person they are directed to.</p><p>{quick_start}</p><h2>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-github-badges" id="user-content-github-badges"><span aria-hidden="true" class="octicon octicon-link"></span></a>GitHub badges:</h2>
+<h3>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-implementation" id="user-content-implementation"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation:</h3>
+<table>
+<thead>
+<tr>
+<th>attribute</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PyPi</td>
+<td><img alt="PyPI download total" data-canonical-src="https://img.shields.io/pypi/dm/gender-render.svg" src="https://img.shields.io/pypi/dm/gender-render.svg" style="max-width:100%;"/> <img alt="PyPI version" data-canonical-src="https://img.shields.io/pypi/v/gender-render.svg" src="https://img.shields.io/pypi/v/gender-render.svg" style="max-width:100%;"/> <img alt="PyPI pyversions" data-canonical-src="https://img.shields.io/pypi/pyversions/gender-render.svg" src="https://img.shields.io/pypi/pyversions/gender-render.svg" style="max-width:100%;"/></td>
+</tr>
+<tr>
+<td>license</td>
+<td><img alt="implementation license" data-canonical-src="https://img.shields.io/badge/license-MIT-lightgreen" src="https://img.shields.io/badge/license-MIT-lightgreen" style="max-width:100%;"/></td>
+</tr>
+<tr>
+<td>maintenance</td>
+<td><img alt="Average time to resolve an issue" data-canonical-src="http://isitmaintained.com/badge/resolution/phseiff/gender-render.svg" src="http://isitmaintained.com/badge/resolution/phseiff/gender-render.svg" style="max-width:100%;"/> <img alt="Percentage of issues still open" data-canonical-src="http://isitmaintained.com/badge/open/phseiff/gender-render.svg" src="http://isitmaintained.com/badge/open/phseiff/gender-render.svg" style="max-width:100%;"/></td>
+</tr>
+<tr>
+<td>tests</td>
+<td><img alt="coverage" data-canonical-src="https://img.shields.io/badge/coverage-100%25-brightgreen" src="https://img.shields.io/badge/coverage-100%25-brightgreen" style="max-width:100%;"/> <img alt="vulture" data-canonical-src="https://img.shields.io/badge/vulture-100%25-brightgreen" src="https://img.shields.io/badge/vulture-100%25-brightgreen" style="max-width:100%;"/></td>
+</tr>
+<tr>
+<td>documentation</td>
+<td><a href="https://phseiff.com/gender-render/docs/code-doc/gender_render/">here</a></td>
+</tr>
+<tr>
+<td>installation</td>
+<td><code>pip3 install gender-render</code></td>
+</tr>
+</tbody>
+</table>
+<h3>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-specification" id="user-content-specification"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specification:</h3>
+<table>
+<thead>
+<tr>
+<th>attribute</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>license</td>
+<td><img alt="implementation license" data-canonical-src="https://img.shields.io/badge/license-ToDo-lightgreen" src="https://img.shields.io/badge/license-ToDo-lightgreen" style="max-width:100%;"/></td>
+</tr>
+<tr>
+<td>download latest</td>
+<td>ToDo</td>
+</tr>
+<tr>
+<td>download page</td>
+<td>ToDo</td>
+</tr>
+</tbody>
+</table>
+<h2>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-license" id="user-content-license"><span aria-hidden="true" class="octicon octicon-link"></span></a>License:</h2>
+<p>Specification and implementation are licensed separately.
+For the specification, see <a href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./LICENSE-specification.txt">here</a>.
+For the implementation, see <a href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./LICENSE-implementation.txt">here</a>.</p><h2>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-development--contributing" id="user-content-development--contributing"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development &amp; Contributing:</h2>
+<p>Active, and issues as well as pre-discussed pull requests are welcome.
+See <a href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./CONTRIBUTING.md">here</a> for additional information.</p><h2>
+<a aria-hidden="true" class="anchor" href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./%23user-content-code-of-conduct" id="user-content-code-of-conduct"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code of Conduct:</h2>
+<p>In general, be decent and don't put shame on the 21st century.
+See <a href="file:///home/philipp/PycharmProjects/gender-render/docs/usage-guides/./CODE-OF-CONDUCT.md">here</a> for additional information.</p>
+</article>
+</div>
+</div>
+</div>
+</div>
+<div class="gist-meta">
+Abgabe von: Philipp A. Seiffert; Matrikelnummer 7157367.<p>Diese Datei wurde mit meinem <a href="https://github.com/phseiff/github-flavored-markdown-to-html">selbstgeschriebenen Markdown-to-Html-und-Pdf-Converter</a>, erstellt.Wenn Sie sich für ihre Lesbarkeit erkenntich zeigen wollen, würde ich ein Sternchen für das verlinkte GitHub-Repo sehr zu schätzen wissen. :)</p></div>
+<style>
+    .ToDo {
+        color: #735c0f;
+    }
+</style>
+</div>
+</div>
+</body></html>

@@ -33,7 +33,7 @@ class ContextValues:
 
         ["address", "Mr_s", "Mr", "Mrs"],
         ["surname", "Doe", "name", "family-names"],
-        ["personal-name", "Avery", "first-name"],
+        ["personal-name", "Jean", "first-name"],
 
         # properties of individual pronoun data:
         ["gender-addressing"],
@@ -81,7 +81,7 @@ class ContextValues:
                                                      + "\"-attribute of individual \"" + id + "\", but their "
                                                      + "individual pronoun data does not define this attribute.")
             else:
-                warnings.WarningManager.raise_warning("Rendering a template requires the default value of the\""
+                warnings.WarningManager.raise_warning("Rendering a template requires the default value of the \""
                                                       + property_name + "\"-property of individuum \"" + id + "\", but "
                                                       + "this individuum has this value undefined, so its default had "
                                                       + "to be used.", warnings.DefaultValueUsedWarning)
