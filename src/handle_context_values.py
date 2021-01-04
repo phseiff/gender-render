@@ -32,7 +32,7 @@ class ContextValues:
         ["reflexive", "themself", "reflex"],
 
         ["address", "Mr_s", "Mr", "Mrs"],
-        ["surname", "Smith", "name", "family-names"],
+        ["surname", "Doe", "name", "family-names"],
         ["personal-name", "Avery", "first-name"],
 
         # properties of individual pronoun data:
