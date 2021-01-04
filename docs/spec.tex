@@ -218,9 +218,9 @@
                  \hline
                  Form of Address & Mr, Mrs, Mr\_s, address & \\
                  \hline
-                 Surname & Smith, name, surname, family-name & (It should be mentioned that Smith is the most common US surname\footnote{according to \href{https://www.voanews.com/usa/all-about-america/most-popular-last-name-each-us-state}{voanews.com}})\\
+                 Surname & Doe, name, surname, family-name & (This is a reference to "John Doe", a commonly used placeholder for names.)\\
                  \hline
-                 Personal name & Avery, personal-name, first-name & (It should be mentioned that Avery is the most popular unisex name in the US today\footnote{according to \href{https://nameberry.com/unisex-names}{nameberry.com}})\\
+                 Personal name & Joan, personal-name, first-name & (This is, analogously to "Doe" for family names, a reference to "John Doe", but "Jean" is gender-neutral and thus makes for a much better placeholder than "John".)\\
                  \hline
                  \hline
                  Custom property & "\texttt{<}" \emph{property} "\texttt{>}" & \emph{property} can be any string without whitespace, and refers to a property of an individual that is defined by its pronoun data as a string, yet not part of the spec. \\
@@ -236,7 +236,7 @@
     %\end{minipage}
 
     The priority of the \texttt{context}-section type is \texttt{1000}.
-    If the \texttt{context}-section's value contains multiple values, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", the \GenderRender-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}", as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value.\\
+    If the \texttt{context}-section's value contains multiple values, such as "\texttt{\{foo:bar * context:Mr\_s Doe\}}", the \GenderRender-tag is interpreted as "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Doe\}}", as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value.\\
 
     The other section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{950}.
     \texttt{id}-sections may take any value, as long as they take only one value, including (but not recommended to users for obvious reasons) values that contain escaped whitespace.
@@ -292,9 +292,9 @@
                  \hline
                  Form of Address & Mr, Mrs, Mr\_s, address & \\
                  \hline
-                 Surname & Smith, name, surname, family-name & \\
+                 Surname & Doe, name, surname, family-name & \\
                  \hline
-                 Personal name & Avery, personal-name, first-name & \\
+                 Personal name & Jean, personal-name, first-name & \\
                  \hline
                  \hline
                  Gender-specific addressing & gender-addressing & If set to "false" or "f", the first name of an individual is used instead of its addressing;
@@ -387,7 +387,7 @@
     If the given pronoun data is not valid, an \texttt{InvalidPDError} is risen, otherwise a \texttt{SyntaxError} occurs.
     Please note that for a \GenderRender-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
 
-    This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Smith\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Smith\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).
+    This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Doe\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Doe\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).
     If a tags context value is not supported, an error may be risen, but this may differ from implementation to implementation to ensure backwards compatibility with versions that support a smaller set of context values.\\
 
     The second step matches \GenderRender-tags to individual pronoun data passed to the renderer.
