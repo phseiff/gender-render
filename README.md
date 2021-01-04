@@ -15,21 +15,19 @@ Gender\*render is not only a piece of software that can definitely come in handy
 
 Using gender\*render offers a set of advantages over traditional "one for men and one for women"-email templates:
 
-* Comes as a simple python module, but the concept is easily portable.
+* **Supportive**: Supports addressing one or multiple people in your texts, talking about them in the first as well as second person and multiple grammatical contexts, supports addressing people with no preferred way of addressing, supports preferences regarding noun gendering, supports neo-pronouns.
 
-* Easy enough for non-tech people to write templates with it.
+* **Easy**: Easy enough for non-tech people to write templates with it - writing one template for all genders with gender*render may actually be easier than writing two templates for two genders.
 
-* Supports addressing individuals in first person as well as mentioning them in third person.
+* **Slim & Handy**: gender*render doesn't get into your way and doesn't cluster up your template with syntax for things you don't need right now.
 
-* Supports addressing *multiple* as well as only addressing a single individual with unknown pronoun preferences.
+* **Portable**: Comes as a python-module, but with a full specification that encourages re-implementation in different languages.
 
-* Supports ANY pronoun-sets or forms of addressing, including pronoun-less identities.
+* **Reliable**: Tested with 100% code- and branch coverage and a more than 2:1 testing code to actual code ratio.
 
-* Comes with a specification so you can easily port it to other (natural or programming) languages.
+* **Well-documented**: Written with inspiration from literate programming, gender*render comes with a specification with in-depth elaboration on the underlying concepts, as well as full documentation of all methods and an introduction and getting started guide.
 
-* Aids you you in being a decent human being by correctly genering persons in your automated emails!
-
-If your web forms ask your customers for their pronoun preferences instead of their gender, preferably with text entry boxes instead of dropdowns, and you have these pronoun information in a nice data base, you can easily automate the process of correctly gendering your emails based on the person they are directed to. In fact, using gender\*render might even save you time in the end, since you need to write only one template with it instead of two templates for "two" different genders.
+If your web forms ask your customers for their pronoun preferences instead of their gender, preferably with text entry boxes instead of dropdowns, and you have these pronoun information in a nice data base, you can easily automate the process of correctly gendering your emails based on the person they are directed to.
 
 ## Table of content:
 
