@@ -43,7 +43,6 @@ maintenance | [![Average time to resolve an issue](http://isitmaintained.com/bad
 tests | ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen) ![vulture](https://img.shields.io/badge/vulture-100%25-brightgreen)
 documentation | [here](https://phseiff.com/gender-render/docs/code-doc/gender_render/)
 build | ![build](https://github.com/phseiff/gender-render/workflows/Build/badge.svg)
-installation | `pip3 install gender-render`
 
 ### Specification:
 
