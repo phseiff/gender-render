@@ -29,7 +29,7 @@ Using gender\*render offers a set of advantages over traditional "one for men an
 
 If your web forms ask your customers for their pronoun preferences instead of their gender, preferably with text entry boxes instead of dropdowns, and you have these pronoun information in a nice data base, you can easily automate the process of correctly gendering your emails based on the person they are directed to.
 
-## Quick Start
+## 🚗💨 Quick Start
 
 [Installation](#installation) • [Usage](#usage) • [Template Syntax](#template-syntax)
 
@@ -62,21 +62,24 @@ rendered_template_as_a_str = gr.render_template(
 
 <table>
 <tr>
-<td> Template </td> <td> Pronoun Data (json) </td> <td> Result </td>
+<td> Template & Pronoun Data </td> <td> Result </td>
 </tr>
 
 <tr><td>
+
+**Template**:
 
 Addressing one person:
 
 ```
 Dear {Mr_s Doe},
-Yesterday, I was asked about your wellbeing,
-"Is there reason to worry about {them}?",
-and I told the person why asked that [...]
+Yesterday, I was asked about your
+wellbeing, "Is there reason to worry
+about {them}?", and I told the
+person who asked that [...]
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -92,22 +95,26 @@ Having more value in the pronoun data than needed is, of course, also allowed!
 
 ```
 Dear Mrs Smith,
-Yesterday, I was asked about your wellbeing,
-"Is there reason to worry about her?",
-and I told the person why asked that [...]
+Yesterday, I was asked about your
+wellbeing, "Is there reason to worry
+about her?", and I told the
+person who asked that [...]
 ```
 
 </td></tr>
 <tr><td>
+
+**Template**:
 
 Addressing multiple persons:
 
 ```
 Dear {seller* Mr_s Doe},
 
-According to our guidelines, the issue with
-{reseller* Mr_s Doe} is best resolved if
-{reseller*they} publically apologizes to
+According to our guidelines, the
+issue with {reseller* Mr_s Doe} is
+best resolved if {reseller*they}
+publically apologizes to
 {buyer* Mr_s Doe} for {reseller*their}
 behavior.
 
@@ -115,7 +122,7 @@ Best regards,
 {customer_support* Jean Doe}
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -147,9 +154,10 @@ Note that all these attributes can take any value; not only "Mr" and "Mrs" is va
 ```
 Dear Mrs Brown,
 
-According to our guidelines, the issue with
-Mr Jones is best resolved if
-he publically apologizes to
+According to our guidelines, the
+issue with Mr Jones is
+best resolved if he
+publically apologizes to
 Mx Ainge for his
 behavior.
 
@@ -159,6 +167,8 @@ Emma Ackernick
 
 </td></tr>
 <tr><td>
+
+**Template**:
 
 gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag:
 
@@ -170,7 +180,7 @@ equals
 "{Mr_s Doe}".
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -192,6 +202,8 @@ Ind. Adams
 </td></tr>
 <tr><td>
 
+**Template**:
+
 Address individuals who don't want to get a special title:
 
 ```
@@ -199,7 +211,7 @@ Dear {Mr_s Doe},
 [...]
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -219,13 +231,15 @@ Dear Joey Chase,
 </td></tr>
 <tr><td>
 
+**Template**:
+
 Refer to individuals with hyponyms for person or by their profession:
 
 ```
 I hope the {actor} is doing well.
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -246,14 +260,16 @@ Note that this also works for words that start with capital letters - "Actor" wo
 </td></tr>
 <tr><td>
 
+**Template**:
+
 *Every* gendered noun has a neutral version available:
 
 ```
-As a {salesman}, {they} had to face great
-hardships!
+As a {salesman}, {they} had to face
+great hardships!
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -267,20 +283,23 @@ hardships!
 </td><td>
 
 ```
-As a salesperson, they had to face great
-hardships!
+As a salesperson, they had to face
+great hardships!
 ```
 
 </td></tr>
 <tr><td>
 
+**Template**:
+
 If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used:
 
 ```
-Since tuesday, {they} serve as a {cadet}.
+Since tuesday, {they} serve as a
+{cadet}.
 ```
 
-</td><td>
+**Pronoun Data**:
 
 ```json
 {
@@ -292,11 +311,11 @@ Since tuesday, {they} serve as a {cadet}.
 </td><td>
 
 ```
-Since tuesday, they serve as a cadet.
+Since tuesday, they serve as a
+cadet.
 ```
 
 </td></tr>
-
 </table>
 
 ## GitHub badges:
