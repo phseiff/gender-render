@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>gender_render.warnings API documentation</title>
+<meta name="description" content="Defines the warnings specified by the spec …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>gender_render.warnings</code></h1>
+</header>
+<section id="section-intro">
+<p>Defines the warnings specified by the spec.</p>
+<p>To enable and disable warnings, pass a set of all warnings you want enabled to the "enable_warnings"-parameter of any
+of the interfaces defined in the specifications. All warnings are declared as classes in this submodule.</p>
+<p>By default, all warnings are enabled.</p>
+<p>Ready-made sets of values for the "enable_warnings"-parameter include:</p>
+<ul>
+<li>ENABLE_ALL_WARNINGS: a set of all warnings</li>
+<li>ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default</li>
+<li>DISABLE_ALL_WARNINGS: an empty set (disables all warnings)</li>
+<li>ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.</li>
+</ul>
+<p>Please note that classes that enable logging rather than actual warnings are not included in the
+gender_render.ENABLE_ALL_WARNINGS set. Every type of warning that would be raised regardless of input at initialization
+time of the module is considered logging rather than warning.</p>
+<p>When calling a function, method or class that isn't specified as a public interface by the specification (currently only
+render_template, Template and PronounData), the warning behavior is unreliable; you therefore shouldn't do this unless
+you explicitly define your preferred warning settings with <code><a title="gender_render.warnings.WarningManager.set_warning_settings" href="#gender_render.warnings.WarningManager.set_warning_settings">WarningManager.set_warning_settings()</a></code>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L0-L197" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Defines the warnings specified by the spec.
+
+To enable and disable warnings, pass a set of all warnings you want enabled to the &#34;enable_warnings&#34;-parameter of any
+of the interfaces defined in the specifications. All warnings are declared as classes in this submodule.
+
+By default, all warnings are enabled.
+
+Ready-made sets of values for the &#34;enable_warnings&#34;-parameter include:
+
+- ENABLE_ALL_WARNINGS: a set of all warnings
+- ENABLE_DEFAULT_WARNINGS: a set of all warnings enabled by default
+- DISABLE_ALL_WARNINGS: an empty set (disables all warnings)
+- ENABLE_ALL_LOGGING: a set of all warning classes that enable types of logging rather than warnings.
+
+Please note that classes that enable logging rather than actual warnings are not included in the
+gender_render.ENABLE_ALL_WARNINGS set. Every type of warning that would be raised regardless of input at initialization
+time of the module is considered logging rather than warning.
+
+When calling a function, method or class that isn&#39;t specified as a public interface by the specification (currently only
+render_template, Template and PronounData), the warning behavior is unreliable; you therefore shouldn&#39;t do this unless
+you explicitly define your preferred warning settings with `WarningManager.set_warning_settings`.
+&#34;&#34;&#34;
+
+import warnings as ws
+import threading
+import typing
+import inspect
+
+# General Warning Classes:
+
+
+class GRWarning(Warning):
+    &#34;&#34;&#34;The base class of all gender*render-warnings.
+    All other custom warnings are derived from this one.&#34;&#34;&#34;
+    pass
+
+
+class GRLogging(Warning):
+    &#34;&#34;&#34;The base class for all warnings that are actually not warnings, but logs that enable or disable certain types of
+    additional logging.
+    These classes are mostly implementation-specific.&#34;&#34;&#34;
+    pass
+
+# Warning Classes:
+
+
+class NotAWordWarning(GRWarning):
+    &#34;&#34;&#34;The value of a Gendered Noun-tag is not a word known in the
+    english (or implementation-specific) language.&#34;&#34;&#34;
+    pass
+
+
+class NotANounWarning(NotAWordWarning):
+    &#34;&#34;&#34;The value of a Gendered Noun-tag is not a noun known in the
+    english language.&#34;&#34;&#34;
+    pass
+
+
+class NotAPersonNounWarning(NotANounWarning):
+    &#34;&#34;&#34;The value of a Gendered Noun-tag is not a noun known in the
+    english language that refers to a person or a title.&#34;&#34;&#34;
+    pass
+
+
+class FreeUngenderedPersonNounWarning(GRWarning):
+    &#34;&#34;&#34;A noun that refers to a type of person or profession was found outside of any tag.
+    This is potentially bad because that noun might be gender-dependant.&#34;&#34;&#34;
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass
+
+
+class FreeGenderedPersonNounWarning(FreeUngenderedPersonNounWarning):
+    &#34;&#34;&#34;A noun that refers to a type of person or profession and is not neutral was found outside of any tag.
+    This is probably harmfull if this noun refers to a person whose gender should be determined by pronoun data.&#34;&#34;&#34;
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass
+
+
+class NounGenderingGuessingsWarning(GRWarning):
+    &#34;&#34;&#34;Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
+    rather than hardcoded values.
+    This warning type is not listed in the specification since it is highly implementation-dependant and should not
+    be necessary in a perfect implementation.&#34;&#34;&#34;
+    pass
+
+
+class UnknownPropertyWarning(GRWarning):
+    &#34;&#34;&#34;A custom property in a piece of individual pronoun data is not
+    using the special syntax for custom properties ( property name
+    or &lt;property name&gt; rather than just property name). Using the
+    special syntax is preferable to ensure that the custom property
+    is not named equal to a property introduced in a later version
+    or addition to this specification.&#34;&#34;&#34;
+    pass
+
+
+class FreePronounFoundWarning(GRWarning):
+    &#34;&#34;&#34;A (non-neo) pronoun is found freely outside any
+    gender*render-tag.&#34;&#34;&#34;
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass
+
+
+class IdMatchingNecessaryWarning(GRWarning):
+    &#34;&#34;&#34;Not every tag has an id, or the pronoun data is individual pronoun data, so some matching had to be done.
+    This is intended behavior and completely fine.
+    This warning is only raised to inform you in case this was accidental. If you don&#39;t know what it means, you need
+    not worry about it and can safely ignore or disable it.&#34;&#34;&#34;
+    pass
+
+
+class UnexpectedFileFormatWarning(GRWarning):
+    &#34;&#34;&#34;The file name specified to Template() or Template().render() does not follow the file extension naming
+    convention of this specification.&#34;&#34;&#34;
+    pass
+
+
+class DefaultValueUsedWarning(GRWarning):
+    &#34;&#34;&#34;An attribute with a default value was looked up in a piece of individual pronoun data, but not found, so its
+    default value was used. This is in itself not a problem and perfectly fine behavior; this warning is only raised
+    to inform you in case you forgot to define the property or pythonically prefer explicit to implicit.&#34;&#34;&#34;
+    # This warning is not part of the specification since it is too specific of a design decision to expect every
+    #  implementation to follow it.
+    pass
+
+
+class GenderedNounsBuildFromWebWarning(GRWarning):
+    &#34;&#34;&#34;The data containing the gendered and especially neutral versions of all english hyponyms for &#34;person&#34; could not
+    be found; therefore, it will be downloaded and saved from the internet now. This should only happen once per
+    installation and only when initializing the module for the first time, and it should not happen at all with the PyPi
+    installation.&#34;&#34;&#34;
+    # This warning is not part of the specification since it is too dependent on this implementation&#39;s architecture to
+    #  expect every implementation to need it.
+    pass
+
+
+class BuildingGenderedNounDataLogging(GRLogging):
+    &#34;&#34;&#34;This class enables/disables the logging of information when building the gendered-noun-data from which the
+    gendered versions of nouns are read.&#34;&#34;&#34;
+    pass
+
+
+class GRSyntaxParsingLogging(GRLogging):
+    &#34;&#34;&#34;This class enables/disables the logging of state traversion, characters and the step-by-step transforming result
+    value of the part of template parsing that parses according to &#34;&#34;&#34;
+    pass
+
+# A helper function to find all warnings in the module:
+
+
+def get_all_subclasses(class_object):
+    &#34;&#34;&#34;Returns a list of all subclasses of a given class that are defined in the global scope.&#34;&#34;&#34;
+    return [globals()[w] for w in globals() if inspect.isclass(globals()[w]) and issubclass(globals()[w], class_object)]
+
+
+# Define warning types:
+
+WarningType = typing.Type[typing.Union[GRWarning, GRLogging]]
+WarningSettingType = typing.Union[typing.Set[WarningType], typing.FrozenSet[WarningType]]
+
+# Define standard values for all warnings enables/ all warnings disabled/ default:
+
+
+ENABLE_ALL_LOGGING: WarningSettingType = frozenset(get_all_subclasses(GRLogging))
+ENABLE_ALL_WARNINGS: WarningSettingType = frozenset(get_all_subclasses(GRWarning))
+DISABLE_ALL_WARNINGS: WarningSettingType = frozenset()
+
+ENABLE_DEFAULT_WARNINGS: WarningSettingType = ENABLE_ALL_WARNINGS
+
+# WarningManager:
+
+
+class WarningManager:
+    &#34;&#34;&#34;A bundle of functions to handle warning handling.&#34;&#34;&#34;
+    warning_settings_by_thread_id = dict()
+
+    @staticmethod
+    def set_warning_settings(warning_settings: WarningSettingType):
+        &#34;&#34;&#34;Sets the warning settings to warning_settings for the current thread (thread-save).&#34;&#34;&#34;
+        WarningManager.warning_settings_by_thread_id[threading.get_ident()] = warning_settings
+
+    @staticmethod
+    def raise_warning(text: typing.Union[str, None], warning_type: WarningType):
+        &#34;&#34;&#34;Raises the given warning type with the given text if it is enabled for the current thread.&#34;&#34;&#34;
+        if text is None:
+            text = warning_type.__doc__
+        if threading.get_ident() not in WarningManager.warning_settings_by_thread_id:
+            WarningManager.warning_settings_by_thread_id[threading.get_ident()] = ENABLE_DEFAULT_WARNINGS
+        if warning_type in WarningManager.warning_settings_by_thread_id[threading.get_ident()]:
+            ws.warn(text, warning_type)
+        # ToDo: Make a pull request if you want children of GRLogging to use the logging-module rather than the warnings
+        #  module. Note that this may cause the need to change the unittests, and may not require any changes except to
+        #  this method and the GRLogging-objects parent class.
+        # ToDo: Feel free to make a pull request if you know how to suppress line- and file information in warnings.
+        #  or replace it with the lines from where it was logged
+        #  (https://stackoverflow.com/questions/2654113/how-to-get-the-callers-method-name-in-the-called-method), but
+        #  there would be some design decisions to be made about this since inspect.stack() tends to be very slow,
+        #  amongst other things.</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="gender_render.warnings.get_all_subclasses"><code class="name flex">
+<span>def <span class="ident">get_all_subclasses</span></span>(<span>class_object)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of all subclasses of a given class that are defined in the global scope.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L151-L153" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_all_subclasses(class_object):
+    &#34;&#34;&#34;Returns a list of all subclasses of a given class that are defined in the global scope.&#34;&#34;&#34;
+    return [globals()[w] for w in globals() if inspect.isclass(globals()[w]) and issubclass(globals()[w], class_object)]</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="gender_render.warnings.GRWarning"><code class="flex name class">
+<span>class <span class="ident">GRWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class of all gender*render-warnings.
+All other custom warnings are derived from this one.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L32-L35" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class GRWarning(Warning):
+    &#34;&#34;&#34;The base class of all gender*render-warnings.
+    All other custom warnings are derived from this one.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.DefaultValueUsedWarning" href="#gender_render.warnings.DefaultValueUsedWarning">DefaultValueUsedWarning</a></li>
+<li><a title="gender_render.warnings.FreePronounFoundWarning" href="#gender_render.warnings.FreePronounFoundWarning">FreePronounFoundWarning</a></li>
+<li><a title="gender_render.warnings.FreeUngenderedPersonNounWarning" href="#gender_render.warnings.FreeUngenderedPersonNounWarning">FreeUngenderedPersonNounWarning</a></li>
+<li><a title="gender_render.warnings.GenderedNounsBuildFromWebWarning" href="#gender_render.warnings.GenderedNounsBuildFromWebWarning">GenderedNounsBuildFromWebWarning</a></li>
+<li><a title="gender_render.warnings.IdMatchingNecessaryWarning" href="#gender_render.warnings.IdMatchingNecessaryWarning">IdMatchingNecessaryWarning</a></li>
+<li><a title="gender_render.warnings.NotAWordWarning" href="#gender_render.warnings.NotAWordWarning">NotAWordWarning</a></li>
+<li><a title="gender_render.warnings.NounGenderingGuessingsWarning" href="#gender_render.warnings.NounGenderingGuessingsWarning">NounGenderingGuessingsWarning</a></li>
+<li><a title="gender_render.warnings.UnexpectedFileFormatWarning" href="#gender_render.warnings.UnexpectedFileFormatWarning">UnexpectedFileFormatWarning</a></li>
+<li><a title="gender_render.warnings.UnknownPropertyWarning" href="#gender_render.warnings.UnknownPropertyWarning">UnknownPropertyWarning</a></li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.GRLogging"><code class="flex name class">
+<span>class <span class="ident">GRLogging</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class for all warnings that are actually not warnings, but logs that enable or disable certain types of
+additional logging.
+These classes are mostly implementation-specific.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L38-L42" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class GRLogging(Warning):
+    &#34;&#34;&#34;The base class for all warnings that are actually not warnings, but logs that enable or disable certain types of
+    additional logging.
+    These classes are mostly implementation-specific.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.BuildingGenderedNounDataLogging" href="#gender_render.warnings.BuildingGenderedNounDataLogging">BuildingGenderedNounDataLogging</a></li>
+<li><a title="gender_render.warnings.GRSyntaxParsingLogging" href="#gender_render.warnings.GRSyntaxParsingLogging">GRSyntaxParsingLogging</a></li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.NotAWordWarning"><code class="flex name class">
+<span>class <span class="ident">NotAWordWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The value of a Gendered Noun-tag is not a word known in the
+english (or implementation-specific) language.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L47-L50" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class NotAWordWarning(GRWarning):
+    &#34;&#34;&#34;The value of a Gendered Noun-tag is not a word known in the
+    english (or implementation-specific) language.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.NotANounWarning" href="#gender_render.warnings.NotANounWarning">NotANounWarning</a></li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.NotANounWarning"><code class="flex name class">
+<span>class <span class="ident">NotANounWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The value of a Gendered Noun-tag is not a noun known in the
+english language.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L53-L56" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class NotANounWarning(NotAWordWarning):
+    &#34;&#34;&#34;The value of a Gendered Noun-tag is not a noun known in the
+    english language.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.NotAWordWarning" href="#gender_render.warnings.NotAWordWarning">NotAWordWarning</a></li>
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.NotAPersonNounWarning" href="#gender_render.warnings.NotAPersonNounWarning">NotAPersonNounWarning</a></li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.NotAPersonNounWarning"><code class="flex name class">
+<span>class <span class="ident">NotAPersonNounWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The value of a Gendered Noun-tag is not a noun known in the
+english language that refers to a person or a title.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L59-L62" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class NotAPersonNounWarning(NotANounWarning):
+    &#34;&#34;&#34;The value of a Gendered Noun-tag is not a noun known in the
+    english language that refers to a person or a title.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.NotANounWarning" href="#gender_render.warnings.NotANounWarning">NotANounWarning</a></li>
+<li><a title="gender_render.warnings.NotAWordWarning" href="#gender_render.warnings.NotAWordWarning">NotAWordWarning</a></li>
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.FreeUngenderedPersonNounWarning"><code class="flex name class">
+<span>class <span class="ident">FreeUngenderedPersonNounWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A noun that refers to a type of person or profession was found outside of any tag.
+This is potentially bad because that noun might be gender-dependant.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L65-L69" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class FreeUngenderedPersonNounWarning(GRWarning):
+    &#34;&#34;&#34;A noun that refers to a type of person or profession was found outside of any tag.
+    This is potentially bad because that noun might be gender-dependant.&#34;&#34;&#34;
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.FreeGenderedPersonNounWarning" href="#gender_render.warnings.FreeGenderedPersonNounWarning">FreeGenderedPersonNounWarning</a></li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.FreeGenderedPersonNounWarning"><code class="flex name class">
+<span>class <span class="ident">FreeGenderedPersonNounWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A noun that refers to a type of person or profession and is not neutral was found outside of any tag.
+This is probably harmfull if this noun refers to a person whose gender should be determined by pronoun data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L72-L76" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class FreeGenderedPersonNounWarning(FreeUngenderedPersonNounWarning):
+    &#34;&#34;&#34;A noun that refers to a type of person or profession and is not neutral was found outside of any tag.
+    This is probably harmfull if this noun refers to a person whose gender should be determined by pronoun data.&#34;&#34;&#34;
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.FreeUngenderedPersonNounWarning" href="#gender_render.warnings.FreeUngenderedPersonNounWarning">FreeUngenderedPersonNounWarning</a></li>
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.NounGenderingGuessingsWarning"><code class="flex name class">
+<span>class <span class="ident">NounGenderingGuessingsWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
+rather than hardcoded values.
+This warning type is not listed in the specification since it is highly implementation-dependant and should not
+be necessary in a perfect implementation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L79-L84" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class NounGenderingGuessingsWarning(GRWarning):
+    &#34;&#34;&#34;Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
+    rather than hardcoded values.
+    This warning type is not listed in the specification since it is highly implementation-dependant and should not
+    be necessary in a perfect implementation.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.UnknownPropertyWarning"><code class="flex name class">
+<span>class <span class="ident">UnknownPropertyWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A custom property in a piece of individual pronoun data is not
+using the special syntax for custom properties ( property name
+or <property name> rather than just property name). Using the
+special syntax is preferable to ensure that the custom property
+is not named equal to a property introduced in a later version
+or addition to this specification.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L87-L94" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class UnknownPropertyWarning(GRWarning):
+    &#34;&#34;&#34;A custom property in a piece of individual pronoun data is not
+    using the special syntax for custom properties ( property name
+    or &lt;property name&gt; rather than just property name). Using the
+    special syntax is preferable to ensure that the custom property
+    is not named equal to a property introduced in a later version
+    or addition to this specification.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.FreePronounFoundWarning"><code class="flex name class">
+<span>class <span class="ident">FreePronounFoundWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A (non-neo) pronoun is found freely outside any
+gender*render-tag.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L97-L101" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class FreePronounFoundWarning(GRWarning):
+    &#34;&#34;&#34;A (non-neo) pronoun is found freely outside any
+    gender*render-tag.&#34;&#34;&#34;
+    # ToDo: There is actually no implementation to search for this yet; make an issue if you want to discuss it!
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.IdMatchingNecessaryWarning"><code class="flex name class">
+<span>class <span class="ident">IdMatchingNecessaryWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Not every tag has an id, or the pronoun data is individual pronoun data, so some matching had to be done.
+This is intended behavior and completely fine.
+This warning is only raised to inform you in case this was accidental. If you don't know what it means, you need
+not worry about it and can safely ignore or disable it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L104-L109" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class IdMatchingNecessaryWarning(GRWarning):
+    &#34;&#34;&#34;Not every tag has an id, or the pronoun data is individual pronoun data, so some matching had to be done.
+    This is intended behavior and completely fine.
+    This warning is only raised to inform you in case this was accidental. If you don&#39;t know what it means, you need
+    not worry about it and can safely ignore or disable it.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.UnexpectedFileFormatWarning"><code class="flex name class">
+<span>class <span class="ident">UnexpectedFileFormatWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The file name specified to Template() or Template().render() does not follow the file extension naming
+convention of this specification.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L112-L115" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class UnexpectedFileFormatWarning(GRWarning):
+    &#34;&#34;&#34;The file name specified to Template() or Template().render() does not follow the file extension naming
+    convention of this specification.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.DefaultValueUsedWarning"><code class="flex name class">
+<span>class <span class="ident">DefaultValueUsedWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An attribute with a default value was looked up in a piece of individual pronoun data, but not found, so its
+default value was used. This is in itself not a problem and perfectly fine behavior; this warning is only raised
+to inform you in case you forgot to define the property or pythonically prefer explicit to implicit.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L118-L124" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class DefaultValueUsedWarning(GRWarning):
+    &#34;&#34;&#34;An attribute with a default value was looked up in a piece of individual pronoun data, but not found, so its
+    default value was used. This is in itself not a problem and perfectly fine behavior; this warning is only raised
+    to inform you in case you forgot to define the property or pythonically prefer explicit to implicit.&#34;&#34;&#34;
+    # This warning is not part of the specification since it is too specific of a design decision to expect every
+    #  implementation to follow it.
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.GenderedNounsBuildFromWebWarning"><code class="flex name class">
+<span>class <span class="ident">GenderedNounsBuildFromWebWarning</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The data containing the gendered and especially neutral versions of all english hyponyms for "person" could not
+be found; therefore, it will be downloaded and saved from the internet now. This should only happen once per
+installation and only when initializing the module for the first time, and it should not happen at all with the PyPi
+installation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L127-L134" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class GenderedNounsBuildFromWebWarning(GRWarning):
+    &#34;&#34;&#34;The data containing the gendered and especially neutral versions of all english hyponyms for &#34;person&#34; could not
+    be found; therefore, it will be downloaded and saved from the internet now. This should only happen once per
+    installation and only when initializing the module for the first time, and it should not happen at all with the PyPi
+    installation.&#34;&#34;&#34;
+    # This warning is not part of the specification since it is too dependent on this implementation&#39;s architecture to
+    #  expect every implementation to need it.
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.BuildingGenderedNounDataLogging"><code class="flex name class">
+<span>class <span class="ident">BuildingGenderedNounDataLogging</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class enables/disables the logging of information when building the gendered-noun-data from which the
+gendered versions of nouns are read.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L137-L140" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class BuildingGenderedNounDataLogging(GRLogging):
+    &#34;&#34;&#34;This class enables/disables the logging of information when building the gendered-noun-data from which the
+    gendered versions of nouns are read.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRLogging" href="#gender_render.warnings.GRLogging">GRLogging</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.GRSyntaxParsingLogging"><code class="flex name class">
+<span>class <span class="ident">GRSyntaxParsingLogging</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class enables/disables the logging of state traversion, characters and the step-by-step transforming result
+value of the part of template parsing that parses according to</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L143-L146" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class GRSyntaxParsingLogging(GRLogging):
+    &#34;&#34;&#34;This class enables/disables the logging of state traversion, characters and the step-by-step transforming result
+    value of the part of template parsing that parses according to &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="gender_render.warnings.GRLogging" href="#gender_render.warnings.GRLogging">GRLogging</a></li>
+<li>builtins.Warning</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gender_render.warnings.WarningManager"><code class="flex name class">
+<span>class <span class="ident">WarningManager</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A bundle of functions to handle warning handling.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L173-L190" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class WarningManager:
+    &#34;&#34;&#34;A bundle of functions to handle warning handling.&#34;&#34;&#34;
+    warning_settings_by_thread_id = dict()
+
+    @staticmethod
+    def set_warning_settings(warning_settings: WarningSettingType):
+        &#34;&#34;&#34;Sets the warning settings to warning_settings for the current thread (thread-save).&#34;&#34;&#34;
+        WarningManager.warning_settings_by_thread_id[threading.get_ident()] = warning_settings
+
+    @staticmethod
+    def raise_warning(text: typing.Union[str, None], warning_type: WarningType):
+        &#34;&#34;&#34;Raises the given warning type with the given text if it is enabled for the current thread.&#34;&#34;&#34;
+        if text is None:
+            text = warning_type.__doc__
+        if threading.get_ident() not in WarningManager.warning_settings_by_thread_id:
+            WarningManager.warning_settings_by_thread_id[threading.get_ident()] = ENABLE_DEFAULT_WARNINGS
+        if warning_type in WarningManager.warning_settings_by_thread_id[threading.get_ident()]:
+            ws.warn(text, warning_type)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="gender_render.warnings.WarningManager.warning_settings_by_thread_id"><code class="name">var <span class="ident">warning_settings_by_thread_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="gender_render.warnings.WarningManager.set_warning_settings"><code class="name flex">
+<span>def <span class="ident">set_warning_settings</span></span>(<span>warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="#gender_render.warnings.GRLogging">GRLogging</a>]]]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the warning settings to warning_settings for the current thread (thread-save).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L177-L180" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def set_warning_settings(warning_settings: WarningSettingType):
+    &#34;&#34;&#34;Sets the warning settings to warning_settings for the current thread (thread-save).&#34;&#34;&#34;
+    WarningManager.warning_settings_by_thread_id[threading.get_ident()] = warning_settings</code></pre>
+</details>
+</dd>
+<dt id="gender_render.warnings.WarningManager.raise_warning"><code class="name flex">
+<span>def <span class="ident">raise_warning</span></span>(<span>text: Union[str, NoneType], warning_type: Type[Union[<a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="#gender_render.warnings.GRLogging">GRLogging</a>]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Raises the given warning type with the given text if it is enabled for the current thread.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/warnings.py#L182-L190" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def raise_warning(text: typing.Union[str, None], warning_type: WarningType):
+    &#34;&#34;&#34;Raises the given warning type with the given text if it is enabled for the current thread.&#34;&#34;&#34;
+    if text is None:
+        text = warning_type.__doc__
+    if threading.get_ident() not in WarningManager.warning_settings_by_thread_id:
+        WarningManager.warning_settings_by_thread_id[threading.get_ident()] = ENABLE_DEFAULT_WARNINGS
+    if warning_type in WarningManager.warning_settings_by_thread_id[threading.get_ident()]:
+        ws.warn(text, warning_type)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="gender_render" href="index.html">gender_render</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="gender_render.warnings.get_all_subclasses" href="#gender_render.warnings.get_all_subclasses">get_all_subclasses</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="gender_render.warnings.GRWarning" href="#gender_render.warnings.GRWarning">GRWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.GRLogging" href="#gender_render.warnings.GRLogging">GRLogging</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.NotAWordWarning" href="#gender_render.warnings.NotAWordWarning">NotAWordWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.NotANounWarning" href="#gender_render.warnings.NotANounWarning">NotANounWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.NotAPersonNounWarning" href="#gender_render.warnings.NotAPersonNounWarning">NotAPersonNounWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.FreeUngenderedPersonNounWarning" href="#gender_render.warnings.FreeUngenderedPersonNounWarning">FreeUngenderedPersonNounWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.FreeGenderedPersonNounWarning" href="#gender_render.warnings.FreeGenderedPersonNounWarning">FreeGenderedPersonNounWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.NounGenderingGuessingsWarning" href="#gender_render.warnings.NounGenderingGuessingsWarning">NounGenderingGuessingsWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.UnknownPropertyWarning" href="#gender_render.warnings.UnknownPropertyWarning">UnknownPropertyWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.FreePronounFoundWarning" href="#gender_render.warnings.FreePronounFoundWarning">FreePronounFoundWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.IdMatchingNecessaryWarning" href="#gender_render.warnings.IdMatchingNecessaryWarning">IdMatchingNecessaryWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.UnexpectedFileFormatWarning" href="#gender_render.warnings.UnexpectedFileFormatWarning">UnexpectedFileFormatWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.DefaultValueUsedWarning" href="#gender_render.warnings.DefaultValueUsedWarning">DefaultValueUsedWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.GenderedNounsBuildFromWebWarning" href="#gender_render.warnings.GenderedNounsBuildFromWebWarning">GenderedNounsBuildFromWebWarning</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.BuildingGenderedNounDataLogging" href="#gender_render.warnings.BuildingGenderedNounDataLogging">BuildingGenderedNounDataLogging</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.GRSyntaxParsingLogging" href="#gender_render.warnings.GRSyntaxParsingLogging">GRSyntaxParsingLogging</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gender_render.warnings.WarningManager" href="#gender_render.warnings.WarningManager">WarningManager</a></code></h4>
+<ul class="">
+<li><code><a title="gender_render.warnings.WarningManager.set_warning_settings" href="#gender_render.warnings.WarningManager.set_warning_settings">set_warning_settings</a></code></li>
+<li><code><a title="gender_render.warnings.WarningManager.raise_warning" href="#gender_render.warnings.WarningManager.raise_warning">raise_warning</a></code></li>
+<li><code><a title="gender_render.warnings.WarningManager.warning_settings_by_thread_id" href="#gender_render.warnings.WarningManager.warning_settings_by_thread_id">warning_settings_by_thread_id</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
