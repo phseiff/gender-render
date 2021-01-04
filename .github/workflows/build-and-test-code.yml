@@ -1,4 +1,4 @@
-name: Build the Code HTML Documentation and run tests
+name: Build
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Test Code and Build Documentation 🔧
+      - name: Build and Tests 🔧
         run: |
           # install test- and installation tools:
           sudo pip3 install wheel
