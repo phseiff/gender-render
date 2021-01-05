@@ -47,6 +47,7 @@ jobs:
               --output-dir docs/code-doc\
               --template-dir docs/template-dir\
               gender_render
+          cp docs/code-doc/* .
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
