@@ -42,7 +42,11 @@ jobs:
           # build documentation:
           python3 -m coverage html
           mv src gender_render  # <- hacky solution
-          pdoc3 --html -f -c "sort_identifiers=False" -c "git_link_template='https://github.com/phseiff/gender-render/tree/gh-pages/{path}#L{start_line}-L{end_line}'" --output-dir docs/code-doc gender_render
+          pdoc3 --html -f -c "sort_identifiers=False"\
+              -c "git_link_template='https://github.com/phseiff/gender-render/tree/gh-pages/{path}#L{start_line}-L{end_line}'"\
+              --output-dir docs/code-doc\
+              --template-dir docs/template-dir\
+              gender_render
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
