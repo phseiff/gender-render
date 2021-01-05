@@ -20,6 +20,7 @@ with open("docs/usage-guides/README-template.md", "r") as readme_template_file:
 # push:
 
 for command in [
+    "git add .github/*",
     "git add *",
     "git commit -m \"" + sys.argv[1] + "\"",
     "git push"
