@@ -19,7 +19,7 @@ the correct pronouns of all people involved.",
     package_data={'gender_render': ['*']},
     include_package_data=True,
     install_requires=open("requirements.txt", "r").read().splitlines(),
-    license="LICENSE.txt",
+    license="LICENSE-implementation.txt",
     extras_require={
         'more_warnings': ["nltk"],
         'testing': ["typing_extensions"]
