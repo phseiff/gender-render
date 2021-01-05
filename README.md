@@ -71,7 +71,7 @@ rendered_template_as_a_str = gr.render_template(
 
 * Template:
 
-```
+```nohighlight
 Dear {Mr_s Doe},
 Yesterday, I was asked about your
 wellbeing, "Is there reason to worry
@@ -93,7 +93,7 @@ Having more value in the pronoun data than needed is, of course, also allowed!
 
 </td><td>
 
-```
+```nohighlight
 Dear Mrs Smith,
 Yesterday, I was asked about your
 wellbeing, "Is there reason to worry
