@@ -138,9 +138,9 @@ Emma Ackernick
 </td></tr>
 <tr><td>
 
-**Template**:
+**gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag**:
 
-gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag:
+* Template:
 
 ```nohighlight
 "{Mr_s} {Doe}"
@@ -150,7 +150,7 @@ equals
 "{Mr_s Doe}".
 ```
 
-**Pronoun Data**:
+* Pronoun Data:
 
 ```json
 {
@@ -172,16 +172,16 @@ equals
 </td></tr>
 <tr><td>
 
-**Template**:
+**Address individuals who don't want to get a special title**:
 
-Address individuals who don't want to get a special title:
+* Template:
 
 ```nohighlight
 Dear {Mr_s Doe},
 [...]
 ```
 
-**Pronoun Data**:
+* Pronoun Data:
 
 ```json
 {
@@ -201,15 +201,15 @@ Dear Joey Chase,
 </td></tr>
 <tr><td>
 
-**Template**:
+**Refer to individuals with hyponyms for person or by their profession**:
 
-Refer to individuals with hyponyms for person or by their profession:
+* Template:
 
 ```nohighlight
 I hope the {actor} is doing well.
 ```
 
-**Pronoun Data**:
+* Pronoun Data:
 
 ```json
 {
@@ -230,16 +230,16 @@ Note that this also works for words that start with capital letters - "Actor" wo
 </td></tr>
 <tr><td>
 
-**Template**:
+***Every* gendered noun has a neutral version available**:
 
-*Every* gendered noun has a neutral version available:
+* Template:
 
 ```nohighlight
 As a {salesman}, {they} had to face
 great hardships!
 ```
 
-**Pronoun Data**:
+* Pronoun Data:
 
 ```json
 {
@@ -260,16 +260,16 @@ great hardships!
 </td></tr>
 <tr><td>
 
-**Template**:
+**If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used**:
 
-If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used:
+* Template:
 
 ```nohighlight
 Since tuesday, {they} serve as a
 {cadet}.
 ```
 
-**Pronoun Data**:
+* Pronoun Data:
 
 ```json
 {
