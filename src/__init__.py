@@ -3,6 +3,8 @@
 
 .. include:: ../README.md
 
+.. include:: ../docs/usage-guides/quick-start.html
+
 The gender*render-python reference implementation.
 For documentation and a usage guide, see https://phseiff.com/gender-render/docs/code-doc/gender_render/
 
