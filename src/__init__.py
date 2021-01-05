@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 """
+
+.. include:: ../README.md
+
 The gender*render-python reference implementation.
 For documentation and a usage guide, see https://phseiff.com/gender-render/docs/code-doc/gender_render/
 

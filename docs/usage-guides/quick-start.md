@@ -2,13 +2,13 @@
 
 [Installation](#installation) • [Usage](#usage) • [Template Syntax](#template-syntax)
 
-### Installation:
+### Installation
 
 ```
 pip3 install gender-render
 ```
 
-### Usage:
+### Usage
 
 ```python
 import gender_render as gr
@@ -27,7 +27,7 @@ rendered_template_as_a_str = gr.render_template(
 )
 ```
 
-### Template Syntax:
+### Template Syntax
 
 <table>
 <tr>
@@ -48,7 +48,7 @@ about {them}?", and I told the
 person who asked that [...]
 ```
 
-**Pronoun Data**:
+**Pronoun Data**
 
 ```json
 {
