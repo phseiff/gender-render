@@ -67,4 +67,4 @@ See [here](CONTRIBUTING.md) for additional information.
 ## Code of Conduct
 
 In general, be decent and don't put shame on the 21st century.
-See [here](CODE-OF-CONDUCT.md) for additional information.
+See [here](CODE_OF_CONDUCT.md) for additional information.
