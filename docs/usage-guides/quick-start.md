@@ -77,7 +77,8 @@ person who asked that [...]
 
 * Template:
 
-```
+
+```nohighlight
 Dear {seller* Mr_s Doe},
 
 According to our guidelines, the
@@ -120,7 +121,7 @@ Note that all these attributes can take any value; not only "Mr" and "Mrs" is va
 
 </td><td>
 
-```
+```nohighlight
 Dear Mrs Brown,
 
 According to our guidelines, the
@@ -141,7 +142,7 @@ Emma Ackernick
 
 gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag:
 
-```
+```nohighlight
 "{Mr_s} {Doe}"
 
 equals
@@ -160,12 +161,12 @@ equals
 
 </td><td>
 
-```
-Ind. Abrams
+```nohighlight
+"Ind. Abrams"
 
 equals
 
-Ind. Adams
+"Ind. Adams"
 ```
 
 </td></tr>
@@ -175,7 +176,7 @@ Ind. Adams
 
 Address individuals who don't want to get a special title:
 
-```
+```nohighlight
 Dear {Mr_s Doe},
 [...]
 ```
@@ -192,7 +193,7 @@ Dear {Mr_s Doe},
 
 </td><td>
 
-```
+```nohighlight
 Dear Joey Chase,
 [...]
 ```
@@ -204,7 +205,7 @@ Dear Joey Chase,
 
 Refer to individuals with hyponyms for person or by their profession:
 
-```
+```nohighlight
 I hope the {actor} is doing well.
 ```
 
@@ -220,7 +221,7 @@ Available values are "male", "female" and "neutral".
 
 </td><td>
 
-```
+```nohighlight
 I hope the actress is doing well.
 ```
 
@@ -233,7 +234,7 @@ Note that this also works for words that start with capital letters - "Actor" wo
 
 *Every* gendered noun has a neutral version available:
 
-```
+```nohighlight
 As a {salesman}, {they} had to face
 great hardships!
 ```
@@ -251,7 +252,7 @@ great hardships!
 
 </td><td>
 
-```
+```nohighlight
 As a salesperson, they had to face
 great hardships!
 ```
@@ -263,7 +264,7 @@ great hardships!
 
 If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used:
 
-```
+```nohighlight
 Since tuesday, {they} serve as a
 {cadet}.
 ```
@@ -279,7 +280,7 @@ Since tuesday, {they} serve as a
 
 </td><td>
 
-```
+```nohighlight
 Since tuesday, they serve as a
 cadet.
 ```
