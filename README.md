@@ -67,9 +67,9 @@ rendered_template_as_a_str = gr.render_template(
 
 <tr><td>
 
-**Template**:
+**Addressing one person**:
 
-Addressing one person:
+* Template:
 
 ```
 Dear {Mr_s Doe},
@@ -79,7 +79,7 @@ about {them}?", and I told the
 person who asked that [...]
 ```
 
-**Pronoun Data**
+* Pronoun Data:
 
 ```json
 {
@@ -104,9 +104,9 @@ person who asked that [...]
 </td></tr>
 <tr><td>
 
-**Template**:
+**Addressing multiple persons**:
 
-Addressing multiple persons:
+* Template:
 
 ```
 Dear {seller* Mr_s Doe},
@@ -122,7 +122,7 @@ Best regards,
 {customer_support* Jean Doe}
 ```
 
-**Pronoun Data**:
+* Pronoun Data:
 
 ```json
 {
