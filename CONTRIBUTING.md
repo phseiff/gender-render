@@ -34,6 +34,6 @@ In general, any contribution (issue as well as pull request) is appreciated, but
 
 ## Further reading
 
-See also [our code of conduct](CODE-OF-CONDUCT.md).
+See also [our code of conduct](CODE_OF_CONDUCT.md).
 
 Happy contributing!
