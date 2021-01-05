@@ -1,17 +1,17 @@
 <p align="center"><!--<a href="https://github.com/phseiff"><img src="https://phseiff.com/images/brought-to-you-by-phseiff.svg" alt="brought to you by phseiff:"></a>-->
-<img src="docs/images/title.svg" alt="{{gender*render}}"></p>
+<img src="https://phseiff.com/gender-render/docs/images/title.svg" alt="{{gender*render}}"></p>
 
 <p align="center" color="violet">Template-system for rendering gender-neutral text- and email-templates properly gendered and with the correct pronouns of all people involved.</p>
 
 Ever had the struggle of correctly gendering people in your automated emails? Are you sick of writing email templates that are unsupportive of non-binary people, gender everyone with ugly underscores, or clumsily avoid pronouns alltogether, costing you hours of work to frickle them together? With gender\*render, you can write easy, gender-neutral templates for your emails, and automatically render them into correctly gendered emails, given the pronouns and names of all people concerned! [[Jump to quickstart]](#quick-start-)
 
-[![to quickstart](docs/images/idea-illustration.svg)](#example-usages)
+[![to quickstart](https://phseiff.com/gender-render/docs/images/idea-illustration.svg)](#example-usages)
 
 Gender\*render is not only a piece of software that can definitely come in handy if you want to write progressive automated emails, but also a proof of concept. Many people say that correctly gendering non-binary people, people with unusual pronouns, or people with no pronouns at all in automated fashions is impossible. And many live by said premise. gender\*render as a concept is supposed to be a proof that this is simply false, and that any such claims come from a mixture of missing will and laziness, with technical limitations merely being a pretext. Gender\*render comes with an in-depth specification, so you can easily implement it in any language of your choice, port it to other (human) languages or read about the thoughts behind this project! [[Download spec]](https://github.com/phseiff/gender-render/raw/main/docs/spec.pdf)
 
-[![download spec](docs/images/download-spec.svg)](https://phseiff.com/gender-render/spec.pdf)
+[![download spec](https://phseiff.com/gender-render/docs/images/download-spec.svg)](https://phseiff.com/gender-render/spec.pdf)
 
-## Advantages/Features:
+## Advantages/Features
 
 Using gender\*render offers a set of advantages over traditional "one for men and one for women"-email templates:
 
@@ -31,9 +31,9 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 {quick_start}
 
-## GitHub badges:
+## GitHub badges
 
-### Implementation:
+### Implementation
 
 attribute    | value
 -------------|-----------------------------
@@ -44,7 +44,7 @@ tests | ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen) ![
 documentation | ![here](https://img.shields.io/badge/documentation-here%20%F0%9F%94%97-lightblue)
 build | ![build](https://github.com/phseiff/gender-render/workflows/Build/badge.svg)
 
-### Specification:
+### Specification
 
 attribute    | value
 -------------|-----------------------------
@@ -53,18 +53,18 @@ download latest | ToDo
 download page | ToDo
 
 
-## License:
+## License
 
 Specification and implementation are licensed separately.
 For the specification, see [here](LICENSE-specification.txt).
 For the implementation, see [here](LICENSE-implementation.txt).
 
-## Development & Contributing:
+## Development & Contributing
 
 Active, and issues as well as pre-discussed pull requests are welcome.
 See [here](CONTRIBUTING.md) for additional information.
 
-## Code of Conduct:
+## Code of Conduct
 
 In general, be decent and don't put shame on the 21st century.
 See [here](CODE-OF-CONDUCT.md) for additional information.
