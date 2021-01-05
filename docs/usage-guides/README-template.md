@@ -41,7 +41,7 @@ PyPi | [![PyPI download total](https://img.shields.io/pypi/dm/gender-render.svg)
 license | [![implementation license](https://img.shields.io/badge/license-MIT-lightgreen)](https://github.com/phseiff/gender-render/blob/master/LICENSE-implementation.txt)
 maintenance | [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render) [![Percentage of issues still open](http://isitmaintained.com/badge/open/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render)
 tests | ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen) ![vulture](https://img.shields.io/badge/vulture-100%25-brightgreen)
-documentation | [here](https://phseiff.com/gender-render/docs/code-doc/gender_render/)
+documentation | ![here](https://img.shields.io/badge/documentation-here%20%F0%9F%94%97-lightblue)
 build | ![build](https://github.com/phseiff/gender-render/workflows/Build/badge.svg)
 
 ### Specification:
