@@ -285,7 +285,8 @@ Since tuesday, they serve as a
 cadet.
 ```
 
-</td><td>
+</td></tr>
+<tr></tr><td>
 
 **Define your own properties**:
 
