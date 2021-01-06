@@ -72,7 +72,7 @@ with open("docs/specs/specs.txt", "w") as spec_list_file:
 for command in [
     "git add .github/*",
     "git add *",
-    "git add docs/specs/*.pdf",
+    "git add --force docs/specs/*.pdf",
     "git commit -m \"" + sys.argv[1] + "\"",
     "git push"
 ]:
