@@ -27,6 +27,7 @@ jobs:
           sudo pip3 install typing_extensions
           sudo pip3 install deepdiff[murmur]
           sudo pip3 install pdoc3
+          sudo pip3 install wheezy.template
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
@@ -38,6 +39,9 @@ jobs:
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
           coverage report --fail-under=100 --skip-covered -m
+
+          # build download page:
+          wheezy.template -s docs spec_dl_page_blueprint.html > download_page.md
 
           # build documentation:
           python3 -m coverage html

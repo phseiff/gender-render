@@ -285,5 +285,31 @@ Since tuesday, they serve as a
 cadet.
 ```
 
+</td><td>
+
+**Define your own properties**:
+
+* Template:
+
+```nohighlight
+After {they} ate {their} {<favorite_food>} like any other {child}, {they} slept.
+```
+
+* Pronoun Data:
+
+```json
+{
+  "subject": "ze",
+  "dpossessive": "zen",
+  "<favorite_food>": "spaghetti"
+}
+```
+
+</td><td>
+
+```noheighlight
+After ze ate zen spaghetti like any other child, ze slept.
+```
+
 </td></tr>
 </table>
