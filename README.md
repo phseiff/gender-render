@@ -25,7 +25,7 @@ Using gender\*render offers a set of advantages over traditional "one for men an
 
 * **Reliable**: Tested with 100% code- and branch coverage and a more than 2:1 testing code to actual code ratio.
 
-* **Well-documented**: Written with inspiration from literate programming, gender*render comes with a specification with in-depth elaboration on the underlying concepts, as well as full documentation of all methods and an introduction and getting started guide.
+* **Well-documented**: Written with inspiration from literate programming, gender*render comes with a specification with in-depth elaboration on the underlying concepts, as well as full documentation of all methods, and a getting started guide.
 
 If your web forms ask your customers for their pronoun preferences instead of their gender, preferably with text entry boxes instead of dropdowns, and you have these pronoun information in a nice data base, you can easily automate the process of correctly gendering your emails based on the person they are directed to.
 
@@ -338,7 +338,7 @@ attribute    | value
 -------------|-----------------------------
 license | [![implementation license](https://img.shields.io/badge/license-ToDo-lightgreen)](https://github.com/phseiff/gender-render/blob/master/LICENSE-specification.txt)
 download latest | ToDo
-download page | ToDo
+download page | ToDo: Refer to the right dl page in the spec, INCLUDING the v0.1.0-line which links to it!!!
 
 
 ## License
