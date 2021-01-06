@@ -54,8 +54,7 @@ for spec_file in specification_files:
     full_path_to_versioned_location_of_spec_pdf = full_path_to_versioned_location_of_spec.rsplit(".", 1)[0] + ".pdf"
     shutil.copyfile(full_path_to_spec, full_path_to_versioned_location_of_spec)  # <- tex
     shutil.copyfile(full_path_to_spec_pdf, full_path_to_versioned_location_of_spec_pdf)  # <- pdf
-    shutil.copyfile(full_path_to_spec_pdf, os.path.join(spec_dir, "newest.pdf"))  # <- pdf
-    print("newest version:", os.path.join(spec_dir, "newest.pdf"))
+    shutil.copyfile(full_path_to_spec_pdf, os.path.join(spec_dir, "latest.pdf"))  # <- pdf
 
     # create listing of all files:
     versions_of_this_specification = [f.split("-")[1].rsplit(".", 1)[0]
