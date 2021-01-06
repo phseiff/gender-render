@@ -58,7 +58,7 @@ for spec_file in specification_files:
     print("newest version:", os.path.join(spec_dir, "newest.pdf"))
 
     # create listing of all files:
-    versions_of_this_specification = [f.split("-")[1].split(".")[0]
+    versions_of_this_specification = [f.split("-")[1].rsplit(".", 1)[0]
                                       for f in os.listdir(spec_dir) if f.endswith(".pdf") and "-" in f]
     with open(os.path.join(spec_dir, "versions.txt"), "w") as spec_versions_file:
         spec_versions_file.write("\n".join(versions_of_this_specification))
