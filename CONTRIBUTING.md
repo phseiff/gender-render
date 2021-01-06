@@ -10,6 +10,10 @@ bugfix-releases correspond to to releases with merely changes in wording.
 If you want to make a change in the wording of a specification, to make it more clear, fix spelling mistakes or grammatical errors, or simply fix smaller wording issues (I am not a native english speaker), you can issue a pull request or raise an issue in which you offer to make a pull request or ask to fix them;
 for all other changes (major as well as inor releases), you should raise an issue to discuss the proposed change before trying to make a pull request.
 
+In regards of the file structure, note that the files in `docs/specs/*` may not be changed in a pull request, since they are managed by a script.
+The right place for changes are the `.tex` files directly in `docs`.
+Also, note that a files version (in the `doc` folder) is not increased when developement of a new version begins, but rather when it finishes, since increasing the number automatically triggers a script that uploads the new specification version to the download page.
+
 Please be aware that there may already be changes planned at the time of you proposing them, so even if your proposed changes are good and necessary, there is no guarantee that your implementation concept will be the one chosen at the end.
 
 ## In regards to the implementation
