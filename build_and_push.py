@@ -54,11 +54,11 @@ for spec_file in specification_files:
     full_path_to_versioned_location_of_spec_pdf = full_path_to_versioned_location_of_spec.rsplit(".", 1)[0] + ".pdf"
     shutil.copyfile(full_path_to_spec, full_path_to_versioned_location_of_spec)  # <- tex
     shutil.copyfile(full_path_to_spec_pdf, full_path_to_versioned_location_of_spec_pdf)  # <- pdf
-    shutil.copyfile(full_path_to_spec_pdf, os.path.join(spec_dir, "newest.pdf"))  # <- pdf
-    print("newest version:", os.path.join(spec_dir, "newest.pdf"))
+    shutil.copyfile(full_path_to_spec_pdf, os.path.join(spec_dir, "latest.pdf"))  # <- pdf
 
     # create listing of all files:
-    versions_of_this_specification = [f for f in os.listdir(spec_dir) if f.endswith(".pdf")]
+    versions_of_this_specification = [f.split("-")[1].rsplit(".", 1)[0]
+                                      for f in os.listdir(spec_dir) if f.endswith(".pdf") and "-" in f]
     with open(os.path.join(spec_dir, "versions.txt"), "w") as spec_versions_file:
         spec_versions_file.write("\n".join(versions_of_this_specification))
     print("")
@@ -72,7 +72,7 @@ with open("docs/specs/specs.txt", "w") as spec_list_file:
 for command in [
     "git add .github/*",
     "git add *",
-    "git add docs/specs/*.pdf",
+    "git add --force docs/specs/*.pdf",
     "git commit -m \"" + sys.argv[1] + "\"",
     "git push"
 ]:

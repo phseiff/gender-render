@@ -7,9 +7,9 @@ Ever had the struggle of correctly gendering people in your automated emails? Ar
 
 [![to quickstart](https://phseiff.com/gender-render/docs/images/idea-illustration.svg)](#quick-start-)
 
-Gender\*render is not only a piece of software that can definitely come in handy if you want to write progressive automated emails, but also a proof of concept. Many people say that correctly gendering non-binary people, people with unusual pronouns, or people with no pronouns at all in automated fashions is impossible. And many live by said premise. gender\*render as a concept is supposed to be a proof that this is simply false, and that any such claims come from a mixture of missing will and laziness, with technical limitations merely being a pretext. Gender\*render comes with an in-depth specification, so you can easily implement it in any language of your choice, port it to other (human) languages or read about the thoughts behind this project! [[Download spec]](https://github.com/phseiff/gender-render/raw/main/docs/spec.pdf)
+Gender\*render is not only a piece of software that can definitely come in handy if you want to write progressive automated emails, but also a proof of concept. Many people say that correctly gendering non-binary people, people with unusual pronouns, or people with no pronouns at all in automated fashions is impossible. And many live by said premise. gender\*render as a concept is supposed to be a proof that this is simply false, and that any such claims come from a mixture of missing will and laziness, with technical limitations merely being a pretext. Gender\*render comes with an in-depth specification, so you can easily implement it in any language of your choice, port it to other (human) languages or read about the thoughts behind this project! [[Download spec]](https://phseiff.com/docs/specs/spec/latest.pdf)
 
-[![download spec](https://phseiff.com/gender-render/docs/images/download-spec.svg)](https://phseiff.com/gender-render/spec.pdf)
+[![download spec](https://phseiff.com/gender-render/docs/images/download-spec.svg)](https://phseiff.com/docs/specs/spec/latest.pdf)
 
 ## Advantages/Features
 
@@ -40,9 +40,9 @@ attribute    | value
 PyPi | [![PyPI download total](https://img.shields.io/pypi/dm/gender-render.svg)](https://pypi.python.org/pypi/gh-md-to-html/) [![PyPI version](https://img.shields.io/pypi/v/gender-render.svg)](https://pypi.python.org/pypi/gh-md-to-html/) ![PyPI pyversions](https://img.shields.io/pypi/pyversions/gender-render.svg)
 license | [![implementation license](https://img.shields.io/badge/license-MIT-lightgreen)](https://github.com/phseiff/gender-render/blob/master/LICENSE-implementation.txt)
 maintenance | [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render) [![Percentage of issues still open](http://isitmaintained.com/badge/open/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render)
-tests | ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen) ![vulture](https://img.shields.io/badge/vulture-100%25-brightgreen)
-documentation | ![here](https://img.shields.io/badge/documentation-here%20%F0%9F%94%97-lightblue)
-build | ![build](https://github.com/phseiff/gender-render/workflows/Build/badge.svg)
+tests |[ ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/phseiff/gender-render/blob/main/.github/workflows/build-and-test-code.yml) [![vulture](https://img.shields.io/badge/vulture-100%25-brightgreen)](https://github.com/phseiff/gender-render/blob/main/.github/workflows/build-and-test-code.yml)
+documentation | [![here](https://img.shields.io/badge/documentation-here%20%F0%9F%94%97-lightblue)](https://phseiff.com/gender-render)
+build | [![build](https://github.com/phseiff/gender-render/workflows/Build/badge.svg)](https://github.com/phseiff/gender-render/blob/main/.github/workflows/build-and-test-code.yml)
 
 ### Specification
 
