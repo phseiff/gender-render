@@ -3,12 +3,15 @@
 
 .. include:: ../README.md
 
+.. include:: ../download_page.md
+
 The gender*render-python reference implementation.
 For documentation and a usage guide, see https://phseiff.com/gender-render/docs/code-doc/gender_render/
 
-This implementation follows the specification found here (ToDo: insert)
+This implementation follows the specification(s) found here:
+https://phseiff.com/gender-render/docs/code-doc/gender_render/#download-specifications
 
-The interfaces defined by the specification can be found as `gender_render.Template`, (from
+The interfaces defined by the main specification can be found as `gender_render.Template`, (from
 `gender_render.template_interface`), `gender_render.PronounData` (from `gender_render.pronoun_data_interface`) and
 `gender_render.render_template`.
 

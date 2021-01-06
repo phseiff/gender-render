@@ -19,6 +19,10 @@
 <link rel="icon" href="https://pdoc3.github.io/pdoc/logo.png">
 </head>
 <body>
+<!-- The following github corner is taken from Tim Holman (copyright notice: Copyright (c) 2016 Tim Holman),
+and licensed under MIT according to https://github.com/tholman/github-corners/blob/master/license.md -->
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<a href="https://github.com/phseiff/gender-render" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 <main>
 <article id="content">
 <header>
@@ -249,6 +253,21 @@ great hardships!
 <pre><code class="language-nohighlight">Since tuesday, they serve as a
 cadet.
 </code></pre>
+</td><td>
+**Define your own properties**:
+* Template:
+<pre><code class="language-nohighlight">After {they} ate {their} {&lt;favorite_food&gt;} like any other {child}, {they} slept.
+</code></pre>
+* Pronoun Data:
+<pre><code class="language-json">{
+  &quot;subject&quot;: &quot;ze&quot;,
+  &quot;dpossessive&quot;: &quot;zen&quot;,
+  &quot;&lt;favorite_food&gt;&quot;: &quot;spaghetti&quot;
+}
+</code></pre>
+</td><td>
+<pre><code class="language-noheighlight">After ze ate zen spaghetti like any other child, ze slept.
+</code></pre>
 </td></tr>
 </table>
 <h2 id="github-badges">GitHub badges</h2>
@@ -302,11 +321,11 @@ cadet.
 </tr>
 <tr>
 <td>download latest</td>
-<td>ToDo</td>
+<td><a href="https://phseiff.com/gender-render/docs/specs/spec/latest.pdf"><img alt="dowload" src="https://img.shields.io/badge/download-here-brightgreen"></a></td>
 </tr>
 <tr>
-<td>download page</td>
-<td>ToDo: Refer to the right dl page in the spec, INCLUDING the v0.1.0-line which links to it!!!</td>
+<td>other downloads</td>
+<td><a href="https://phseiff.com/gender-render/#download-specifications"><img alt="here" src="https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue"></a></td>
 </tr>
 </tbody>
 </table>
@@ -315,34 +334,48 @@ cadet.
 For the specification, see <a href="LICENSE-specification.txt">here</a>.
 For the implementation, see <a href="LICENSE-implementation.txt">here</a>.</p>
 <h2 id="development-contributing">Development &amp; Contributing</h2>
-<p>Active, and issues as well as pre-discussed pull requests are welcome.
+<p>Questions, suggestions and issues as well as pre-discussed pull requests are welcome.
 See <a href="CONTRIBUTING.md">here</a> for additional information.</p>
 <h2 id="code-of-conduct">Code of Conduct</h2>
 <p>In general, be decent and don't put shame on the 21st century.
-See <a href="CODE_OF_CONDUCT.md">here</a> for additional information.
-The gender*render-python reference implementation.
+See <a href="CODE_OF_CONDUCT.md">here</a> for additional information.</p>
+<h2 id="download-specifications">Download Specifications</h2>
+<p>gender*render follows a strict set of easily implementable specifications.
+There is one main specification ("spec"), as well as several extensions specifications ("ext-&hellip;").
+Learn more by downloading the <a href="https://phseiff.com/gender-render/docs/specs/spec/latest.pdf">main specification</a>, which dives further into the versioning scheme of gender*render specifications, their vision and development model, or download any specification in any version from the following list:</p>
+<h3 id="spec">spec</h3>
+<ul>
+<li><a href="https://phseiff.com/gender-render/docs/specs/spec/latest.pdf">download latest</a></li>
+<li><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf">v0.1.0</a></li>
+</ul>
+<h2 id="reference-implementation">Reference Implementation</h2>
+<p>The gender*render-python reference implementation.
 For documentation and a usage guide, see <a href="https://phseiff.com/gender-render/docs/code-doc/gender_render/">https://phseiff.com/gender-render/docs/code-doc/gender_render/</a></p>
-<p>This implementation follows the specification found here (ToDo: insert)</p>
-<p>The interfaces defined by the specification can be found as <code>gender_render.Template</code>, (from
+<p>This implementation follows the specification(s) found here:
+<a href="https://phseiff.com/gender-render/docs/code-doc/gender_render/#download-specifications">https://phseiff.com/gender-render/docs/code-doc/gender_render/#download-specifications</a></p>
+<p>The interfaces defined by the main specification can be found as <code>gender_render.Template</code>, (from
 <code><a title="gender_render.template_interface" href="template_interface.html">gender_render.template_interface</a></code>), <code>gender_render.PronounData</code> (from <code><a title="gender_render.pronoun_data_interface" href="pronoun_data_interface.html">gender_render.pronoun_data_interface</a></code>) and
 <code><a title="gender_render.render_template" href="#gender_render.render_template">render_template()</a></code>.</p>
 <p>To find out how to enable and disable warnings, refer to the documentation of <code><a title="gender_render.warnings" href="warnings.html">gender_render.warnings</a></code>.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/__init__.py#L0-L38" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/__init__.py#L0-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">#!/usr/bin/env python
 &#34;&#34;&#34;
 
 .. include:: ../README.md
 
+.. include:: ../download_page.md
+
 The gender*render-python reference implementation.
 For documentation and a usage guide, see https://phseiff.com/gender-render/docs/code-doc/gender_render/
 
-This implementation follows the specification found here (ToDo: insert)
+This implementation follows the specification(s) found here:
+https://phseiff.com/gender-render/docs/code-doc/gender_render/#download-specifications
 
-The interfaces defined by the specification can be found as `gender_render.Template`, (from
+The interfaces defined by the main specification can be found as `gender_render.Template`, (from
 `gender_render.template_interface`), `gender_render.PronounData` (from `gender_render.pronoun_data_interface`) and
 `gender_render.render_template`.
 
@@ -422,7 +455,7 @@ This is the submodule where pronoun data and templates …</p></div>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="gender_render.render_template"><code class="name flex">
-<span>def <span class="ident">render_template</span></span>(<span>template, pronoun_data: Union[str, Dict[str, Dict[str, str]], Dict[str, str]], takes_file_path=False, warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]]] = frozenset({&lt;class &#x27;gender_render.warnings.NotAPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.IdMatchingNecessaryWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotANounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreePronounFoundWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAWordWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnknownPropertyWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NounGenderingGuessingsWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnexpectedFileFormatWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GenderedNounsBuildFromWebWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeGenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GRWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.DefaultValueUsedWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeUngenderedPersonNounWarning&#x27;&gt;}))</span>
+<span>def <span class="ident">render_template</span></span>(<span>template, pronoun_data: Union[str, Dict[str, Dict[str, str]], Dict[str, str]], takes_file_path=False, warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]]] = frozenset({&lt;class &#x27;gender_render.warnings.GRWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeUngenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnexpectedFileFormatWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.IdMatchingNecessaryWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotANounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreePronounFoundWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAWordWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnknownPropertyWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NounGenderingGuessingsWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GenderedNounsBuildFromWebWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeGenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.DefaultValueUsedWarning&#x27;&gt;}))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Accepts a gender*render template as a string and a string or dict of pronoun data or, if <code>takes_file_path</code> is
@@ -431,7 +464,7 @@ Serves as a shortcut for Template(&hellip;).render(PronounData(&hellip;), &helli
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/__init__.py#L31-L39" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/__init__.py#L34-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def render_template(template, pronoun_data: typing.Union[str, GRPD, IDPD], takes_file_path=False,
                     warning_settings: warnings.WarningSettingType = warnings.ENABLE_DEFAULT_WARNINGS):
@@ -473,6 +506,11 @@ Serves as a shortcut for Template(&hellip;).render(PronounData(&hellip;), &helli
 <li><a href="#license">License</a></li>
 <li><a href="#development-contributing">Development &amp; Contributing</a></li>
 <li><a href="#code-of-conduct">Code of Conduct</a></li>
+<li><a href="#download-specifications">Download Specifications</a><ul>
+<li><a href="#spec">spec</a></li>
+</ul>
+</li>
+<li><a href="#reference-implementation">Reference Implementation</a></li>
 </ul>
 </div>
 <ul id="index">

@@ -316,6 +316,32 @@ Since tuesday, they serve as a
 cadet.
 ```
 
+</td><td>
+
+**Define your own properties**:
+
+* Template:
+
+```nohighlight
+After {they} ate {their} {<favorite_food>} like any other {child}, {they} slept.
+```
+
+* Pronoun Data:
+
+```json
+{
+  "subject": "ze",
+  "dpossessive": "zen",
+  "<favorite_food>": "spaghetti"
+}
+```
+
+</td><td>
+
+```noheighlight
+After ze ate zen spaghetti like any other child, ze slept.
+```
+
 </td></tr>
 </table>
 
@@ -337,9 +363,8 @@ build | [![build](https://github.com/phseiff/gender-render/workflows/Build/badge
 attribute    | value
 -------------|-----------------------------
 license | [![implementation license](https://img.shields.io/badge/license-ToDo-lightgreen)](https://github.com/phseiff/gender-render/blob/master/LICENSE-specification.txt)
-download latest | ToDo
-download page | ToDo: Refer to the right dl page in the spec, INCLUDING the v0.1.0-line which links to it!!!
-
+download latest | [![dowload](https://img.shields.io/badge/download-here-brightgreen)](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
+other downloads | [![here](https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue)](https://phseiff.com/gender-render/#download-specifications)
 
 ## License
 
@@ -349,7 +374,7 @@ For the implementation, see [here](LICENSE-implementation.txt).
 
 ## Development & Contributing
 
-Active, and issues as well as pre-discussed pull requests are welcome.
+Questions, suggestions and issues as well as pre-discussed pull requests are welcome.
 See [here](CONTRIBUTING.md) for additional information.
 
 ## Code of Conduct
