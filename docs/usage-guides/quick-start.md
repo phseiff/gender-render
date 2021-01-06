@@ -293,7 +293,9 @@ cadet.
 * Template:
 
 ```nohighlight
-After {they} ate {their} {<favorite_food>} like any other {child}, {they} slept.
+After {they} ate {their}
+{<favorite_food>} like any
+other {child}, {they} slept.
 ```
 
 * Pronoun Data:
@@ -309,7 +311,9 @@ After {they} ate {their} {<favorite_food>} like any other {child}, {they} slept.
 </td><td>
 
 ```noheighlight
-After ze ate zen spaghetti like any other child, ze slept.
+After ze ate zen
+spaghetti like any
+other child, ze slept.
 ```
 
 </td></tr>
