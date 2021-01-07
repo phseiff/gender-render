@@ -43,11 +43,12 @@ for spec_file in specification_files:
     print("does not already exist!")
 
     # otherwise, create a pdf version of it:
-    process = subprocess.Popen("pdflatex " + spec_file, shell=True, stdout=subprocess.PIPE, cwd="docs")
-    output, error = process.communicate()
-    if error:
-        print("error:", error)
-        sys.exit(1)
+    for i in range(3):
+        process = subprocess.Popen("pdflatex " + spec_file, shell=True, stdout=subprocess.PIPE, cwd="docs")
+        output, error = process.communicate()
+        if error:
+            print("error:", error)
+            sys.exit(1)
 
     # move newly created pdf version and tex file to specs folder:
     full_path_to_spec_pdf = full_path_to_spec.rsplit(".", 1)[0] + ".pdf"
