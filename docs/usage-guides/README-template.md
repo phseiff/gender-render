@@ -48,15 +48,15 @@ build | [![build](https://github.com/phseiff/gender-render/workflows/Build/badge
 
 attribute    | value
 -------------|-----------------------------
-license | [![implementation license](https://img.shields.io/badge/license-ToDo-lightgreen)](https://github.com/phseiff/gender-render/blob/master/LICENSE-specification.txt)
+license | [![implementation license](https://img.shields.io/badge/license-OWFa%201.0-lightgreen)](https://github.com/phseiff/gender-render/blob/master/LICENSE-specification.txt)
 download latest | [![dowload](https://img.shields.io/badge/download-here-brightgreen)](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
 other downloads | [![here](https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue)](https://phseiff.com/gender-render/#download-specifications)
 
 ## License
 
 Specification and implementation are licensed separately.
-For the specification, see [here](LICENSE-specification.txt).
-For the implementation, see [here](LICENSE-implementation.txt).
+For the specification, see [here](LICENSE-specification.txt) (OWFa 1.0).
+For the implementation, see [here](LICENSE-implementation.txt) (MIT).
 
 ## Development & Contributing
 
