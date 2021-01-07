@@ -15,6 +15,7 @@ The right place for changes are the `.tex` files directly in `docs`.
 Also, note that a files version (in the `doc` folder) is not increased when developement of a new version begins, but rather when it finishes, since increasing the number automatically triggers a script that uploads the new specification version to the download page.
 
 Please be aware that there may already be changes planned at the time of you proposing them, so even if your proposed changes are good and necessary, there is no guarantee that your implementation concept will be the one chosen at the end.
+Please be aware, additionally, that maintainers already having detailed plans on how to implement a feature can be a reason for not choosing your suggested approach to a problem even if your approach is a good one, for example due to discrepancies in the preferred way of going about this.
 
 ## In regards to the implementation
 
@@ -35,6 +36,8 @@ See [above](#in-regards-to-the-specification) on how to contribute to the specif
 ## In general
 
 In general, any contribution (issue as well as pull request) is appreciated, but the chance of them bearing fruits and not being rejected drastically increases if you follow the aforementioned set of standards.
+However, please be aware that not every contribution can be guaranteed to make it into the code/ the specification for many reasons, such as differences in vision and perspective;
+I will, however, be committed to making sure that contributions don't get rejected at frustratingly or unnecessary late stages of their development to the fullest extend possible.
 
 ## Further reading
 
