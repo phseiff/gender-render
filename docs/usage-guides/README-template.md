@@ -37,7 +37,7 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 attribute    | value
 -------------|-----------------------------
-PyPi | [![PyPI download total](https://img.shields.io/pypi/dm/gender-render.svg)](https://pypi.python.org/pypi/gh-md-to-html/) [![PyPI version](https://img.shields.io/pypi/v/gender-render.svg)](https://pypi.python.org/pypi/gh-md-to-html/) ![PyPI pyversions](https://img.shields.io/pypi/pyversions/gender-render.svg)
+PyPi | [![PyPI download total](https://img.shields.io/pypi/dm/gender-render.svg)](https://pypi.python.org/pypi/gender-render/) [![PyPI version](https://img.shields.io/pypi/v/gender-render.svg)](https://pypi.python.org/pypi/gender-render/) ![PyPI pyversions](https://img.shields.io/pypi/pyversions/gender-render.svg)
 license | [![implementation license](https://img.shields.io/badge/license-MIT-lightgreen)](https://github.com/phseiff/gender-render/blob/main/LICENSE-implementation.txt)
 maintenance | [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render) [![Percentage of issues still open](http://isitmaintained.com/badge/open/phseiff/gender-render.svg)](http://isitmaintained.com/project/phseiff/gender-render)
 tests |[ ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/phseiff/gender-render/blob/main/.github/workflows/build-and-test-code.yml) [![vulture](https://img.shields.io/badge/vulture-100%25-brightgreen)](https://github.com/phseiff/gender-render/blob/main/.github/workflows/build-and-test-code.yml)
