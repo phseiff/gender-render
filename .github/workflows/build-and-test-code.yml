@@ -28,6 +28,7 @@ jobs:
           sudo pip3 install deepdiff[murmur]
           sudo pip3 install pdoc3
           sudo pip3 install wheezy.template
+          sudo pip3 install twine
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
@@ -52,6 +53,10 @@ jobs:
               --template-dir docs/template-dir\
               gender_render
           cp docs/code-doc/gender_render/* .
+
+          # upload code to pypi:
+          python3 setup.py sdist
+          twine upload -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || 0
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
