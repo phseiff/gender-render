@@ -1,0 +1,7 @@
+requests~=2.25.1
+
+[more_warnings]
+nltk
+
+[testing]
+typing_extensions
