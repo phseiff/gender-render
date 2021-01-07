@@ -46,7 +46,7 @@ jobs:
 
           # build documentation:
           python3 -m coverage html
-          cp src gender_render  # <- hacky solution
+          cp -r src gender_render  # <- hacky solution
           pdoc3 --html -f -c "sort_identifiers=False"\
               -c "git_link_template='https://github.com/phseiff/gender-render/tree/gh-pages/{path}#L{start_line}-L{end_line}'"\
               --output-dir docs/code-doc\
