@@ -286,7 +286,7 @@ cadet.
 ```
 
 </td></tr>
-<tr></tr><td>
+<tr><td>
 
 **Define your own properties**:
 
