@@ -6,8 +6,8 @@ Learn more by downloading the [main specification](https://phseiff.com/gender-re
 
 ### spec
 * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
-* [v0.1.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf)
 * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf)
+* [v0.1.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf)
 
 
 ## Reference Implementation
