@@ -1,7 +1,7 @@
 <p align="center"><!--<a href="https://github.com/phseiff"><img src="https://phseiff.com/images/brought-to-you-by-phseiff.svg" alt="brought to you by phseiff:"></a>-->
 <img src="https://phseiff.com/gender-render/docs/images/title.svg" alt="{gender*render}"></p>
 
-<p align="center" color="violet">Template-system for rendering gender-neutral text-, email- and RGB-text-templates properly gendered and with the correct pronouns of all people involved.</p>
+<p align="center" color="violet">Template-system for rendering gender-neutral text-, email- and RPG-text-templates properly gendered and with the correct pronouns of all people involved.</p>
 
 Ever had the struggle of correctly gendering people in your automated emails? Are you sick of writing email templates that are unsupportive of non-binary people, gender everyone with ugly underscores, or clumsily avoid pronouns alltogether, costing you hours of work to frickle them together? With gender\*render, you can write easy, gender-neutral templates for your emails, and automatically render them into correctly gendered emails, given the pronouns and names of all people concerned! [[Jump to quickstart]](#quick-start-)
 
