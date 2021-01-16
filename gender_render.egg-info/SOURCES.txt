@@ -9,6 +9,8 @@ requirements.txt
 setup.cfg
 setup.py
 .github/workflows/build-and-test-code.yml
+.github/workflows/cla.yml
+docs/CLA.md
 docs/NEWFILE
 docs/changelog.md
 docs/spec.tex
