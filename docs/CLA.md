@@ -13,10 +13,10 @@ I am aware that a part of a pull request contributing to the specification of ge
 
   I agree that the content of my contribution to the specification may be licensed under the license which can be found [here](../LICENSE-specification.txt) at the time of me signing this CLA.
   
-  Additionally, I agree to the [Open Web Foundation CLA 1.0](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owf-contributor-license-agreement-1-0---copyright-and-patent) regarding my contribution to the specification.
+  Additionally, I agree to the [Open Web Foundation CLA 1.0](http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owf-contributor-license-agreement-1-0---copyright-and-patent) regarding my contribution to the specification and hereby sign it.
   
   I am aware and agree that my contribution to the specification may be re-licensed under a more permissive license in the future by the maintainers of this project.
-  I am also aware and agree that my contribution to the specification may be included in and licensed together with future versions of the specification that might be licensed under a more restrictive license to protect the label "gender\*render" and the project from being diluted by impersonations, brand imitations, contradicting versions of the specification and other problems a specification can face that hinder its spread and adaption, or to increase the credit its contributors receive for contributing or having contributed, as long as these future versions do not restrict the peoples access to the specification and their right to implement it.
+  I am also aware and agree that my contribution to the specification may be included in and licensed together with future versions of the specification that might be licensed under a more restrictive license to protect the label "gender\*render" and the project from being diluted by impersonations, brand imitations, contradicting versions of the specification and other problems a specification can face that hinder its spread and adaption, or to increase the credit its contributors receive for contributing or having contributed, as long as these future versions do not restrict the peoples access to the specification and their right to implement it and use these implementations.
   
 * **For contributions to the implementation** (which files are considered part of the implementation is defined according to the [license of the implementation](../LICENSE-implementation.txt), at the time of you signing this CLS):
 
