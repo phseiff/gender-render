@@ -30,7 +30,7 @@ The implementation follows PEP8 standards, with some exceptions like the dict de
 The code also strives for 100% code coverage, and no dead code unless for a good reason (see `test/vulture_whitelist.py`), and follows semeantic versioning.
 Every function, method and class needs to have a docstring and ideally, comments where necessary.
 
-Please also note that the implementation **has** to follow the latest version of the specification, so adding features that do not comply with it or change the way the rendered behaves from how the spec defines it too is not supported.
+Please also note that the implementation **has** to follow the latest version of the specification, so adding features that do not comply with it or change the way the rendered template behaves from how the spec defines it too is not supported.
 See [above](#in-regards-to-the-specification) on how to contribute to the specification.
 
 ## In general
@@ -38,6 +38,8 @@ See [above](#in-regards-to-the-specification) on how to contribute to the specif
 In general, any contribution (issue as well as pull request) is appreciated, but the chance of them bearing fruits and not being rejected drastically increases if you follow the aforementioned set of standards.
 However, please be aware that not every contribution can be guaranteed to make it into the code/ the specification for many reasons, such as differences in vision and perspective;
 I will, however, be committed to making sure that contributions don't get rejected at frustratingly or unnecessary late stages of their development to the fullest extend possible.
+
+For a pull request to be merged, you will have to digitally sign the projects [CLA](docs/CLA.md); a bot will guide you through the signing process.
 
 ## Further reading
 
