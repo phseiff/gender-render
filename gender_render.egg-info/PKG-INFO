@@ -44,7 +44,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         2. [Content](#content-) <-- you are here
         3. [Quick start](#quick-start-)
         4. [Spec downloads & changelog](#download-specifications--changelog)
-        5. [stats & links](#github-badges-)
+        5. [stats & links](#github-badges)
         6. [Mission Statement](#mission-statement-)
         7. [License](#license)
         8. [Development & Contributing](#development--contributing)
@@ -371,7 +371,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         </td></tr>
         </table>
         
-        ## Download Specifications & Changelog 📚
+        ## Download Specifications & Changelog
         
         gender\*render follows a strict set of easily implementable specifications.
         The implementations explain in-depth which design decision was taken why and how gender\*render works exactly, but also define guidelines for re-implementing gender\*render for different programming- and well as natural languages, and contain various findings and ideas/ concepts on how to deal with various aspects of grammatical gender and automated gendering in a technical context, some of whom might help you in writing related or similar tools.
@@ -386,7 +386,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         
         
         
-        ## GitHub badges 🏅
+        ## GitHub badges
         
         ### Implementation
         
