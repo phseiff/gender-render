@@ -33,11 +33,11 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 0. [Introduction](#top)
 1. [Advantages & Features](#advantagesfeatures)
-2. [Content](#content) <-- you are here
+2. [Content](#content-) <-- you are here
 3. [Quick start](#quick-start-)
 4. [Spec downloads & changelog](#download-specifications)
 5. [stats & links](#github-badges)
-6. [Mission Statement](#mission-statement)
+6. [Mission Statement](#mission-statement-)
 7. [License](#license)
 8. [Development & Contributing](#development--contributing)
 9. [Code of Conduct](#code-of-conduct)
