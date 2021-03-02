@@ -79,6 +79,10 @@ These three missions are listed in ascending order of importance (3 is the end g
 
 In addition to being devoted to its mission, gender\*render is dedicated to the ideals of its [code of conduct](#code-of-conduct).
 
+<!-- ToDo: would this be more elegant?:
+In addition to being devoted to its mission, this project is also committed to upholding the moral standards expected of every contributor in our [code of conduct](#code-of-conduct), to the extend applicable to a project.
+-->
+
 ## License
 
 Specification and implementation are licensed separately.
