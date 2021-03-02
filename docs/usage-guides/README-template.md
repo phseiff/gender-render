@@ -36,7 +36,7 @@ If your web forms ask your customers for their pronoun preferences instead of th
 2. [Content](#content-) <-- you are here
 3. [Quick start](#quick-start-)
 4. [Spec downloads & changelog](#download-specifications--changelog)
-5. [stats & links](#github-badges-)
+5. [stats & links](#github-badges)
 6. [Mission Statement](#mission-statement-)
 7. [License](#license)
 8. [Development & Contributing](#development--contributing)
@@ -46,7 +46,7 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 {spec_downloads}
 
-## GitHub badges 🏅
+## GitHub badges
 
 ### Implementation
 
