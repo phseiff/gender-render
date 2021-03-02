@@ -65,8 +65,8 @@ and licensed under MIT according to https://github.com/tholman/github-corners/bl
 <li><a href="#advantagesfeatures">Advantages &amp; Features</a></li>
 <li><a href="#content-">Content</a> &lt;&ndash; you are here</li>
 <li><a href="#quick-start-">Quick start</a></li>
-<li><a href="#download-specifications">Spec downloads &amp; changelog</a></li>
-<li><a href="#github-badges">stats &amp; links</a></li>
+<li><a href="#download-specifications--changelog">Spec downloads &amp; changelog</a></li>
+<li><a href="#github-badges-">stats &amp; links</a></li>
 <li><a href="#mission-statement-">Mission Statement</a></li>
 <li><a href="#license">License</a></li>
 <li><a href="#development--contributing">Development &amp; Contributing</a></li>
@@ -288,7 +288,7 @@ other child, ze slept.
 </code></pre>
 </td></tr>
 </table>
-<h2 id="download-specifications">Download Specifications</h2>
+<h2 id="download-specifications-changelog">Download Specifications &amp; Changelog 📚</h2>
 <p>gender*render follows a strict set of easily implementable specifications.
 The implementations explain in-depth which design decision was taken why and how gender*render works exactly, but also define guidelines for re-implementing gender*render for different programming- and well as natural languages, and contain various findings and ideas/ concepts on how to deal with various aspects of grammatical gender and automated gendering in a technical context, some of whom might help you in writing related or similar tools.</p>
 <p>There is one main specification ("spec"), as well as several extensions specifications ("ext-&hellip;").
@@ -299,7 +299,7 @@ To get started, you can download the <a href="https://phseiff.com/gender-render/
 <li><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf">v0.1.1</a></li>
 <li><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf">v0.1.0</a></li>
 </ul>
-<h2 id="github-badges">GitHub badges</h2>
+<h2 id="github-badges">GitHub badges 🏅</h2>
 <h3 id="implementation">Implementation</h3>
 <table>
 <thead>
@@ -354,7 +354,7 @@ To get started, you can download the <a href="https://phseiff.com/gender-render/
 </tr>
 <tr>
 <td>other downloads</td>
-<td><a href="#download-specifications"><img alt="here" src="https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue"></a></td>
+<td><a href="#download-specifications--changelog"><img alt="here" src="https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue"></a></td>
 </tr>
 </tbody>
 </table>
@@ -484,7 +484,7 @@ This is the submodule where pronoun data and templates …</p></div>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="gender_render.render_template"><code class="name flex">
-<span>def <span class="ident">render_template</span></span>(<span>template, pronoun_data: Union[str, Dict[str, Dict[str, str]], Dict[str, str]], takes_file_path=False, warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]]] = frozenset({&lt;class &#x27;gender_render.warnings.NounGenderingGuessingsWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GRWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeGenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GenderedNounsBuildFromWebWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeUngenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.DefaultValueUsedWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnexpectedFileFormatWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotANounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.IdMatchingNecessaryWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAWordWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnknownPropertyWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreePronounFoundWarning&#x27;&gt;}))</span>
+<span>def <span class="ident">render_template</span></span>(<span>template, pronoun_data: Union[str, Dict[str, Dict[str, str]], Dict[str, str]], takes_file_path=False, warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]]] = frozenset({&lt;class &#x27;gender_render.warnings.NounGenderingGuessingsWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.IdMatchingNecessaryWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GRWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeGenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnknownPropertyWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreePronounFoundWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeUngenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GenderedNounsBuildFromWebWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotANounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.DefaultValueUsedWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAWordWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnexpectedFileFormatWarning&#x27;&gt;}))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Accepts a gender*render template as a string and a string or dict of pronoun data or, if <code>takes_file_path</code> is
@@ -528,8 +528,8 @@ Serves as a shortcut for Template(&hellip;).render(PronounData(&hellip;), &helli
 <li><a href="#template-syntax">Template Syntax</a></li>
 </ul>
 </li>
-<li><a href="#download-specifications">Download Specifications</a></li>
-<li><a href="#github-badges">GitHub badges</a><ul>
+<li><a href="#download-specifications-changelog">Download Specifications &amp; Changelog 📚</a></li>
+<li><a href="#github-badges">GitHub badges 🏅</a><ul>
 <li><a href="#implementation">Implementation</a></li>
 <li><a href="#specification">Specification</a></li>
 </ul>
