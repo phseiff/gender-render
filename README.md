@@ -35,11 +35,12 @@ If your web forms ask your customers for their pronoun preferences instead of th
 1. [Advantages & Features](#advantagesfeatures)
 2. [Content](#content) <-- you are here
 3. [Quick start](#quick-start-)
-4. [stats & links](#github-badges)
-5. [Mission Statement](#mission-statement)
-6. [License](#license)
-7. [Development & Contributing](#development--contributing)
-8. [Code of Conduct](#code-of-conduct)
+4. [Spec downloads & changelog](#download-specifications)
+5. [stats & links](#github-badges)
+6. [Mission Statement](#mission-statement)
+7. [License](#license)
+8. [Development & Contributing](#development--contributing)
+9. [Code of Conduct](#code-of-conduct)
 
 ## Quick Start 🚗💨
 
@@ -396,7 +397,7 @@ attribute    | value
 -------------|-----------------------------
 license | [![implementation license](https://img.shields.io/badge/license-OWFa%201.0-lightgreen)](https://github.com/phseiff/gender-render/blob/main/LICENSE-specification.txt)
 download latest | [![dowload](https://img.shields.io/badge/download-here-brightgreen)](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
-other downloads | [![here](https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue)](https://phseiff.com/gender-render/#download-specifications)
+other downloads | [![here](https://img.shields.io/badge/dowloads-here%20%F0%9F%94%97-lightblue)](#download-specifications)
 
 ## Mission Statement 📕
 
