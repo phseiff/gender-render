@@ -9,10 +9,91 @@ import subprocess
 import os
 import pathlib
 import shutil
+import json
 
 from wheezy.template.engine import Engine
 from wheezy.template.ext.core import CoreExtension
 from wheezy.template.loader import FileLoader
+
+
+# helper function to increase a version number
+
+def increment_version(v: str, level: str) -> str:
+    v_list: list = v.split(".")
+    assert len(v_list) == 3
+    for j in range(len(v_list)):
+        v_list[j] = int(v_list[j])
+    if level in {"bugfix", "wording"}:
+        v_list[2] += 1
+    elif level == "minor":
+        v_list[1] += 1
+        v_list[2] = 0
+    elif level == "major":
+        v_list[0] += 1
+        v_list[1] = 0
+        v_list[2] = 0
+    for j in range(len(v_list)):
+        v_list[j] = str(v_list[j])
+    v = ".".join(v_list)
+    return v
+
+
+# parse commit message, and increment:
+
+CHANGELOG_FILE = "docs/specs/changelog.json"
+changelog = None
+if not (os.path.exists(CHANGELOG_FILE) and os.path.isfile(CHANGELOG_FILE)):
+    with open(CHANGELOG_FILE, "w") as changelog_file:
+        changelog_file.write("{}")
+    print("Created changelog file!")
+with open(CHANGELOG_FILE, "r+") as changelog_file:
+    changelog = json.load(changelog_file)
+    changelog_file.seek(0)
+
+    commit_message = sys.argv[1]
+    try:
+        # we accept messages in the format "text", as well as
+        # "[<spec_name>|implementation] ([bugfix|wording|minor|major]): <text>"
+        assert "):" in commit_message
+        background, text = commit_message.split("): ", 1)
+        assert " (" in background
+        aspect, level = background.split(" (", 1)
+        assert level in {"bugfix", "minor", "major", "wording"}
+        if aspect == "implementation":
+            file_name = "src/__init__.py"
+            left = '\n__version__ = "'
+            right = '"\n'
+        else:
+            file_name = "docs/" + aspect
+            left = '\\newcommand{\\version}{v'
+            right = '}'
+        assert os.path.exists(file_name) and os.path.isfile(file_name)
+        with open(file_name, "r+") as f:
+            file_content = f.read()
+            f.seek(0)
+        # with open(file_name, "r+") as f:
+            assert left in file_content
+            left_wing, rest = file_content.split(left, 1)
+            assert right in rest
+            old_version, right_wing = rest.split(right, 1)
+            new_version = increment_version(old_version, level)
+            file_content = left_wing + left + new_version + right + right_wing
+            print("file:", file_name)
+            print("old version:", old_version)
+            print("new version:", new_version)
+            if aspect == "implementation" and input("modify implementation version? >> ") != "yes":
+                sys.exit(0)
+            f.write(file_content)
+
+            if aspect != "implementation":
+                spec_file_name = aspect.split(".")[0]
+                if spec_file_name not in changelog:
+                    changelog[spec_file_name] = {}
+                changelog[spec_file_name][new_version] = text
+        json.dump(changelog, changelog_file, indent=4, sort_keys=True)
+
+    except AssertionError:
+        print("No version was incremented.")
 
 # index specification versions:
 
