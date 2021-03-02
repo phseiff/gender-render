@@ -38,6 +38,7 @@ docs/images/title.draft3.svg
 docs/images/title.inkspace.svg
 docs/images/title.pdf
 docs/images/title.svg
+docs/specs/changelog.json
 docs/specs/specs.txt
 docs/specs/spec/latest.pdf
 docs/specs/spec/spec-v0.1.0.pdf
