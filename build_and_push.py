@@ -10,15 +10,9 @@ import os
 import pathlib
 import shutil
 
-# build the full README-file:
-
-with open("docs/usage-guides/quick-start.md", "r") as f:
-    quick_start_guide = f.read()
-with open("docs/usage-guides/README-template.md", "r") as readme_template_file:
-    with open("README.md", "w") as readme_file:
-        readme_file.write(readme_template_file.read().format(
-            quick_start=quick_start_guide
-        ))
+from wheezy.template.engine import Engine
+from wheezy.template.ext.core import CoreExtension
+from wheezy.template.loader import FileLoader
 
 # index specification versions:
 
@@ -63,6 +57,26 @@ for spec_file in specification_files:
     with open(os.path.join(spec_dir, "versions.txt"), "w") as spec_versions_file:
         spec_versions_file.write("\n".join(versions_of_this_specification))
     print("")
+
+# render specification download list:
+
+searchpath = ['docs']
+engine = Engine(
+    loader=FileLoader(searchpath),
+    extensions=[CoreExtension()]
+)
+template = engine.get_template('spec_dl_page_blueprint.html')
+
+# build the full README-file:
+
+with open("docs/usage-guides/quick-start.md", "r") as f:
+    quick_start_guide = f.read()
+with open("docs/usage-guides/README-template.md", "r") as readme_template_file:
+    with open("README.md", "w") as readme_file:
+        readme_file.write(readme_template_file.read().format(
+            quick_start=quick_start_guide,
+            spec_downloads=template.render({})
+        ))
 
 # save a list of all specifications:
 with open("docs/specs/specs.txt", "w") as spec_list_file:

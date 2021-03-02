@@ -43,6 +43,8 @@ If your web forms ask your customers for their pronoun preferences instead of th
 
 {quick_start}
 
+{spec_downloads}
+
 ## GitHub badges
 
 ### Implementation

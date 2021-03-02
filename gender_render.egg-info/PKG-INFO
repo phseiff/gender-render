@@ -370,6 +370,21 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         </td></tr>
         </table>
         
+        ## Download Specifications
+        
+        gender\*render follows a strict set of easily implementable specifications.
+        The implementations explain in-depth which design decision was taken why and how gender\*render works exactly, but also define guidelines for re-implementing gender\*render for different programming- and well as natural languages, and contain various findings and ideas/ concepts on how to deal with various aspects of grammatical gender and automated gendering in a technical context, some of whom might help you in writing related or similar tools.
+        
+        There is one main specification ("spec"), as well as several extensions specifications ("ext-...").
+        To get started, you can download the [main specification](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf), which dives further into the versioning scheme of gender\*render specifications, their vision and development model, or download any specification in any version from the following list.
+        
+        * spec:
+          * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
+          * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf)
+          * [v0.1.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf)
+        
+        
+        
         ## GitHub badges
         
         ### Implementation

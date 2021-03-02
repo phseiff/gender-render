@@ -3,7 +3,7 @@
 
 .. include:: ../README.md
 
-.. include:: ../download_page.md
+## Reference Implementation
 
 The gender*render-python reference implementation.
 For documentation and a usage guide, see https://phseiff.com/gender-render/
