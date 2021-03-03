@@ -156,7 +156,7 @@ with open("docs/usage-guides/README-template.md", "r") as readme_template_file:
     with open("README.md", "w") as readme_file:
         readme_file.write(readme_template_file.read().format(
             quick_start=quick_start_guide,
-            spec_downloads=template.render({})
+            spec_downloads=template.render({"changelog": changelog})
         ))
 
 # save a list of all specifications:
