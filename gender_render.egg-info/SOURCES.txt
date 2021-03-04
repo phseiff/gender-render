@@ -45,6 +45,8 @@ docs/specs/spec/spec-v0.1.0.pdf
 docs/specs/spec/spec-v0.1.0.tex
 docs/specs/spec/spec-v0.1.1.pdf
 docs/specs/spec/spec-v0.1.1.tex
+docs/specs/spec/spec-v0.2.0.pdf
+docs/specs/spec/spec-v0.2.0.tex
 docs/specs/spec/versions.txt
 docs/template-dir/head.mako
 docs/template-dir/html.mako
