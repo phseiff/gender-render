@@ -373,6 +373,7 @@ To get started, you can download the [main specification](https://phseiff.com/ge
 
 * spec:
   * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
+  * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf) - Change "gripd" to "idpd".
   * [v0.3.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.pdf) - Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.
   * [v0.2.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.pdf) - Add the concept of canonical context values and direct-mapped context values to the specification.
   * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf) - Mention RGB-dialogues as a possible use case.
