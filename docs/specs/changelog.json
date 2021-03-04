@@ -1,7 +1,8 @@
 {
     "spec": {
-        "0.2.0": "Add the concept of canonical context values and direct-mapped context values to the specification.",
         "0.1.0": "Initial release",
-        "0.1.1": "Mention RGB-dialogues as a possible use case."
+        "0.1.1": "Mention RGB-dialogues as a possible use case.",
+        "0.2.0": "Add the concept of canonical context values and direct-mapped context values to the specification.",
+        "0.3.0": "Extend on how to determine whether a implementation follows the standard or not regarding the extension specs."
     }
 }
