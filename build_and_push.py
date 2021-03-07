@@ -282,6 +282,7 @@ def main():
         output, error = process.communicate()
 
 
+print("test2")
 if __name__ == "__main__":
     print("test")
     if "make-html" in sys.argv:
