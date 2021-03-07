@@ -18,16 +18,17 @@ jobs:
 
       - name: Build and Tests 🔧
         run: |
-          # install test- and installation tools:
-          sudo pip3 install setuptools
-          sudo pip3 install wheezy.template
-          sudo pip3 install beautifulsoup4
           # sudo apt-get install -y texlive-plain-generic
           # echo "installed texlive-plain-generic!"
           sudo apt-get install -y tex4ht
           echo "installed tex4ht!"
           sudo apt-get install -y texlive-latex-base
           echo "installed texlive-latex-base!"
+
+          # install test- and installation tools:
+          sudo pip3 install setuptools
+          sudo pip3 install wheezy.template
+          sudo pip3 install beautifulsoup4
 
           # build html pages from latex sources:
           chmod +x ./build_and_push.py
