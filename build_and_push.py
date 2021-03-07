@@ -3,7 +3,7 @@
 This file is executed as a means to build the project before pushing.
 I tried getting it to work with github actions, but trust me, all that stuff wasn't easy to get to work.
 """
-
+print("fufufu")
 import sys
 import subprocess
 import os
