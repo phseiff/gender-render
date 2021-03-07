@@ -39,7 +39,7 @@ jobs:
 
           # build html pages from latex sources:
           chmod +x ./build_and_push.py
-          python3 build_and_push.py make-html
+          ./build_and_push.py make-html
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
