@@ -283,6 +283,7 @@ def main():
 
 
 if __name__ == "__main__":
+    print("test")
     if "make-html" in sys.argv:
         make_html_for_all_specs()
     else:
