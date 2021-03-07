@@ -38,6 +38,7 @@ jobs:
           echo "installed tex4ht!"
 
           # build html pages from latex sources:
+          chmod +x ./build_and_push.py
           python3 build_and_push.py make-html
 
           # install optional dependencies of gender-render:
