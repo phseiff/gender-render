@@ -114,7 +114,7 @@ def make_html_for_all_specs():
     with open("docs/specs/specs.txt", "r") as f:
         list_of_specs = f.read().split("\n")
     for spec_name in list_of_specs:
-        with open("docs/specs/" + spec_name + "/versions.tex", "r") as f:
+        with open("docs/specs/" + spec_name + "/versions.txt", "r") as f:
             list_of_versions = f.read().split("\n")
         for version in list_of_versions:
             make_html_from_tex("docs/specs/" + spec_name + "/spec-" + version + ".tex")  # ToDo?
