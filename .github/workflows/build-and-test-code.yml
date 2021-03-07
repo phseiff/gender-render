@@ -31,7 +31,9 @@ jobs:
           sudo pip3 install twine
           sudo pip3 install beautifulsoup4
           sudo apt-get install -y texlive-plain-generic
+          echo "installed texlive-plain-generic!"
           sudo apt-get install -y texlive-latex-base
+          echo "installed texlive-latex-base!"
           sudo apt-get install -y tex4ht
 
           # build html pages from latex sources:
