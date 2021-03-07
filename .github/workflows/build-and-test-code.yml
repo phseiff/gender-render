@@ -29,6 +29,11 @@ jobs:
           sudo pip3 install pdoc3
           sudo pip3 install wheezy.template
           sudo pip3 install twine
+          sudo pip3 install beautifulsoup4
+          sudo apt-get install -y tex4ht
+
+          # build html pages from latex sources:
+          python3 build_and_push.py make-html
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
