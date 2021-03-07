@@ -19,6 +19,7 @@ jobs:
       - name: Build and Tests 🔧
         run: |
           # install test- and installation tools:
+          sudo pip3 install setuptools
           sudo pip3 install wheezy.template
           sudo pip3 install beautifulsoup4
           # sudo apt-get install -y texlive-plain-generic
@@ -33,7 +34,6 @@ jobs:
           ./build_and_push.py make-html
 
           sudo pip3 install wheel
-          sudo pip3 install setuptools
           sudo pip3 install setuptools_scm
           sudo pip3 install vulture
           sudo pip3 install coverage
