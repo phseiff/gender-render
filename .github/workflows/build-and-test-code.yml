@@ -19,16 +19,7 @@ jobs:
       - name: Build and Tests 🔧
         run: |
           # install test- and installation tools:
-          sudo pip3 install wheel
-          sudo pip3 install setuptools
-          sudo pip3 install setuptools_scm
-          sudo pip3 install vulture
-          sudo pip3 install coverage
-          sudo pip3 install typing_extensions
-          sudo pip3 install deepdiff[murmur]
-          sudo pip3 install pdoc3
           sudo pip3 install wheezy.template
-          sudo pip3 install twine
           sudo pip3 install beautifulsoup4
           # sudo apt-get install -y texlive-plain-generic
           # echo "installed texlive-plain-generic!"
@@ -40,6 +31,16 @@ jobs:
           # build html pages from latex sources:
           chmod +x ./build_and_push.py
           ./build_and_push.py make-html
+
+          sudo pip3 install wheel
+          sudo pip3 install setuptools
+          sudo pip3 install setuptools_scm
+          sudo pip3 install vulture
+          sudo pip3 install coverage
+          sudo pip3 install typing_extensions
+          sudo pip3 install deepdiff[murmur]
+          sudo pip3 install pdoc3
+          sudo pip3 install twine
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
