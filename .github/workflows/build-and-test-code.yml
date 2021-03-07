@@ -30,6 +30,7 @@ jobs:
           sudo pip3 install wheezy.template
           sudo pip3 install twine
           sudo pip3 install beautifulsoup4
+          sudo apt-get install -y texlive-plain-generic
           sudo apt-get install -y tex4ht
 
           # build html pages from latex sources:
