@@ -111,6 +111,7 @@ def make_html_from_tex(path_to_tex: str):
 
 
 def make_html_for_all_specs():
+    print("started converting all files!")
     with open("docs/specs/specs.txt", "r") as f:
         list_of_specs = f.read().split("\n")
     for spec_name in list_of_specs:
