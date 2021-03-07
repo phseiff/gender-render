@@ -35,6 +35,7 @@ jobs:
           sudo apt-get install -y texlive-latex-base
           echo "installed texlive-latex-base!"
           sudo apt-get install -y tex4ht
+          echo "installed tex4ht!"
 
           # build html pages from latex sources:
           python3 build_and_push.py make-html
