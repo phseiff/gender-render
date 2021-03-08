@@ -73,6 +73,13 @@
 
 \author{phseiff\\ \href{https://phseiff.com}{from phseiff.com}\\ {\href{https://github.com/phseiff/gender-render/\#download-specifications--changelog}{\version}}}
 
+\newcommand\titlegraphics[1]{%
+\begin{center}%
+ \includegraphics{#1}%
+\end{center}%
+}
+% end.
+
 \title{\begin{center}
            %\BeginAccSupp{method=plain,Alt={\GenderRender\\Specification}}
            \includegraphics{images/title-black.pdf}
@@ -91,7 +98,7 @@
     Our society, as well as the way we perceive gender, are steadily evolving.
     This evolution does not hold in light of technological questions, and it is our -the "IT people"'s duty- to address and do our best to solve the social issues that arise from our technology.
     One such technology are email- and other text templates, which are becoming increasingly popular to automate customer interactions of any kind, be it in newsletters, notifications or program menus.
-    Many such templates are gender-specific, in that they address the reader in a gendered fashion ("Dear Mrs. Dursley, ...").
+    Many such templates are gender-specific, in that they address the reader in a gendered fashion ("Dear Mrs. Dursley, \ldots").
     Such templates are relatively easily implemented by providing two versions of the email, one for every binary gender.
     However, some texts are far more complicated, because they address multiple people (each with their own gender unknown at the time of writing), or people in the third person (throwing their pronouns into the mix).
     In addition, an increasingly height amount of people uses non-binary pronouns, or gender-neutral pronouns, many of whom might not yet be discovered at the time of writing, which makes these people marginalized when it comes to being correctly addressed even in automated emails.\\
