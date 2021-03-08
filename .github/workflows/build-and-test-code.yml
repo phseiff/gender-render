@@ -22,6 +22,7 @@ jobs:
           sudo add-apt-repository ppa:jonathonf/texlive-2019
           sudo apt-get update
           sudo apt-get install texlive
+          sudo apt-get install pandoc
 
           # install make4ht:
           cd ../
