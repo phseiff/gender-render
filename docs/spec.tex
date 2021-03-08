@@ -80,11 +80,11 @@
 }
 % end.
 
-\title{\begin{center}
+\title{
            %\BeginAccSupp{method=plain,Alt={\GenderRender\\Specification}}
-           \includegraphics{images/title-black.pdf}
+           \titlegraphics{images/title-black.pdf}
            %\EndAccSupp{}
-\end{center} Template system and implementation specification for rendering gender-neutral email templates with pronoun information}
+Template system and implementation specification for rendering gender-neutral email templates with pronoun information}
 
 
 \begin{document}
@@ -485,7 +485,7 @@ some context values that are referred to as direct mapped context values still p
                  syntactic context of the \GenderRender-tag & procedure\\
                  \hline
                  \hline
-                 Every direct-mapped context value with canonical \emph{foo} \newline {\tiny except \texttt{address} and its aliases} & The tag is replaced with the value of the value of the \emph{foo}-attribute. \\
+                 Every direct-mapped context value with canonical \emph{foo} \newline {\tiny except \texttt{address} and its aliases} & The tag is replaced with the value of the \emph{foo}-attribute. \\
                  \hline
                  Form of Address (context value with canonical \texttt{address}) & If the \texttt{gender-addressing}-attribute is set to false (or undefined), the tag is replaced with the value of the \texttt{personal-name}-attribute.\newline Otherwise, it is handled like any other direct-mapped context value (see above). \\
                  \hline
