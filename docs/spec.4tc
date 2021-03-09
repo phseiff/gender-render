@@ -1,0 +1,29 @@
+\expandafter\ifx\csname doTocEntry\endcsname\relax \expandafter\endinput\fi
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{Q1-1-1}{}{Contents}}{3}\relax 
+\doTocEntry\toclikesection{}{\csname a:TocLink\endcsname{1}{x1-1000}{QQ2-1-2}{Contents}}{4}\relax 
+\doTocEntry\tocsection{1}{\csname a:TocLink\endcsname{1}{x1-20001}{QQ2-1-3}{Abstract}}{5}\relax 
+\doTocEntry\tocsection{2}{\csname a:TocLink\endcsname{1}{x1-30002}{QQ2-1-4}{Requirements}}{6}\relax 
+\doTocEntry\tocsection{3}{\csname a:TocLink\endcsname{1}{x1-40003}{QQ2-1-5}{Design Decisions}}{7}\relax 
+\doTocEntry\tocsection{4}{\csname a:TocLink\endcsname{1}{x1-50004}{QQ2-1-6}{Standard}}{8}\relax 
+\doTocEntry\tocsubsection{4.1}{\csname a:TocLink\endcsname{1}{x1-60001}{QQ2-1-7}{Template Language}}{8}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-6005}{}{\numberline {1}{\ignorespaces Types of context values in tags\relax }}}{12}\relax 
+\doTocEntry\tocsubsection{4.2}{\csname a:TocLink\endcsname{1}{x1-70002}{QQ2-1-9}{Pronoun Description Data}}{14}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-7002}{}{\numberline {2}{\ignorespaces Supported properties in individual pronoun data\relax }}}{16}\relax 
+\doTocEntry\tocsubsection{4.3}{\csname a:TocLink\endcsname{1}{x1-80003}{QQ2-1-11}{Pronoun Renderer}}{17}\relax 
+\doTocEntry\tocsubsubsection{4.3.1}{\csname a:TocLink\endcsname{1}{x1-90001}{QQ2-1-12}{ gender*render Renderer specification}}{17}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-9003}{}{\numberline {3}{\ignorespaces Types of errors whilst rendering\relax }}}{20}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-9005}{}{\numberline {4}{\ignorespaces Id resolution\relax }}}{23}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-9007}{}{\numberline {5}{\ignorespaces Rendering procedures for each syntactic context\relax }}}{25}\relax 
+\doTocEntry\tocsubsubsection{4.3.2}{\csname a:TocLink\endcsname{1}{x1-100002}{QQ2-1-16}{Implementation guidelines}}{27}\relax 
+\doTocEntry\tocsubsubsubsection{}{\csname a:TocLink\endcsname{1}{x1-110011}{QQ2-1-17}{Naming Guidelines}}{27}\relax 
+\doTocEntry\tocsubsubsubsection{}{\csname a:TocLink\endcsname{1}{x1-120012}{QQ2-1-18}{Object Orientation}}{28}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-12003}{}{\numberline {6}{\ignorespaces OOP equivalents for low-level languages\relax }}}{29}\relax 
+\doTocEntry\tocsubsubsubsection{}{\csname a:TocLink\endcsname{1}{x1-130013}{QQ2-1-20}{Naming the package}}{30}\relax 
+\doTocEntry\tocsubsubsubsection{}{\csname a:TocLink\endcsname{1}{x1-140014}{QQ2-1-21}{Naming the module/ library}}{30}\relax 
+\doTocEntry\tocsubsubsubsection{}{\csname a:TocLink\endcsname{1}{x1-150015}{QQ2-1-22}{Core functionality}}{30}\relax 
+\doTocEntry\tocsubsubsubsection{}{\csname a:TocLink\endcsname{1}{x1-160016}{QQ2-1-23}{Warnings}}{32}\relax 
+\doTocEntry\toclot{}{\csname a:TocLink\endcsname{1}{x1-16003}{}{\numberline {7}{\ignorespaces Potential Warnings\relax }}}{34}\relax 
+\doTocEntry\tocsection{5}{\csname a:TocLink\endcsname{1}{x1-170005}{QQ2-1-25}{Specification developement}}{35}\relax 
+\doTocEntry\tocsection{6}{\csname a:TocLink\endcsname{1}{x1-180006}{QQ2-1-26}{Exemplary Implementation}}{36}\relax 
+\doTocEntry\tocsection{7}{\csname a:TocLink\endcsname{1}{x1-190007}{QQ2-1-27}{Outlook}}{37}\relax 
+\doTocEntry\tocsection{8}{\csname a:TocLink\endcsname{1}{x1-200008}{QQ2-1-28}{License}}{37}\relax 
