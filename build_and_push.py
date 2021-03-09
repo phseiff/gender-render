@@ -117,11 +117,33 @@ def make_html_for_all_specs():
     print("started converting all tex-files to html!")
     with open("docs/specs/specs.txt", "r") as f:
         list_of_specs = f.read().split("\n")
+    # iterate over all specifications:
     for spec_name in list_of_specs:
         with open("docs/specs/" + spec_name + "/versions.txt", "r") as f:
             list_of_versions = f.read().split("\n")
+        # copy images to the specification directory to allow make4ht to convert image files to png:
+        images_from = "docs/images"
+        images_to = "docs/specs/" + spec_name + "/images"
+        shutil.copytree(images_from, images_to)
+        # iterate over all versions of the spec to convert them to html:
         for version in list_of_versions:
-            make_html_from_tex("docs/specs/" + spec_name + "/" + spec_name + "-" + version + ".tex")  # ToDo?
+            subprocess.Popen(["make4ht", "-c", "config.cfg", spec_name + "-" + version + ".tex", "fn-in"],
+                             cwd="docs/specs/" + spec_name, stdout=subprocess.PIPE, stdin=subprocess.PIPE).wait()
+            # replace links to images in the generated html with links to the shared image folder in docs/images:
+            image_files = [f for f in os.listdir(images_to)]
+            html_file_name = "docs/specs/" + spec_name + "/" + spec_name + "-" + version
+            with open(html_file_name + ".html", "r") as html_file:
+                html_content = html_file.read()
+            for image_file in image_files:
+                if "src='images/" + image_file + "'" in html_content:
+                    html_content = html_content.replace("src='images/" + image_file + "'",
+                                                        "src='../../images/" + image_file + "'")
+            with open(html_file_name + ".html", "w") as html_file:
+                html_file.write(html_content)
+        # move generated images back to the image folder:
+        image_files = [f for f in os.listdir(images_to)]
+        for image_file in image_files:
+            shutil.move(os.path.join(images_to, image_file), os.path.join(images_from, image_file))
 
 
 def main():
