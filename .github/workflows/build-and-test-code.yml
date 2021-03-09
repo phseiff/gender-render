@@ -22,6 +22,7 @@ jobs:
           sudo apt-get install tex4ht
           sudo apt-get install texlive-latex-base
           sudo apt-get install texlive-extra-utils
+          sudo apt-get install texlive-latex-extra
           sudo apt install texlive-luatex
           sudo add-apt-repository ppa:jonathonf/texlive-2019
           sudo apt-get update
