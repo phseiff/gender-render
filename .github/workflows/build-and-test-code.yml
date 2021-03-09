@@ -19,6 +19,7 @@ jobs:
       - name: Build and Tests 🔧
         run: |
           # install texlive:
+          sudo apt-get install texlive-latex-base
           sudo add-apt-repository ppa:jonathonf/texlive-2019
           sudo apt-get update
           sudo apt-get install texlive
