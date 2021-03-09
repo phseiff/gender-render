@@ -33,7 +33,7 @@ jobs:
           cd make4ht
           make justinstall
           echo "justinstall worked fine!"
-          sudo make install justinstall
+          # sudo make install justinstall
           cd ../gender-render
 
           cd docs
