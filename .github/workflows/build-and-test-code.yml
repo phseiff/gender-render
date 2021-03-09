@@ -21,6 +21,7 @@ jobs:
           # install texlive:
           sudo apt-get install texlive-latex-base
           sudo apt-get install texlive-extra-utils
+          sudo apt install texlive-luatex
           sudo add-apt-repository ppa:jonathonf/texlive-2019
           sudo apt-get update
           sudo apt-get install texlive
