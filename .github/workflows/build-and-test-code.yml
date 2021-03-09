@@ -32,7 +32,8 @@ jobs:
           git clone https://github.com/michal-h21/make4ht.git
           cd make4ht
           make justinstall
-          sudo make install
+          echo "justinstall worked fine!"
+          sudo make install justinstall
           cd ../gender-render
 
           cd docs
