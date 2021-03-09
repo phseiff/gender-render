@@ -37,7 +37,7 @@ jobs:
           cd ../gender-render
 
           cd docs
-          make4ht -c config.cfg spec.tex "fn-in"
+          sudo make4ht -c config.cfg spec.tex "fn-in"
           cd ../
 
           # sudo apt-get install -y texlive-plain-generic
