@@ -14,9 +14,12 @@ import time
 from bs4 import BeautifulSoup
 import bs4
 
-from wheezy.template.engine import Engine
-from wheezy.template.ext.core import CoreExtension
-from wheezy.template.loader import FileLoader
+try:
+    from wheezy.template.engine import Engine
+    from wheezy.template.ext.core import CoreExtension
+    from wheezy.template.loader import FileLoader
+except ImportError:
+    pass
 
 
 def make_html_from_tex(path_to_tex: str):
@@ -111,14 +114,14 @@ def make_html_from_tex(path_to_tex: str):
 
 
 def make_html_for_all_specs():
-    print("started converting all files!")
+    print("started converting all tex-files to html!")
     with open("docs/specs/specs.txt", "r") as f:
         list_of_specs = f.read().split("\n")
     for spec_name in list_of_specs:
         with open("docs/specs/" + spec_name + "/versions.txt", "r") as f:
             list_of_versions = f.read().split("\n")
         for version in list_of_versions:
-            make_html_from_tex("docs/specs/" + spec_name + "/spec-" + version + ".tex")  # ToDo?
+            make_html_from_tex("docs/specs/" + spec_name + "/" + spec_name + "-" + version + ".tex")  # ToDo?
 
 
 def main():
@@ -216,7 +219,8 @@ def main():
         print("full path to spec is", full_path_to_spec)
 
         # check if version already exists:
-        full_path_to_versioned_location_of_spec = os.path.join(spec_dir, "spec-" + version + ".tex")  # ToDo?
+        full_path_to_versioned_location_of_spec = os.path.join(
+            spec_dir, spec_file.split(".")[0] + "-" + version + ".tex")
         if os.path.exists(full_path_to_versioned_location_of_spec):
             print("already exists!\n")
             continue
