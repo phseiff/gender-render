@@ -28,7 +28,6 @@ docs/images/idea-illustration.svg
 docs/images/template-as-finite-state-machine - old version.png
 docs/images/template-as-finite-state-machine.drawio
 docs/images/template-as-finite-state-machine.png
-docs/images/title-black-.png
 docs/images/title-black.inkspace.svg
 docs/images/title-black.pdf
 docs/images/title-inline.inkspace.svg
