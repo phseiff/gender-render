@@ -38,10 +38,10 @@ jobs:
           echo "justinstall worked fine!"
           cd ../gender-render
 
-          # cd docs
-          # sudo make4ht -c config.cfg spec.tex "fn-in"
-          # cd ../
+          # create html files:
+          python3 ./build_and_push.py make-html
 
+          # install Python dependencies:
           sudo pip3 install setuptools
           sudo pip3 install wheel
           sudo pip3 install setuptools_scm

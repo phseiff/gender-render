@@ -10,9 +10,6 @@ import os
 import pathlib
 import shutil
 import json
-import time
-from bs4 import BeautifulSoup
-import bs4
 
 try:
     from wheezy.template.engine import Engine
@@ -22,128 +19,88 @@ except ImportError:
     pass
 
 
-def make_html_from_tex(path_to_tex: str):
-    directory, file_name = path_to_tex.rsplit("/", 1)
-    print("\n##############\n#\n# " + file_name + "\n#\n##############\n")
-    p = subprocess.Popen(["htlatex", file_name, "xhtml, charset=utf-8", " -cunihtf -utf8"], cwd=directory,
-                         stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+wrong_title_section = r"""\title{\begin{center}
+           %\BeginAccSupp{method=plain,Alt={\GenderRender\\Specification}}
+           \includegraphics{images/title-black.pdf}
+           %\EndAccSupp{}
+\end{center} Template system and implementation specification for rendering gender-neutral email templates with pronoun information}"""
 
-    # convert to html:
-    while True:
-        try:
-            time.sleep(4)
-            print("entering \"q\".")
-            p.stdin.write(b"q\n")
-            p.stdin.flush()
-        except BrokenPipeError:
-            print("finished creating html file!")
-            break
+corrected_title_section = r"""
+\newcommand\titlegraphics[1]{%
+\begin{center}%
+ \includegraphics{#1}%
+\end{center}%
+}
+% end.
 
-    # get created html:
-    with open(path_to_tex.replace(".tex", ".html"), "r") as f:
-        html_content = f.read()
-
-    # handle multicolumn:
-    html_soup_representation = BeautifulSoup(html_content, "html.parser")
-    for e in html_soup_representation.find_all("tr"):
-        if (len(e.find_all(recursive=False)) == 2 and len(e.find_all("td", recursive=False)) == 1
-                and len(e.find_all("div", {"class": "multicolumn"}, recursive=False)) == 1):
-            amount_of_columns_in_table = len(e.parent.find("tr").find_all("td", recursive=False))
-            print("multicolumn row - before:", e)
-            print("amount_of_columns_in_table:", amount_of_columns_in_table)
-            e.td.string = e.div.string
-            e.td["colspan"] = amount_of_columns_in_table
-            e.div.decompose()
-            print("multicolumn row - after:", e, "\n")
-
-    # add linebreak after the header
-    html_soup_representation.find("h2", {"class": "titleHead"}).img["alt"] = "gender*render"
-    html_soup_representation.find("h2", {"class": "titleHead"}).contents.insert(2,
-                                                                                html_soup_representation.new_tag("br"))
-
-    # edit footnotes
-    footnote_numbers = set()
-    all_footnotes = str()
-    for e in html_soup_representation.find_all("span", {"class": "footnote-mark"}):
-        if e.sup:
-            footnote_number = e.sup.text.lstrip().rstrip()
-            if footnote_number not in footnote_numbers:
-                footnote_numbers.add(footnote_number)
-                parent = e.parent
-                e["id"] = footnote_number + "-footnote"
-                e.sup.contents = [html_soup_representation.new_tag("a", href="#" + footnote_number + "-footnote-down")]
-                e.sup.a.string = footnote_number
-                footnote = str()
-                in_relevant_area = False
-                print("footnote anchor:", e)
-                for e2 in parent.find_all(recursive=False):
-                    if (e2.name == "span" and not e2.has_attr("id") and e2.find("a", recursive=False)
-                            and e2.a.find("sup", recursive=False) and e2.a.sup.text.lstrip().rstrip() == footnote_number):
-                        e2.a["href"] = "#" + footnote_number + "-footnote"
-                        e2.a.contents.insert(0, bs4.NavigableString("^"))
-                        e2.a["id"] = footnote_number + "-footnote-down"
-                        footnote += str(e2)
-                        print("found relevant area - starter:", e2)
-                        e2.decompose()
-                        in_relevant_area = True
-                    elif in_relevant_area:
-                        for e3 in e2.find_all(recursive=True):
-                            if e3.has_attr("class") and e3["class"][0].endswith("-8"):
-                                break
-                        else:
-                            if not (e2.has_attr("class") and e2["class"][0].endswith("-8")):
-                                in_relevant_area = False
-                    if in_relevant_area:
-                        footnote += str(e2)
-                        e2.decompose()
-                print("footnote:", footnote.replace("\n", " "))
-                print("footnote_anchor:", e.__str__(), "\n")
-                all_footnotes += "<p>" + footnote.replace("\n", " ") + "</p>\n"
-    if all_footnotes:
-        all_footnotes = "<h3>Footnotes</h3>\n" + all_footnotes
-        print("\nall footnotes:\n" + all_footnotes)
-        html_soup_representation.html.body.contents.append(BeautifulSoup(all_footnotes, "html.parser"))
-
-    footnote_numbers = sorted(list(footnote_numbers))
-    print("footnote_numbers:", footnote_numbers)
-
-    # save modified html
-    # with open(path_to_tex.rsplit("/", 1)[0] + "/index.html", "w") as f:
-    with open(path_to_tex.replace(".tex", ".html"), "w") as f:
-        f.write(str(html_soup_representation.prettify()))
+\title{
+           %\BeginAccSupp{method=plain,Alt={\GenderRender\\Specification}}
+           \titlegraphics{images/title-black.pdf}
+           %\EndAccSupp{}
+Template system and implementation specification for rendering gender-neutral email templates with pronoun information}
+"""
 
 
 def make_html_for_all_specs():
-    print("started converting all tex-files to html!")
+    print("started converting all tex-files to html!\n")
     with open("docs/specs/specs.txt", "r") as f:
         list_of_specs = f.read().split("\n")
     # iterate over all specifications:
     for spec_name in list_of_specs:
         with open("docs/specs/" + spec_name + "/versions.txt", "r") as f:
             list_of_versions = f.read().split("\n")
-        # copy images to the specification directory to allow make4ht to convert image files to png:
+        # copy images and settings to the specification directory to allow make4ht to convert image files to png:
         images_from = "docs/images"
         images_to = "docs/specs/" + spec_name + "/images"
         shutil.copytree(images_from, images_to)
+        # copy styling and configuration files:
+        shutil.copyfile("docs/spec-styling.css", "docs/specs/" + spec_name + "/spec-styling.css")
+        shutil.copyfile("docs/config.cfg", "docs/specs/" + spec_name + "/config.cfg")
         # iterate over all versions of the spec to convert them to html:
         for version in list_of_versions:
-            subprocess.Popen(["make4ht", "-c", "config.cfg", spec_name + "-" + version + ".tex", "fn-in"],
-                             cwd="docs/specs/" + spec_name, stdout=subprocess.PIPE, stdin=subprocess.PIPE).wait()
-            # replace links to images in the generated html with links to the shared image folder in docs/images:
+            tex_file_name_base = "docs/specs/" + spec_name + "/" + spec_name + "-" + version
+            # do some modifications to the tex file before converting:
+            with open(tex_file_name_base + ".tex", "r") as tex_file:
+                tex_file_original_content = tex_file.read()
+            # assert wrong_title_section in tex_file_original_content
+            tex_file_modified_content = tex_file_original_content.replace(wrong_title_section, corrected_title_section)
+            with open(tex_file_name_base + ".tex", "w") as tex_file:
+                tex_file.write(tex_file_modified_content)
+            # convert:
+            command = ["make4ht", "-c", "config.cfg", spec_name + "-" + version + ".tex", "fn-in"]
+            print("cmd:", *command)
+            p = subprocess.Popen(command, cwd="docs/specs/" + spec_name, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            output, error = p.communicate()
+            print("output:", (output.decode("utf-8").rstrip() if output else None))
+            print("error:", (error.decode("utf-8").rstrip() if error else None))
+            print("\n")
+            # replace links to images (and styling) in the generated html with links to the shared image folder in
+            # docs/images:
             image_files = [f for f in os.listdir(images_to)]
-            html_file_name = "docs/specs/" + spec_name + "/" + spec_name + "-" + version
-            with open(html_file_name + ".html", "r") as html_file:
+            html_file_name = tex_file_name_base + ".html"
+            with open(html_file_name, "r") as html_file:
                 html_content = html_file.read()
             for image_file in image_files:
                 if "src='images/" + image_file + "'" in html_content:
                     html_content = html_content.replace("src='images/" + image_file + "'",
                                                         "src='../../images/" + image_file + "'")
-            with open(html_file_name + ".html", "w") as html_file:
+            html_content = html_content.replace("href='spec-styling.css'", "href='../../spec-styling.css'")
+            with open(html_file_name, "w") as html_file:
                 html_file.write(html_content)
+            # move original content back to the tex-file:
+            with open(tex_file_name_base + ".tex", "w") as tex_file:
+                tex_file.write(tex_file_original_content)
+            # remove generated files:
+            for ending in {"dvi", "idv", "log", "4ct", "4tc", "aux", "lg", "tmp", "xref", "css"}:
+                os.remove("docs/specs/" + spec_name + "/" + spec_name + "-" + version + "." + ending)
         # move generated images back to the image folder:
         image_files = [f for f in os.listdir(images_to)]
         for image_file in image_files:
             shutil.move(os.path.join(images_to, image_file), os.path.join(images_from, image_file))
+        shutil.rmtree(images_to)
+        # delete copied styling and configuration file:
+        os.remove("docs/specs/" + spec_name + "/spec-styling.css")
+        os.remove("docs/specs/" + spec_name + "/config.cfg")
 
 
 def main():
