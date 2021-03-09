@@ -31,7 +31,7 @@ jobs:
           cd ../
           git clone https://github.com/michal-h21/make4ht.git
           cd make4ht
-          make
+          make justinstall
           sudo make install
           cd ../gender-render
 
