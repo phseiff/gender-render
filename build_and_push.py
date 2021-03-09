@@ -3,7 +3,7 @@
 This file is executed as a means to build the project before pushing.
 I tried getting it to work with github actions, but trust me, all that stuff wasn't easy to get to work.
 """
-print("fufufu")
+
 import sys
 import subprocess
 import os
@@ -91,7 +91,7 @@ def make_html_for_all_specs():
             with open(tex_file_name_base + ".tex", "w") as tex_file:
                 tex_file.write(tex_file_original_content)
             # remove generated files:
-            for ending in {"dvi", "idv", "log", "4ct", "4tc", "aux", "lg", "tmp", "xref", "css"}:
+            for ending in {"dvi", "idv", "log", "4ct", "4tc", "aux", "lg", "tmp", "xref"}:  # , "css"}:
                 os.remove("docs/specs/" + spec_name + "/" + spec_name + "-" + version + "." + ending)
         # move generated images back to the image folder:
         image_files = [f for f in os.listdir(images_to)]
@@ -265,9 +265,7 @@ def main():
         output, error = process.communicate()
 
 
-print("test2")
 if __name__ == "__main__":
-    print("test")
     if "make-html" in sys.argv:
         make_html_for_all_specs()
     else:
