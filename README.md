@@ -371,7 +371,7 @@ The implementations explain in-depth which design decision was taken why and how
 There is one main specification ("spec"), as well as several extensions specifications ("ext-...").
 To get started, you can download the [main specification](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf), which dives further into the versioning scheme of gender\*render specifications, their vision and development model, or download any specification in any version from the following list.
 
-Clicking a version number downloads the specification as a pdf file, whilst the <sup>[html<img alt="↗" src="docs/images/external-link.svg" height="10em">]</sup>-link next to every specification version leads to a hosted html version of the specification.
+Clicking a version number downloads the specification as a pdf file, whilst the <sup>[html<img alt="↗" src="docs/images/external-link-black.svg" height="10em">]</sup>-link next to every specification version leads to a hosted html version of the specification.
 
 * spec:
   * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
