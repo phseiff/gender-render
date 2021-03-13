@@ -17,6 +17,8 @@ docs/spec.tex
 docs/spec_dl_page_blueprint.html
 docs/images/download-spec.inkspace.svg
 docs/images/download-spec.svg
+docs/images/external-link-black.svg
+docs/images/external-link-blue.svg
 docs/images/header-icon.png~
 docs/images/header-logo.png
 docs/images/icon-black.inkspace.svg

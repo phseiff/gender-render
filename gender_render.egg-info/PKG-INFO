@@ -379,20 +379,20 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         There is one main specification ("spec"), as well as several extensions specifications ("ext-...").
         To get started, you can download the [main specification](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf), which dives further into the versioning scheme of gender\*render specifications, their vision and development model, or download any specification in any version from the following list.
         
-        Clicking a version number downloads the specification as a pdf file, whilst the <sup>[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="10em">]</sup>-link next to every specification version leads to a hosted html version of the specification.
+        Clicking a version number downloads the specification as a pdf file, whilst the <sup>[html<img alt="↗" src="docs/images/external-link.svg" height="10em">]</sup>-link next to every specification version leads to a hosted html version of the specification.
         
         * spec:
           * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
           * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf)
-            <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.html)</sup> - Change "gripd" to "idpd".
+            <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.html)</sup> - Change "gripd" to "idpd".
           * [v0.3.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.pdf)
-            <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.html)</sup> - Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.
+            <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.html)</sup> - Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.
           * [v0.2.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.pdf)
-            <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.html)</sup> - Add the concept of canonical context values and direct-mapped context values to the specification.
+            <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.html)</sup> - Add the concept of canonical context values and direct-mapped context values to the specification.
           * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf)
-            <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.html)</sup> - Mention RGB-dialogues as a possible use case.
+            <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.html)</sup> - Mention RGB-dialogues as a possible use case.
           * [v0.1.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf)
-            <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.html)</sup> - Initial release
+            <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.html)</sup> - Initial release
         
         
         
