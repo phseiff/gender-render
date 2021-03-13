@@ -34,6 +34,7 @@ rendered_template_as_a_str = gr.render_template(
 <td> Template & Pronoun Data </td> <td> Result </td>
 </tr>
 
+<tr></tr>
 <tr><td>
 
 **Addressing one person**:
@@ -71,6 +72,7 @@ person who asked that [...]
 ```
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 **Addressing multiple persons**:
@@ -136,6 +138,7 @@ Emma Ackernick
 ```
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 **gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag**:
@@ -170,6 +173,7 @@ equals
 ```
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 **Address individuals who don't want to get a special title**:
@@ -199,6 +203,7 @@ Dear Joey Chase,
 ```
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 **Refer to individuals with hyponyms for person or by their profession**:
@@ -228,6 +233,7 @@ I hope the actress is doing well.
 Note that this also works for words that start with capital letters - "Actor" would've been gendered as "Actress"!
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 ***Every* gendered noun has a neutral version available**:
@@ -258,6 +264,7 @@ great hardships!
 ```
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 **If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used**:
@@ -286,6 +293,7 @@ cadet.
 ```
 
 </td></tr>
+<tr></tr>
 <tr><td>
 
 **Define your own properties**:

@@ -86,6 +86,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         <td> Template & Pronoun Data </td> <td> Result </td>
         </tr>
         
+        <tr></tr>
         <tr><td>
         
         **Addressing one person**:
@@ -123,6 +124,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         ```
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         **Addressing multiple persons**:
@@ -188,6 +190,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         ```
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         **gender*render doesn't get into your way, since you can fuse any sequence of tags into one tag**:
@@ -222,6 +225,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         ```
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         **Address individuals who don't want to get a special title**:
@@ -251,6 +255,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         ```
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         **Refer to individuals with hyponyms for person or by their profession**:
@@ -280,6 +285,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         Note that this also works for words that start with capital letters - "Actor" would've been gendered as "Actress"!
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         ***Every* gendered noun has a neutral version available**:
@@ -310,6 +316,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         ```
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         **If a noun has no explicit specific version for a grammatical gender, the neutral version of the noun is used**:
@@ -338,6 +345,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         ```
         
         </td></tr>
+        <tr></tr>
         <tr><td>
         
         **Define your own properties**:
