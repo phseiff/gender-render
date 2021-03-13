@@ -11,7 +11,8 @@ To get started, you can download the [main specification](https://phseiff.com/ge
 * @{spec_name}:
   * [download latest](https://phseiff.com/gender-render/docs/specs/@{spec_name}/latest.pdf)
 @for version in sorted(open("docs/specs/" + spec_name + "/versions.txt", "r").read().split("\n"), key=lambda v: tuple(v[1:].split(".")), reverse=True):
-  * [@{version}](https://phseiff.com/gender-render/docs/specs/@{spec_name}/@{spec_name}-@{version}.pdf)@{(" - " + changelog[spec_name][version[1:]]) if spec_name in changelog and version[1:] in changelog[spec_name] else ""}
+  * [@{version}](https://phseiff.com/gender-render/docs/specs/@{spec_name}/@{spec_name}-@{version}.pdf)
+    <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="1em">](https://phseiff.com/gender-render/docs/specs/@{spec_name}/@{spec_name}-@{version}.html)</sup>@{(" - " + changelog[spec_name][version[1:]]) if spec_name in changelog and version[1:] in changelog[spec_name] else ""}
 @end
 
 @end

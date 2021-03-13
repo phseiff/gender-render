@@ -7,7 +7,7 @@ Ever had the struggle of correctly gendering people in your automated emails? Ar
 
 [![to quickstart](https://phseiff.com/gender-render/docs/images/idea-illustration.svg)](#quick-start-)
 
-Gender\*render is not only a piece of software that can definitely come in handy if you want to write progressive automated emails, but also a proof of concept. Many people say that correctly gendering non-binary people, people with unusual pronouns, or people with no pronouns at all in automated fashions is impossible. And many live by said premise. gender\*render as a concept is supposed to be a proof that this is simply false, and that any such claims come from a mixture of missing will and laziness, with technical limitations merely being a pretext. Gender\*render comes with an in-depth specification, so you can easily implement it in any language of your choice, port it to other (human) languages or read about the thoughts behind this project! [[Download spec]](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
+Gender\*render is not only a piece of software that can definitely come in handy if you want to write progressive automated emails, but also a proof of concept. Many people say that correctly gendering non-binary people, people with unusual pronouns, or people with no pronouns at all in automated fashions is impossible. And many live by said premise. gender\*render as a concept is supposed to be a proof that this is simply false, and that any such claims come from a mixture of missing will and laziness, with technical limitations merely being a pretext. Gender\*render comes with an in-depth specification, so you can easily implement it in any language of your choice, port it to other (human) languages or read about the thoughts behind this project! [[Download spec]](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf) [[other versions & changelog]](#download-specifications--changelog)
 
 [![download spec](https://phseiff.com/gender-render/docs/images/download-spec.svg)](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
 
@@ -373,11 +373,16 @@ To get started, you can download the [main specification](https://phseiff.com/ge
 
 * spec:
   * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
-  * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf) - Change "gripd" to "idpd".
-  * [v0.3.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.pdf) - Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.
-  * [v0.2.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.pdf) - Add the concept of canonical context values and direct-mapped context values to the specification.
-  * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf) - Mention RGB-dialogues as a possible use case.
-  * [v0.1.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf) - Initial release
+  * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf)
+    <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="1em">](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.html)</sup> - Change "gripd" to "idpd".
+  * [v0.3.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.pdf)
+    <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="1em">](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.html)</sup> - Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.
+  * [v0.2.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.pdf)
+    <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="1em">](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.html)</sup> - Add the concept of canonical context values and direct-mapped context values to the specification.
+  * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf)
+    <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="1em">](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.html)</sup> - Mention RGB-dialogues as a possible use case.
+  * [v0.1.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.pdf)
+    <sup>[[html<img alt="↗" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/External_link_font_awesome.svg" height="1em">](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.0.html)</sup> - Initial release
 
 
 
