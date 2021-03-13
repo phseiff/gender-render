@@ -1,13 +1,13 @@
 <!DOCTYPE html> 
-<html lang='en' xml:lang='en'> 
+<html xml:lang='en' lang='en'> 
 <head> <title> Template system and implementation specification for rendering gender-neutral
 email templates with pronoun information</title> 
 <meta charset='utf-8' /> 
 <meta name='generator' content='TeX4ht (http://www.tug.org/tex4ht/)' /> 
 <meta name='viewport' content='width=device-width,initial-scale=1' /> 
-<link type='text/css' rel='stylesheet' href='spec-v0.1.0.css' /> 
+<link href='spec-v0.1.0.css' rel='stylesheet' type='text/css' /> 
 <meta name='src' content='spec-v0.1.0.tex' /> 
-<link type='text/css' rel='stylesheet' href='../../spec-styling.css' /> 
+<link href='../../spec-styling.css' rel='stylesheet' type='text/css' /> 
 </head><body>
    <div class='maketitle'>
                                                                   
@@ -30,19 +30,19 @@ templates with pronoun information</h2>
                                                                   
 <h3 class='likesectionHead'><a id='x1-1000'></a>Contents</h3>
    <div class='tableofcontents'>
-   <span class='sectionToc'>1 <a id='QQ2-1-3' href='#x1-20001'>Abstract</a></span>
-<br />   <span class='sectionToc'>2 <a id='QQ2-1-4' href='#x1-30002'>Requirements</a></span>
-<br />   <span class='sectionToc'>3 <a id='QQ2-1-5' href='#x1-40003'>Design Decisions</a></span>
-<br />   <span class='sectionToc'>4 <a id='QQ2-1-6' href='#x1-50004'>Standard</a></span>
-<br />    <span class='subsectionToc'>4.1 <a id='QQ2-1-7' href='#x1-60001'>Template Language</a></span>
-<br />    <span class='subsectionToc'>4.2 <a id='QQ2-1-9' href='#x1-70002'>Pronoun Description Data</a></span>
-<br />    <span class='subsectionToc'>4.3 <a id='QQ2-1-11' href='#x1-80003'>Pronoun Renderer</a></span>
-<br />     <span class='subsubsectionToc'>4.3.1 <a id='QQ2-1-12' href='#x1-90001'>Pronoun Renderer specification</a></span>
-<br />     <span class='subsubsectionToc'>4.3.2 <a id='QQ2-1-16' href='#x1-100002'>Implementation guidelines</a></span>
-<br />   <span class='sectionToc'>5 <a id='QQ2-1-25' href='#x1-170005'>Specification developement</a></span>
-<br />   <span class='sectionToc'>6 <a id='QQ2-1-26' href='#x1-180006'>Exemplary Implementation</a></span>
-<br />   <span class='sectionToc'>7 <a id='QQ2-1-27' href='#x1-190007'>Outlook</a></span>
-<br />   <span class='sectionToc'>8 <a id='QQ2-1-28' href='#x1-200008'>License</a></span>
+   <span class='sectionToc'>1 <a href='#x1-20001' id='QQ2-1-3'>Abstract</a></span>
+<br />   <span class='sectionToc'>2 <a href='#x1-30002' id='QQ2-1-4'>Requirements</a></span>
+<br />   <span class='sectionToc'>3 <a href='#x1-40003' id='QQ2-1-5'>Design Decisions</a></span>
+<br />   <span class='sectionToc'>4 <a href='#x1-50004' id='QQ2-1-6'>Standard</a></span>
+<br />    <span class='subsectionToc'>4.1 <a href='#x1-60001' id='QQ2-1-7'>Template Language</a></span>
+<br />    <span class='subsectionToc'>4.2 <a href='#x1-70002' id='QQ2-1-9'>Pronoun Description Data</a></span>
+<br />    <span class='subsectionToc'>4.3 <a href='#x1-80003' id='QQ2-1-11'>Pronoun Renderer</a></span>
+<br />     <span class='subsubsectionToc'>4.3.1 <a href='#x1-90001' id='QQ2-1-12'>Pronoun Renderer specification</a></span>
+<br />     <span class='subsubsectionToc'>4.3.2 <a href='#x1-100002' id='QQ2-1-16'>Implementation guidelines</a></span>
+<br />   <span class='sectionToc'>5 <a href='#x1-170005' id='QQ2-1-25'>Specification developement</a></span>
+<br />   <span class='sectionToc'>6 <a href='#x1-180006' id='QQ2-1-26'>Exemplary Implementation</a></span>
+<br />   <span class='sectionToc'>7 <a href='#x1-190007' id='QQ2-1-27'>Outlook</a></span>
+<br />   <span class='sectionToc'>8 <a href='#x1-200008' id='QQ2-1-28'>License</a></span>
    </div>
                                                                   
 
@@ -208,7 +208,7 @@ escape, is also considered invalid.<br class='newline' />
 brackets) is considered part of its content. Said content is divided into sections
 through unescaped asterisks (”<span class='cmtt-10'>*</span>”, <span class='cmtt-10'>U+002A</span>). A section of a  gender*render -tag
 does not contain any unescaped asterisks, and it must contain at least one
-non-whitespace<span class='footnote-mark'><a id='fn1x0-bk' href='#fn1x0'><sup class='textsuperscript'>1</sup></a></span><a id='x1-6001f1'></a>
+non-whitespace<span class='footnote-mark'><a href='#fn1x0' id='fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><a id='x1-6001f1'></a>
 character. Colons (”<span class='cmtt-10'>:</span>”, <span class='cmtt-10'>U+003A</span>) are considered special characters in sections, and
 may thus appear at most once per section, and neither as the first nor as the last
 non-whitespace character of the section. If a section contains a colon, the characters
@@ -253,76 +253,76 @@ listed in this spec:
 <div class='center'>
 <!-- l. 212 --><p class='noindent'>
 <a id='x1-6002r1'></a>
-</p><!-- l. 215 --><div class='longtable'> <table id='TBL-2' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><colgroup id='TBL-2-3g'><col id='TBL-2-3' /></colgroup>
+</p><!-- l. 215 --><div class='longtable'> <table cellpadding='0' id='TBL-2' cellspacing='0' class='longtable'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><colgroup id='TBL-2-3g'><col id='TBL-2-3' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-1-'><td id='TBL-2-1-1' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-1-' style='vertical-align:baseline;'><td id='TBL-2-1-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 215 --><p class='noindent'>syntactic
   context
   indicated
   by
   the
-  value(s)             </p></td><td id='TBL-2-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+  value(s)             </p></td><td id='TBL-2-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 215 --><p class='noindent'>possible
   values,
   synonymous
   to
   each
-  other                      </p></td><td id='TBL-2-1-3' style='white-space:wrap; text-align:left;' class='td11'>
+  other                      </p></td><td id='TBL-2-1-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 215 --><p class='noindent'>short
   explanation,
   where
   necessary                                </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-2-'><td id='TBL-2-2-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 217 --><p class='noindent'>Subject             </p></td><td id='TBL-2-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-2-' style='vertical-align:baseline;'><td id='TBL-2-2-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 217 --><p class='noindent'>Subject             </p></td><td id='TBL-2-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 217 --><p class='noindent'>they,
   subject,
-  subj                       </p></td><td id='TBL-2-2-3' style='white-space:wrap; text-align:left;' class='td11'>
+  subj                       </p></td><td id='TBL-2-2-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 218 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-3-'><td id='TBL-2-3-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 219 --><p class='noindent'>Object              </p></td><td id='TBL-2-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-3-' style='vertical-align:baseline;'><td id='TBL-2-3-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 219 --><p class='noindent'>Object              </p></td><td id='TBL-2-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 219 --><p class='noindent'>them,
   object,
-  obj                         </p></td><td id='TBL-2-3-3' style='white-space:wrap; text-align:left;' class='td11'>
+  obj                         </p></td><td id='TBL-2-3-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 220 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-4-'><td id='TBL-2-4-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-4-' style='vertical-align:baseline;'><td id='TBL-2-4-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 221 --><p class='noindent'>Dependant
   possessive
-  Determiner        </p></td><td id='TBL-2-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Determiner        </p></td><td id='TBL-2-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 221 --><p class='noindent'>their,
   dposs,
-  dpossessive              </p></td><td id='TBL-2-4-3' style='white-space:wrap; text-align:left;' class='td11'>
+  dpossessive              </p></td><td id='TBL-2-4-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 222 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-5-'><td id='TBL-2-5-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-5-' style='vertical-align:baseline;'><td id='TBL-2-5-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 223 --><p class='noindent'>Independent
   possessive
-  Determiner        </p></td><td id='TBL-2-5-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Determiner        </p></td><td id='TBL-2-5-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 223 --><p class='noindent'>theirs,
   iposs,
-  ipossessive               </p></td><td id='TBL-2-5-3' style='white-space:wrap; text-align:left;' class='td11'>
+  ipossessive               </p></td><td id='TBL-2-5-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 224 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-6-'><td id='TBL-2-6-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 225 --><p class='noindent'>Reflexive           </p></td><td id='TBL-2-6-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-6-' style='vertical-align:baseline;'><td id='TBL-2-6-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 225 --><p class='noindent'>Reflexive           </p></td><td id='TBL-2-6-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 225 --><p class='noindent'>themself,
   reflexive,
-  reflex                      </p></td><td id='TBL-2-6-3' style='white-space:wrap; text-align:left;' class='td11'>
+  reflex                      </p></td><td id='TBL-2-6-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 226 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-7-'><td id='TBL-2-7-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-7-' style='vertical-align:baseline;'><td id='TBL-2-7-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 228 --><p class='noindent'>Form
   of
-  Address            </p></td><td id='TBL-2-7-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Address            </p></td><td id='TBL-2-7-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 228 --><p class='noindent'>Mr,
   Mrs,
   Mr_s,
-  address                   </p></td><td id='TBL-2-7-3' style='white-space:wrap; text-align:left;' class='td11'>
+  address                   </p></td><td id='TBL-2-7-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 229 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-8-'><td id='TBL-2-8-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 230 --><p class='noindent'>Surname           </p></td><td id='TBL-2-8-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-8-' style='vertical-align:baseline;'><td id='TBL-2-8-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 230 --><p class='noindent'>Surname           </p></td><td id='TBL-2-8-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 230 --><p class='noindent'>Doe,
   name,
   surname,
-  family-name             </p></td><td id='TBL-2-8-3' style='white-space:wrap; text-align:left;' class='td11'>
+  family-name             </p></td><td id='TBL-2-8-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 230 --><p class='noindent'>(This
   is
   a
@@ -336,12 +336,12 @@ listed in this spec:
   placeholder
   for
   names.)                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-9-'><td id='TBL-2-9-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-9-' style='vertical-align:baseline;'><td id='TBL-2-9-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 232 --><p class='noindent'>Personal
-  name                </p></td><td id='TBL-2-9-2' style='white-space:wrap; text-align:left;' class='td11'>
+  name                </p></td><td id='TBL-2-9-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 232 --><p class='noindent'>Joan,
   personal-name,
-  first-name                </p></td><td id='TBL-2-9-3' style='white-space:wrap; text-align:left;' class='td11'>
+  first-name                </p></td><td id='TBL-2-9-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 232 --><p class='noindent'>(This
   is,
   analogously
@@ -369,12 +369,12 @@ listed in this spec:
   placeholder
   than
   ”John”.)                                </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-10-'><td id='TBL-2-10-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-10-' style='vertical-align:baseline;'><td id='TBL-2-10-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 235 --><p class='noindent'>Custom
-  property            </p></td><td id='TBL-2-10-2' style='white-space:wrap; text-align:left;' class='td11'>
+  property            </p></td><td id='TBL-2-10-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 235 --><p class='noindent'>”<span class='cmtt-10'>&lt;</span>”
   <span class='cmti-10'>property</span>
-  ”<span class='cmtt-10'>&gt;</span>”                        </p></td><td id='TBL-2-10-3' style='white-space:wrap; text-align:left;' class='td11'>
+  ”<span class='cmtt-10'>&gt;</span>”                        </p></td><td id='TBL-2-10-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 235 --><p class='noindent'><span class='cmti-10'>property</span>
   can
   be
@@ -406,9 +406,9 @@ listed in this spec:
   of
   the
   spec.                                     </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-11-'><td id='TBL-2-11-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-11-' style='vertical-align:baseline;'><td id='TBL-2-11-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 238 --><p class='noindent'>Gender-specific
-  Noun                </p></td><td id='TBL-2-11-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Noun                </p></td><td id='TBL-2-11-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 238 --><p class='noindent'>any
   nominative,
   with
@@ -417,7 +417,7 @@ listed in this spec:
   by
   underscores
   (”<span class='cmtt-10'>_</span>”,
-  <span class='cmtt-10'>U+005F</span>)                  </p></td><td id='TBL-2-11-3' style='white-space:wrap; text-align:left;' class='td11'>
+  <span class='cmtt-10'>U+005F</span>)                  </p></td><td id='TBL-2-11-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 238 --><p class='noindent'>If
   the
   value
@@ -488,14 +488,14 @@ listed in this spec:
   ”actress”)
   in
   english.                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-12-'><td style='white-space:wrap; text-align:left;' colspan='3' id='TBL-2-12-1' class='td11'>      <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 1: </span><span class='content'>Types of context values in tags</span></div><!-- tex4ht:label?: x1-6002r1  -->                                 </div>          <a id='x1-6003'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-2-12-' style='vertical-align:baseline;'><td id='TBL-2-12-1' style='white-space:wrap; text-align:left;' class='td11' colspan='3'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 1: </span><span class='content'>Types of context values in tags</span></div><!-- tex4ht:label?: x1-6002r1  -->                                 </div>          <a id='x1-6003'></a>
 
                                                                   
-</td></tr><tr style='vertical-align:baseline;' id='TBL-2-14-'><td id='TBL-2-14-1' style='white-space:wrap; text-align:left;' class='td11'>
+</td></tr><tr id='TBL-2-14-' style='vertical-align:baseline;'><td id='TBL-2-14-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 242 --><p class='noindent'>              </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-2-15-'><td id='TBL-2-15-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-2-15-' style='vertical-align:baseline;'><td id='TBL-2-15-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 242 --><p class='noindent'>              </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-2-16-'><td id='TBL-2-16-1' style='white-space:wrap; text-align:left;' class='td11'>                </td><td id='TBL-2-16-2' style='white-space:wrap; text-align:left;' class='td11'>                   </td><td id='TBL-2-16-3' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-2-16-' style='vertical-align:baseline;'><td id='TBL-2-16-1' class='td11' style='white-space:wrap; text-align:left;'>                </td><td id='TBL-2-16-2' class='td11' style='white-space:wrap; text-align:left;'>                   </td><td id='TBL-2-16-3' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -568,87 +568,87 @@ particular:
 <div class='center'>
 <!-- l. 286 --><p class='noindent'>
 <a id='x1-7001r2'></a>
-</p><!-- l. 289 --><div class='longtable'> <table id='TBL-3' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /></colgroup><colgroup id='TBL-3-2g'><col id='TBL-3-2' /></colgroup><colgroup id='TBL-3-3g'><col id='TBL-3-3' /></colgroup>
+</p><!-- l. 289 --><div class='longtable'> <table cellpadding='0' id='TBL-3' cellspacing='0' class='longtable'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /></colgroup><colgroup id='TBL-3-2g'><col id='TBL-3-2' /></colgroup><colgroup id='TBL-3-3g'><col id='TBL-3-3' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-1-'><td id='TBL-3-1-1' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-1-' style='vertical-align:baseline;'><td id='TBL-3-1-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 289 --><p class='noindent'>information
   provided
   by
   properties
-  (attribute)         </p></td><td id='TBL-3-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+  (attribute)         </p></td><td id='TBL-3-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 289 --><p class='noindent'>property
   name(s),
   synonymous
   to
   each
-  other                      </p></td><td id='TBL-3-1-3' style='white-space:wrap; text-align:left;' class='td11'>
+  other                      </p></td><td id='TBL-3-1-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 289 --><p class='noindent'>short
   explanation,
   where
   necessary                                </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-2-'><td id='TBL-3-2-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 291 --><p class='noindent'>Subject             </p></td><td id='TBL-3-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-2-' style='vertical-align:baseline;'><td id='TBL-3-2-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 291 --><p class='noindent'>Subject             </p></td><td id='TBL-3-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 291 --><p class='noindent'>they,
   subject,
-  subj                       </p></td><td id='TBL-3-2-3' style='white-space:wrap; text-align:left;' class='td11'>
+  subj                       </p></td><td id='TBL-3-2-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 292 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-3-'><td id='TBL-3-3-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 293 --><p class='noindent'>Object              </p></td><td id='TBL-3-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-3-' style='vertical-align:baseline;'><td id='TBL-3-3-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 293 --><p class='noindent'>Object              </p></td><td id='TBL-3-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 293 --><p class='noindent'>them,
   object,
-  obj                         </p></td><td id='TBL-3-3-3' style='white-space:wrap; text-align:left;' class='td11'>
+  obj                         </p></td><td id='TBL-3-3-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 294 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-4-'><td id='TBL-3-4-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-4-' style='vertical-align:baseline;'><td id='TBL-3-4-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 295 --><p class='noindent'>Dependant
   possessive
-  Determiner        </p></td><td id='TBL-3-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Determiner        </p></td><td id='TBL-3-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 295 --><p class='noindent'>their,
   dposs,
-  dpossessive              </p></td><td id='TBL-3-4-3' style='white-space:wrap; text-align:left;' class='td11'>
+  dpossessive              </p></td><td id='TBL-3-4-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 296 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-5-'><td id='TBL-3-5-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-5-' style='vertical-align:baseline;'><td id='TBL-3-5-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 297 --><p class='noindent'>Independent
   possessive
-  Determiner        </p></td><td id='TBL-3-5-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Determiner        </p></td><td id='TBL-3-5-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 297 --><p class='noindent'>theirs,
   iposs,
-  ipossessive               </p></td><td id='TBL-3-5-3' style='white-space:wrap; text-align:left;' class='td11'>
+  ipossessive               </p></td><td id='TBL-3-5-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 298 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-6-'><td id='TBL-3-6-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 299 --><p class='noindent'>Reflexive           </p></td><td id='TBL-3-6-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-6-' style='vertical-align:baseline;'><td id='TBL-3-6-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 299 --><p class='noindent'>Reflexive           </p></td><td id='TBL-3-6-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 299 --><p class='noindent'>themself,
   reflexive,
-  reflex                      </p></td><td id='TBL-3-6-3' style='white-space:wrap; text-align:left;' class='td11'>
+  reflex                      </p></td><td id='TBL-3-6-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 300 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-7-'><td id='TBL-3-7-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-7-' style='vertical-align:baseline;'><td id='TBL-3-7-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 302 --><p class='noindent'>Form
   of
-  Address            </p></td><td id='TBL-3-7-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Address            </p></td><td id='TBL-3-7-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 302 --><p class='noindent'>Mr,
   Mrs,
   Mr_s,
-  address                   </p></td><td id='TBL-3-7-3' style='white-space:wrap; text-align:left;' class='td11'>
+  address                   </p></td><td id='TBL-3-7-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 303 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-8-'><td id='TBL-3-8-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 304 --><p class='noindent'>Surname           </p></td><td id='TBL-3-8-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-8-' style='vertical-align:baseline;'><td id='TBL-3-8-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 304 --><p class='noindent'>Surname           </p></td><td id='TBL-3-8-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 304 --><p class='noindent'>Doe,
   name,
   surname,
-  family-name             </p></td><td id='TBL-3-8-3' style='white-space:wrap; text-align:left;' class='td11'>
+  family-name             </p></td><td id='TBL-3-8-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 305 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-9-'><td id='TBL-3-9-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-9-' style='vertical-align:baseline;'><td id='TBL-3-9-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 306 --><p class='noindent'>Personal
-  name                </p></td><td id='TBL-3-9-2' style='white-space:wrap; text-align:left;' class='td11'>
+  name                </p></td><td id='TBL-3-9-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 306 --><p class='noindent'>Jean,
   personal-name,
-  first-name                </p></td><td id='TBL-3-9-3' style='white-space:wrap; text-align:left;' class='td11'>
+  first-name                </p></td><td id='TBL-3-9-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 307 --><p class='noindent'>                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-10-'><td id='TBL-3-10-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-10-' style='vertical-align:baseline;'><td id='TBL-3-10-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 309 --><p class='noindent'>Gender-specific
-  addressing         </p></td><td id='TBL-3-10-2' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 309 --><p class='noindent'>gender-addressing     </p></td><td id='TBL-3-10-3' style='white-space:wrap; text-align:left;' class='td11'>
+  addressing         </p></td><td id='TBL-3-10-2' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 309 --><p class='noindent'>gender-addressing     </p></td><td id='TBL-3-10-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 309 --><p class='noindent'>If
   set
   to
@@ -679,11 +679,11 @@ particular:
   Defaults
   to
   true.                                      </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-11-'><td id='TBL-3-11-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-11-' style='vertical-align:baseline;'><td id='TBL-3-11-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 313 --><p class='noindent'>Gender-specific
   Noun
-  handling           </p></td><td id='TBL-3-11-2' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 313 --><p class='noindent'>gender-nouns           </p></td><td id='TBL-3-11-3' style='white-space:wrap; text-align:left;' class='td11'>
+  handling           </p></td><td id='TBL-3-11-2' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 313 --><p class='noindent'>gender-nouns           </p></td><td id='TBL-3-11-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 313 --><p class='noindent'>Describes
   whether
   the
@@ -731,12 +731,12 @@ particular:
   Defaults
   to
   neutral.                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-12-'><td id='TBL-3-12-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-12-' style='vertical-align:baseline;'><td id='TBL-3-12-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 318 --><p class='noindent'>Custom
-  property            </p></td><td id='TBL-3-12-2' style='white-space:wrap; text-align:left;' class='td11'>
+  property            </p></td><td id='TBL-3-12-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 318 --><p class='noindent'><span class='cmti-10'>property_name</span>,
   <span class='cmtt-10'>_</span><span class='cmti-10'>property_name</span>,
-  <span class='cmtt-10'>&lt;</span><span class='cmti-10'>property_name</span><span class='cmtt-10'>&gt;</span>    </p></td><td id='TBL-3-12-3' style='white-space:wrap; text-align:left;' class='td11'>
+  <span class='cmtt-10'>&lt;</span><span class='cmti-10'>property_name</span><span class='cmtt-10'>&gt;</span>    </p></td><td id='TBL-3-12-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 318 --><p class='noindent'>Corresponds
   to
   ”<span class='cmtt-10'>&lt;</span><span class='cmti-10'>property_name</span><span class='cmtt-10'>&gt;</span>”
@@ -755,14 +755,14 @@ particular:
   multiple
   supported
   syntax.                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-13-'><td style='white-space:wrap; text-align:left;' colspan='3' id='TBL-3-13-1' class='td11'>      <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 2: </span><span class='content'>Supported properties in individual pronoun data</span></div><!-- tex4ht:label?: x1-7001r2  -->          </div>          <a id='x1-7002'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-3-13-' style='vertical-align:baseline;'><td id='TBL-3-13-1' style='white-space:wrap; text-align:left;' class='td11' colspan='3'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 2: </span><span class='content'>Supported properties in individual pronoun data</span></div><!-- tex4ht:label?: x1-7001r2  -->          </div>          <a id='x1-7002'></a>
 
                                                                   
-</td></tr><tr style='vertical-align:baseline;' id='TBL-3-15-'><td id='TBL-3-15-1' style='white-space:wrap; text-align:left;' class='td11'>
+</td></tr><tr id='TBL-3-15-' style='vertical-align:baseline;'><td id='TBL-3-15-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 322 --><p class='noindent'>              </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-3-16-'><td id='TBL-3-16-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-3-16-' style='vertical-align:baseline;'><td id='TBL-3-16-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 322 --><p class='noindent'>              </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-3-17-'><td id='TBL-3-17-1' style='white-space:wrap; text-align:left;' class='td11'>                </td><td id='TBL-3-17-2' style='white-space:wrap; text-align:left;' class='td11'>                   </td><td id='TBL-3-17-3' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-3-17-' style='vertical-align:baseline;'><td id='TBL-3-17-1' class='td11' style='white-space:wrap; text-align:left;'>                </td><td id='TBL-3-17-2' class='td11' style='white-space:wrap; text-align:left;'>                   </td><td id='TBL-3-17-3' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -847,18 +847,18 @@ used.
 
                                                                   
 <a id='x1-9001r3'></a>
-</p><!-- l. 363 --><div class='longtable'> <table id='TBL-4' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /></colgroup><colgroup id='TBL-4-2g'><col id='TBL-4-2' /></colgroup>
+</p><!-- l. 363 --><div class='longtable'> <table cellpadding='0' id='TBL-4' cellspacing='0' class='longtable'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /></colgroup><colgroup id='TBL-4-2g'><col id='TBL-4-2' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-1-'><td id='TBL-4-1-1' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-1-' style='vertical-align:baseline;'><td id='TBL-4-1-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 363 --><p class='noindent'>Error
-  name                                  </p></td><td id='TBL-4-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+  name                                  </p></td><td id='TBL-4-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 363 --><p class='noindent'>commonly
   used
   for                                                       </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-2-'><td id='TBL-4-2-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 365 --><p class='noindent'><span class='cmtt-10'>SyntaxError</span>               </p></td><td id='TBL-4-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-2-' style='vertical-align:baseline;'><td id='TBL-4-2-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 365 --><p class='noindent'><span class='cmtt-10'>SyntaxError</span>               </p></td><td id='TBL-4-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 365 --><p class='noindent'>Used
   if
   the
@@ -881,8 +881,8 @@ used.
   to
   each
   other.                                                   </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-3-'><td id='TBL-4-3-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 367 --><p class='noindent'><span class='cmtt-10'>InvalidPDError</span>            </p></td><td id='TBL-4-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-3-' style='vertical-align:baseline;'><td id='TBL-4-3-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 367 --><p class='noindent'><span class='cmtt-10'>InvalidPDError</span>            </p></td><td id='TBL-4-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 367 --><p class='noindent'>Used
   if
   the
@@ -892,8 +892,8 @@ used.
   is
   not
   valid.                                                    </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-4-'><td id='TBL-4-4-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 369 --><p class='noindent'><span class='cmtt-10'>IdResolutionError</span>         </p></td><td id='TBL-4-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-4-' style='vertical-align:baseline;'><td id='TBL-4-4-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 369 --><p class='noindent'><span class='cmtt-10'>IdResolutionError</span>         </p></td><td id='TBL-4-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 369 --><p class='noindent'>Used
   if
   matching
@@ -906,8 +906,8 @@ used.
   not
   wo
   out.                                                      </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-5-'><td id='TBL-4-5-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 371 --><p class='noindent'><span class='cmtt-10'>MissingInformationError</span>   </p></td><td id='TBL-4-5-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-5-' style='vertical-align:baseline;'><td id='TBL-4-5-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 371 --><p class='noindent'><span class='cmtt-10'>MissingInformationError</span>   </p></td><td id='TBL-4-5-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 371 --><p class='noindent'>Used
   if
   the
@@ -926,8 +926,8 @@ used.
   the
   tag
   requires.                                                </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-6-'><td id='TBL-4-6-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 373 --><p class='noindent'><span class='cmtt-10'>DoubledInformationError</span>   </p></td><td id='TBL-4-6-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-6-' style='vertical-align:baseline;'><td id='TBL-4-6-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 373 --><p class='noindent'><span class='cmtt-10'>DoubledInformationError</span>   </p></td><td id='TBL-4-6-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 373 --><p class='noindent'>Used
   if
   individual
@@ -951,8 +951,8 @@ used.
   for
   each
   property).                                              </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-7-'><td id='TBL-4-7-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 375 --><p class='noindent'><span class='cmtt-10'>InvalidInformationError</span>   </p></td><td id='TBL-4-7-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-7-' style='vertical-align:baseline;'><td id='TBL-4-7-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 375 --><p class='noindent'><span class='cmtt-10'>InvalidInformationError</span>   </p></td><td id='TBL-4-7-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 375 --><p class='noindent'>Used
   if
   a
@@ -972,14 +972,14 @@ used.
   not
   allow
   assigned.                                               </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-8-'><td style='white-space:nowrap; text-align:center;' colspan='2' id='TBL-4-8-1' class='td11'>      <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 3: </span><span class='content'>Types of errors whilst rendering</span></div><!-- tex4ht:label?: x1-9001r3  -->                               </div>         <a id='x1-9002'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-4-8-' style='vertical-align:baseline;'><td id='TBL-4-8-1' style='white-space:nowrap; text-align:center;' class='td11' colspan='2'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 3: </span><span class='content'>Types of errors whilst rendering</span></div><!-- tex4ht:label?: x1-9001r3  -->                               </div>         <a id='x1-9002'></a>
 
                                                                   
-</td></tr><tr style='vertical-align:baseline;' id='TBL-4-10-'><td id='TBL-4-10-1' style='white-space:wrap; text-align:left;' class='td11'>
+</td></tr><tr id='TBL-4-10-' style='vertical-align:baseline;'><td id='TBL-4-10-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 378 --><p class='noindent'>                          </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-4-11-'><td id='TBL-4-11-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-4-11-' style='vertical-align:baseline;'><td id='TBL-4-11-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 378 --><p class='noindent'>                          </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-4-12-'><td id='TBL-4-12-1' style='white-space:wrap; text-align:left;' class='td11'>                           </td><td id='TBL-4-12-2' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-4-12-' style='vertical-align:baseline;'><td id='TBL-4-12-1' class='td11' style='white-space:wrap; text-align:left;'>                           </td><td id='TBL-4-12-2' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -1055,15 +1055,15 @@ values specified by all  gender*render -tags used in the given template as
 <div class='center'>
 <!-- l. 413 --><p class='noindent'>
 <a id='x1-9003r4'></a>
-</p><!-- l. 416 --><div class='longtable'> <table id='TBL-5' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><colgroup id='TBL-5-4g'><col id='TBL-5-4' /></colgroup><colgroup id='TBL-5-5g'><col id='TBL-5-5' /></colgroup>
+</p><!-- l. 416 --><div class='longtable'> <table cellpadding='0' id='TBL-5' cellspacing='0' class='longtable'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><colgroup id='TBL-5-4g'><col id='TBL-5-4' /></colgroup><colgroup id='TBL-5-5g'><col id='TBL-5-5' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-1-'><td id='TBL-5-1-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 416 --><p class='noindent'>           </p></td><td id='TBL-5-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-5-1-' style='vertical-align:baseline;'><td id='TBL-5-1-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 416 --><p class='noindent'>           </p></td><td id='TBL-5-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 416 --><p class='noindent'><span class='cmbx-10'>#ids
   </span><span class='cmbx-10'>=
-  </span><span class='cmbx-10'>0</span>                     </p></td><td id='TBL-5-1-3' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmbx-10'>0</span>                     </p></td><td id='TBL-5-1-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 416 --><p class='noindent'><span class='cmbx-10'>all
   </span><span class='cmbx-10'>tags
   </span><span class='cmbx-10'>have
@@ -1071,7 +1071,7 @@ values specified by all  gender*render -tags used in the given template as
   </span><span class='cmbx-10'>same
   </span><span class='cmbx-10'>id
   </span><span class='cmbx-10'>(=”bar”)
-  </span><span class='cmbx-10'>assigned</span>            </p></td><td id='TBL-5-1-4' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmbx-10'>assigned</span>            </p></td><td id='TBL-5-1-4' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 416 --><p class='noindent'><span class='cmbx-10'>all
   </span><span class='cmbx-10'>tags
   </span><span class='cmbx-10'>have
@@ -1081,7 +1081,7 @@ values specified by all  gender*render -tags used in the given template as
   </span><span class='cmbx-10'>not
   </span><span class='cmbx-10'>all
   </span><span class='cmbx-10'>the
-  </span><span class='cmbx-10'>same</span>                </p></td><td id='TBL-5-1-5' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmbx-10'>same</span>                </p></td><td id='TBL-5-1-5' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 416 --><p class='noindent'><span class='cmbx-10'>some
   </span><span class='cmbx-10'>tags
   </span><span class='cmbx-10'>have
@@ -1089,14 +1089,14 @@ values specified by all  gender*render -tags used in the given template as
   </span><span class='cmbx-10'>assigned,
   </span><span class='cmbx-10'>some
   </span><span class='cmbx-10'>not</span>                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-2-'><td id='TBL-5-2-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-5-2-' style='vertical-align:baseline;'><td id='TBL-5-2-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 419 --><p class='noindent'><span class='cmbx-10'>only
   </span><span class='cmbx-10'>individual
   </span><span class='cmbx-10'>pronoun
   </span><span class='cmbx-10'>data
   </span><span class='cmbx-10'>is
   </span><span class='cmbx-10'>given
-  </span><span class='cmbx-10'>(=</span><span class='cmtt-10'>idpd</span><span class='cmbx-10'>)</span>    </p></td><td id='TBL-5-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmbx-10'>(=</span><span class='cmtt-10'>idpd</span><span class='cmbx-10'>)</span>    </p></td><td id='TBL-5-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 419 --><p class='noindent'>set
   <span class='cmtt-10'>pronoun_data
  </span><span class='cmtt-10'>=
@@ -1107,17 +1107,17 @@ values specified by all  gender*render -tags used in the given template as
   ”usr”
   to
   every
-  tag.                     </p></td><td id='TBL-5-2-3' style='white-space:wrap; text-align:left;' class='td11'>
+  tag.                     </p></td><td id='TBL-5-2-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 419 --><p class='noindent'>set
   <span class='cmtt-10'>pronoun_data
  </span><span class='cmtt-10'>=
  </span><span class='cmsy-10'>{</span><span class='cmtt-10'>"bar":
- </span><span class='cmtt-10'>idpd</span><span class='cmsy-10'>}</span>        </p></td><td id='TBL-5-2-4' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>idpd</span><span class='cmsy-10'>}</span>        </p></td><td id='TBL-5-2-4' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 419 --><p class='noindent'>raise
-  IdResolutionError  </p></td><td id='TBL-5-2-5' style='white-space:wrap; text-align:left;' class='td11'>
+  IdResolutionError  </p></td><td id='TBL-5-2-5' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 419 --><p class='noindent'>raise
   IdResolutionError  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-3-'><td id='TBL-5-3-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-5-3-' style='vertical-align:baseline;'><td id='TBL-5-3-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 422 --><p class='noindent'><span class='cmbx-10'>pronoun
   </span><span class='cmbx-10'>data
   </span><span class='cmbx-10'>is
@@ -1125,24 +1125,24 @@ values specified by all  gender*render -tags used in the given template as
   </span><span class='cmbx-10'>for
   </span><span class='cmbx-10'>one
   </span><span class='cmbx-10'>id
-  </span><span class='cmbx-10'>(=”foo”)</span>   </p></td><td id='TBL-5-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmbx-10'>(=”foo”)</span>   </p></td><td id='TBL-5-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 422 --><p class='noindent'>Assign
   id
   ”foo”
   to
   every
-  tag.                     </p></td><td id='TBL-5-3-3' style='white-space:wrap; text-align:left;' class='td11'>
+  tag.                     </p></td><td id='TBL-5-3-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 422 --><p class='noindent'>if
   ”foo”
   <span class='cmmi-10'>≠</span>
   ”bar”:
   raise
-  IdResolutionError  </p></td><td id='TBL-5-3-4' style='white-space:wrap; text-align:left;' class='td11'>
+  IdResolutionError  </p></td><td id='TBL-5-3-4' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 422 --><p class='noindent'>raise
-  IdResolutionError  </p></td><td id='TBL-5-3-5' style='white-space:wrap; text-align:left;' class='td11'>
+  IdResolutionError  </p></td><td id='TBL-5-3-5' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 422 --><p class='noindent'>raise
   IdResolutionError  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-4-'><td id='TBL-5-4-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-5-4-' style='vertical-align:baseline;'><td id='TBL-5-4-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 425 --><p class='noindent'><span class='cmbx-10'>pronoun
   </span><span class='cmbx-10'>data
   </span><span class='cmbx-10'>is
@@ -1151,9 +1151,9 @@ values specified by all  gender*render -tags used in the given template as
   </span><span class='cmbx-10'>n
   </span><span class='cmbx-10'>(</span><span class='cmsy-10'>≥
  </span><span class='cmbx-10'>1)
-  </span><span class='cmbx-10'>ids</span>           </p></td><td id='TBL-5-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmbx-10'>ids</span>           </p></td><td id='TBL-5-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 425 --><p class='noindent'>raise
-  IdResolutionError  </p></td><td id='TBL-5-4-3' style='white-space:wrap; text-align:left;' class='td11'>
+  IdResolutionError  </p></td><td id='TBL-5-4-3' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 425 --><p class='noindent'>if
   ”bar”
   is
@@ -1165,11 +1165,11 @@ values specified by all  gender*render -tags used in the given template as
   pronoun
   data:
   raise
-  IdResolutionError  </p></td><td id='TBL-5-4-4' style='white-space:wrap; text-align:left;' class='td11'>
+  IdResolutionError  </p></td><td id='TBL-5-4-4' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 425 --><p class='noindent'><span class='cmti-10'>nothing
   </span><span class='cmti-10'>to
   </span><span class='cmti-10'>do
-  </span><span class='cmti-10'>here</span>                   </p></td><td id='TBL-5-4-5' style='white-space:wrap; text-align:left;' class='td11'>
+  </span><span class='cmti-10'>here</span>                   </p></td><td id='TBL-5-4-5' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 425 --><p class='noindent'>if
   #ids
   +
@@ -1197,14 +1197,14 @@ values specified by all  gender*render -tags used in the given template as
   to
   any
   tag.                     </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-5-'><td style='white-space:wrap; text-align:left;' colspan='3' id='TBL-5-5-1' class='td11'></td>                 <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 4: </span><span class='content'>Id resolution</span></div><!-- tex4ht:label?: x1-9003r4  -->                                                         </div>                           <a id='x1-9004'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr id='TBL-5-5-' style='vertical-align:baseline;'><td id='TBL-5-5-1' style='white-space:wrap; text-align:left;' class='td11' colspan='3'></td>                 <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 4: </span><span class='content'>Id resolution</span></div><!-- tex4ht:label?: x1-9003r4  -->                                                         </div>                           <a id='x1-9004'></a>
 
                                                                   
-</tr><tr style='vertical-align:baseline;' id='TBL-5-7-'><td id='TBL-5-7-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-5-7-' style='vertical-align:baseline;'><td id='TBL-5-7-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 428 --><p class='noindent'>           </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-5-8-'><td id='TBL-5-8-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-5-8-' style='vertical-align:baseline;'><td id='TBL-5-8-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 428 --><p class='noindent'>           </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-5-9-'><td id='TBL-5-9-1' style='white-space:wrap; text-align:left;' class='td11'>            </td><td id='TBL-5-9-2' style='white-space:wrap; text-align:left;' class='td11'>                  </td><td id='TBL-5-9-3' style='white-space:wrap; text-align:left;' class='td11'>                  </td><td id='TBL-5-9-4' style='white-space:wrap; text-align:left;' class='td11'>                  </td><td id='TBL-5-9-5' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-5-9-' style='vertical-align:baseline;'><td id='TBL-5-9-1' class='td11' style='white-space:wrap; text-align:left;'>            </td><td id='TBL-5-9-2' class='td11' style='white-space:wrap; text-align:left;'>                  </td><td id='TBL-5-9-3' class='td11' style='white-space:wrap; text-align:left;'>                  </td><td id='TBL-5-9-4' class='td11' style='white-space:wrap; text-align:left;'>                  </td><td id='TBL-5-9-5' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -1242,19 +1242,19 @@ the following:
 
                                                                   
 <a id='x1-9005r5'></a>
-</p><!-- l. 452 --><div class='longtable'> <table id='TBL-6' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup>
+</p><!-- l. 452 --><div class='longtable'> <table cellpadding='0' id='TBL-6' cellspacing='0' class='longtable'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-1-'><td id='TBL-6-1-1' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-6-1-' style='vertical-align:baseline;'><td id='TBL-6-1-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 452 --><p class='noindent'>syntactic
   context
   of
   the
   gender*render
-  -tag                     </p></td><td id='TBL-6-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+  -tag                     </p></td><td id='TBL-6-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 452 --><p class='noindent'>procedure                                                                         </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-2-'><td id='TBL-6-2-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-6-2-' style='vertical-align:baseline;'><td id='TBL-6-2-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 455 --><p class='noindent'>Subject,
   Object,
   (In)dependant
@@ -1267,7 +1267,7 @@ the following:
   +
   <span class='cmti-10'>foo</span>
   +
-  ”<span class='cmtt-10'>&gt;</span>”                     </p></td><td id='TBL-6-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+  ”<span class='cmtt-10'>&gt;</span>”                     </p></td><td id='TBL-6-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 455 --><p class='noindent'>The
   tag
   is
@@ -1279,10 +1279,10 @@ the following:
   the
   corresponding
   attribute.                                                                         </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-3-'><td id='TBL-6-3-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-6-3-' style='vertical-align:baseline;'><td id='TBL-6-3-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 457 --><p class='noindent'>Form
   of
-  Address               </p></td><td id='TBL-6-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Address               </p></td><td id='TBL-6-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 457 --><p class='noindent'>If
   the
   <span class='cmti-10'>gender-specific
@@ -1303,20 +1303,20 @@ the following:
   the
   <span class='cmti-10'>Personal
   </span><span class='cmti-10'>name</span>-attribute.                                                                 </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-4-'><td id='TBL-6-4-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-6-4-' style='vertical-align:baseline;'><td id='TBL-6-4-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 459 --><p class='noindent'>Gender-specific
-  Noun                   </p></td><td id='TBL-6-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+  Noun                   </p></td><td id='TBL-6-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 459 --><p class='noindent'>See
   below.                                                                             </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-5-'><td style='white-space:nowrap; text-align:center;' colspan='2' id='TBL-6-5-1' class='td11'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 5: </span><span class='content'>Rendering procedures for each syntactic context</span></div><!-- tex4ht:label?: x1-9005r5  -->          </div>               <a id='x1-9006'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-6-5-' style='vertical-align:baseline;'><td id='TBL-6-5-1' style='white-space:nowrap; text-align:center;' class='td11' colspan='2'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 5: </span><span class='content'>Rendering procedures for each syntactic context</span></div><!-- tex4ht:label?: x1-9005r5  -->          </div>               <a id='x1-9006'></a>
                                                                   
 
                                                                   
-</td></tr><tr style='vertical-align:baseline;' id='TBL-6-7-'><td id='TBL-6-7-1' style='white-space:wrap; text-align:left;' class='td11'>
+</td></tr><tr id='TBL-6-7-' style='vertical-align:baseline;'><td id='TBL-6-7-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 462 --><p class='noindent'>                </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-6-8-'><td id='TBL-6-8-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-6-8-' style='vertical-align:baseline;'><td id='TBL-6-8-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 462 --><p class='noindent'>                </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-6-9-'><td id='TBL-6-9-1' style='white-space:wrap; text-align:left;' class='td11'>                  </td><td id='TBL-6-9-2' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-6-9-' style='vertical-align:baseline;'><td id='TBL-6-9-1' class='td11' style='white-space:wrap; text-align:left;'>                  </td><td id='TBL-6-9-2' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -1329,9 +1329,9 @@ determined is intentionally left vague since the english language is constantly
 shifting and unambigiously defining every rule for this would require to curate
 extensive lists. However, the recommended approach would be to use a graph of
 nouns that links every noun that refers to a person (for example based on
-WordNet<span class='footnote-mark'><a id='fn2x0-bk' href='#fn2x0'><sup class='textsuperscript'>2</sup></a></span><a id='x1-9007f2'></a>) to their
+WordNet<span class='footnote-mark'><a href='#fn2x0' id='fn2x0-bk'><sup class='textsuperscript'>2</sup></a></span><a id='x1-9007f2'></a>) to their
 synonyms according the gender implied by the synonyms. There are (not necessarily complete)
-datasets available<span class='footnote-mark'><a id='fn3x0-bk' href='#fn3x0'><sup class='textsuperscript'>3</sup></a></span><a id='x1-9008f3'></a>
+datasets available<span class='footnote-mark'><a href='#fn3x0' id='fn3x0-bk'><sup class='textsuperscript'>3</sup></a></span><a id='x1-9008f3'></a>
 that do exactly this. It might be a good idea to test these sets if they contain a
 gender-neutral version for every gendered noun, and if they have only a version
 ending with ”-man” and one version ending with ”-women”, to manually insert a
@@ -1410,29 +1410,29 @@ it:
 <div class='center'>
 <!-- l. 506 --><p class='noindent'>
 <a id='x1-12002r6'></a>
-</p><!-- l. 509 --><div class='longtable'> <table id='TBL-7' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-7-1g'><col id='TBL-7-1' /></colgroup><colgroup id='TBL-7-2g'><col id='TBL-7-2' /></colgroup>
+</p><!-- l. 509 --><div class='longtable'> <table cellpadding='0' id='TBL-7' cellspacing='0' class='longtable'><colgroup id='TBL-7-1g'><col id='TBL-7-1' /></colgroup><colgroup id='TBL-7-2g'><col id='TBL-7-2' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-1-'><td id='TBL-7-1-1' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-1-' style='vertical-align:baseline;'><td id='TBL-7-1-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 509 --><p class='noindent'>object-oriented
-  term                    </p></td><td id='TBL-7-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+  term                    </p></td><td id='TBL-7-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 509 --><p class='noindent'>not
   object-oriented
   equivalent                                                                         </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-2-'><td id='TBL-7-2-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-2-' style='vertical-align:baseline;'><td id='TBL-7-2-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 512 --><p class='noindent'>object
   representing
   a
-  foo                      </p></td><td id='TBL-7-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+  foo                      </p></td><td id='TBL-7-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 512 --><p class='noindent'>data
   structure
   representing
   a
   foo                                                                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-3-'><td id='TBL-7-3-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-3-' style='vertical-align:baseline;'><td id='TBL-7-3-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 514 --><p class='noindent'>class
-  constructor           </p></td><td id='TBL-7-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+  constructor           </p></td><td id='TBL-7-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 514 --><p class='noindent'>function
   that
   returns
@@ -1444,7 +1444,7 @@ it:
   for
   the
   object                                                                              </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-4-'><td id='TBL-7-4-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-4-' style='vertical-align:baseline;'><td id='TBL-7-4-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 516 --><p class='noindent'>method
   of
   an
@@ -1458,7 +1458,7 @@ it:
   b,
   c
   as
-  arguments            </p></td><td id='TBL-7-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+  arguments            </p></td><td id='TBL-7-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 516 --><p class='noindent'>function
   that
   manipulates
@@ -1493,11 +1493,11 @@ it:
   c
   as
   arguments                                                                        </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-5-'><td id='TBL-7-5-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-5-' style='vertical-align:baseline;'><td id='TBL-7-5-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 518 --><p class='noindent'>function
   that
   mutates
-  foo                      </p></td><td id='TBL-7-5-2' style='white-space:wrap; text-align:left;' class='td11'>
+  foo                      </p></td><td id='TBL-7-5-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 518 --><p class='noindent'>function
   that
   returns
@@ -1506,14 +1506,14 @@ it:
   copy
   of
   foo                                                                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-6-'><td id='TBL-7-6-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-6-' style='vertical-align:baseline;'><td id='TBL-7-6-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 520 --><p class='noindent'>function
   <span class='cmtt-10'>f</span>,
   which
   accepts
   some
   optional
-  arguments            </p></td><td id='TBL-7-6-2' style='white-space:wrap; text-align:left;' class='td11'>
+  arguments            </p></td><td id='TBL-7-6-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 520 --><p class='noindent'>function
   <span class='cmtt-10'>f_ext</span>
  where
@@ -1569,22 +1569,22 @@ it:
   to
   this
   approach.                                                                         </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-7-'><td id='TBL-7-7-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-7-' style='vertical-align:baseline;'><td id='TBL-7-7-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 522 --><p class='noindent'>boolean
-  type                    </p></td><td id='TBL-7-7-2' style='white-space:wrap; text-align:left;' class='td11'>
+  type                    </p></td><td id='TBL-7-7-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 522 --><p class='noindent'>0
   or
   1
   as
   integers                                                                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-8-'><td style='white-space:nowrap; text-align:center;' colspan='2' id='TBL-7-8-1' class='td11'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 6: </span><span class='content'>OOP equivalents for low-level languages</span></div><!-- tex4ht:label?: x1-12002r6  -->                     </div>               <a id='x1-12003'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-7-8-' style='vertical-align:baseline;'><td id='TBL-7-8-1' style='white-space:nowrap; text-align:center;' class='td11' colspan='2'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 6: </span><span class='content'>OOP equivalents for low-level languages</span></div><!-- tex4ht:label?: x1-12002r6  -->                     </div>               <a id='x1-12003'></a>
 
                                                                   
-</td></tr><tr style='vertical-align:baseline;' id='TBL-7-10-'><td id='TBL-7-10-1' style='white-space:wrap; text-align:left;' class='td11'>
+</td></tr><tr id='TBL-7-10-' style='vertical-align:baseline;'><td id='TBL-7-10-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 525 --><p class='noindent'>                </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-7-11-'><td id='TBL-7-11-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-7-11-' style='vertical-align:baseline;'><td id='TBL-7-11-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 525 --><p class='noindent'>                </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-7-12-'><td id='TBL-7-12-1' style='white-space:wrap; text-align:left;' class='td11'>                  </td><td id='TBL-7-12-2' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-7-12-' style='vertical-align:baseline;'><td id='TBL-7-12-1' class='td11' style='white-space:wrap; text-align:left;'>                  </td><td id='TBL-7-12-2' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -1717,17 +1717,17 @@ method.<br class='newline' />every function suggested </p>
 <div class='center'>
 <!-- l. 590 --><p class='noindent'>
 <a id='x1-16002r7'></a>
-</p><!-- l. 593 --><div class='longtable'> <table id='TBL-8' cellpadding='0' cellspacing='0' class='longtable'><colgroup id='TBL-8-1g'><col id='TBL-8-1' /></colgroup><colgroup id='TBL-8-2g'><col id='TBL-8-2' /></colgroup>
+</p><!-- l. 593 --><div class='longtable'> <table cellpadding='0' id='TBL-8' cellspacing='0' class='longtable'><colgroup id='TBL-8-1g'><col id='TBL-8-1' /></colgroup><colgroup id='TBL-8-2g'><col id='TBL-8-2' /></colgroup>
                                                                   
 
                                                                   
-<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-1-'><td id='TBL-8-1-1' style='white-space:wrap; text-align:left;' class='td11'>
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-1-' style='vertical-align:baseline;'><td id='TBL-8-1-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 593 --><p class='noindent'>warning
-  name                   </p></td><td id='TBL-8-1-2' style='white-space:wrap; text-align:left;' class='td11'>
+  name                   </p></td><td id='TBL-8-1-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 593 --><p class='noindent'>warning
   meaning                                                                           </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-2-'><td id='TBL-8-2-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 595 --><p class='noindent'><span class='cmtt-10'>NotAWordWarning</span> </p></td><td id='TBL-8-2-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-2-' style='vertical-align:baseline;'><td id='TBL-8-2-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 595 --><p class='noindent'><span class='cmtt-10'>NotAWordWarning</span> </p></td><td id='TBL-8-2-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 595 --><p class='noindent'>The
   value
   of
@@ -1763,8 +1763,8 @@ method.<br class='newline' />every function suggested </p>
   the
   english
   language.                                                                         </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-3-'><td id='TBL-8-3-1' style='white-space:wrap; text-align:left;' class='td11'>
- <!-- l. 598 --><p class='noindent'><span class='cmtt-10'>NotANounWarning</span> </p></td><td id='TBL-8-3-2' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-3-' style='vertical-align:baseline;'><td id='TBL-8-3-1' class='td11' style='white-space:wrap; text-align:left;'>
+ <!-- l. 598 --><p class='noindent'><span class='cmtt-10'>NotANounWarning</span> </p></td><td id='TBL-8-3-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 598 --><p class='noindent'>The
   same
   as
@@ -1778,9 +1778,9 @@ method.<br class='newline' />every function suggested </p>
   are
   not
   nouns.                                                                             </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-4-'><td id='TBL-8-4-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-4-' style='vertical-align:baseline;'><td id='TBL-8-4-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 600 --><p class='noindent'><span class='cmtt-10'>NotAPersonNoun
- </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-4-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-4-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 600 --><p class='noindent'>The
   same
   as
@@ -1809,10 +1809,10 @@ method.<br class='newline' />every function suggested </p>
   in
   any
   way.                                                                                </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-5-'><td id='TBL-8-5-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-5-' style='vertical-align:baseline;'><td id='TBL-8-5-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 602 --><p class='noindent'><span class='cmtt-10'>FreeUngendered-
  </span><span class='cmtt-10'>PersonNoun-
- </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-5-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-5-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 602 --><p class='noindent'>A
   noun
   that
@@ -1830,10 +1830,10 @@ method.<br class='newline' />every function suggested </p>
   of
   any
   tag.                                                                                 </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-6-'><td id='TBL-8-6-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-6-' style='vertical-align:baseline;'><td id='TBL-8-6-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 604 --><p class='noindent'><span class='cmtt-10'>FreeGendered-
  </span><span class='cmtt-10'>PersonNoun-
- </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-6-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-6-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 604 --><p class='noindent'>The
   same
   as
@@ -1851,9 +1851,9 @@ method.<br class='newline' />every function suggested </p>
   gender-neutral
   form
   exists.                                                                              </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-7-'><td id='TBL-8-7-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-7-' style='vertical-align:baseline;'><td id='TBL-8-7-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 606 --><p class='noindent'><span class='cmtt-10'>UnknownProperty-
- </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-7-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-7-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 606 --><p class='noindent'>A
   custom
   property
@@ -1909,9 +1909,9 @@ method.<br class='newline' />every function suggested </p>
   to
   this
   specification.                                                                     </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-8-'><td id='TBL-8-8-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-8-' style='vertical-align:baseline;'><td id='TBL-8-8-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 609 --><p class='noindent'><span class='cmtt-10'>FreePronoun-
- </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-8-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td id='TBL-8-8-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 609 --><p class='noindent'>A
   (non-neo)
   pronoun
@@ -1921,9 +1921,9 @@ method.<br class='newline' />every function suggested </p>
   outside
   any
   <span class='cmsy-10'>{</span>gender*reder<span class='cmsy-10'>}</span>-tag.                                                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-9-'><td id='TBL-8-9-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-9-' style='vertical-align:baseline;'><td id='TBL-8-9-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 611 --><p class='noindent'><span class='cmtt-10'>UnexpectedFile-
- </span><span class='cmtt-10'>FormatWarning</span>   </p></td><td id='TBL-8-9-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>FormatWarning</span>   </p></td><td id='TBL-8-9-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 611 --><p class='noindent'>A
   file
   name
@@ -1943,9 +1943,9 @@ method.<br class='newline' />every function suggested </p>
   of
   this
   specification.                                                                     </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-10-'><td id='TBL-8-10-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-10-' style='vertical-align:baseline;'><td id='TBL-8-10-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 613 --><p class='noindent'><span class='cmtt-10'>IdMatching-
- </span><span class='cmtt-10'>NecessaryWarning</span></p></td><td id='TBL-8-10-2' style='white-space:wrap; text-align:left;' class='td11'>
+ </span><span class='cmtt-10'>NecessaryWarning</span></p></td><td id='TBL-8-10-2' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 613 --><p class='noindent'>The
   set
   of
@@ -1985,14 +1985,14 @@ method.<br class='newline' />every function suggested </p>
   should
   be
   present.                                                                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-11-'><td style='white-space:nowrap; text-align:center;' colspan='2' id='TBL-8-11-1' class='td11'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 7: </span><span class='content'>Potential Warnings</span></div><!-- tex4ht:label?: x1-16002r7  -->                                                </div>               <a id='x1-16003'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr id='TBL-8-11-' style='vertical-align:baseline;'><td id='TBL-8-11-1' style='white-space:nowrap; text-align:center;' class='td11' colspan='2'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 7: </span><span class='content'>Potential Warnings</span></div><!-- tex4ht:label?: x1-16002r7  -->                                                </div>               <a id='x1-16003'></a>
 
                                                                   
-</td></tr><tr style='vertical-align:baseline;' id='TBL-8-13-'><td id='TBL-8-13-1' style='white-space:wrap; text-align:left;' class='td11'>
+</td></tr><tr id='TBL-8-13-' style='vertical-align:baseline;'><td id='TBL-8-13-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 617 --><p class='noindent'>                </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-8-14-'><td id='TBL-8-14-1' style='white-space:wrap; text-align:left;' class='td11'>
+</tr><tr id='TBL-8-14-' style='vertical-align:baseline;'><td id='TBL-8-14-1' class='td11' style='white-space:wrap; text-align:left;'>
  <!-- l. 617 --><p class='noindent'>                </p></td>
-</tr><tr style='vertical-align:baseline;' id='TBL-8-15-'><td id='TBL-8-15-1' style='white-space:wrap; text-align:left;' class='td11'>                  </td><td id='TBL-8-15-2' style='white-space:wrap; text-align:left;' class='td11'></td></tr>
+</tr><tr id='TBL-8-15-' style='vertical-align:baseline;'><td id='TBL-8-15-1' class='td11' style='white-space:wrap; text-align:left;'>                  </td><td id='TBL-8-15-2' class='td11' style='white-space:wrap; text-align:left;'></td></tr>
 </table></div>
 </div>
 </div>
@@ -2010,7 +2010,7 @@ is usable and quite enough to be a valid proof of concept. I consider
 it to be enough to publish and share, but there will be imperfections
 or maybe even straight out design faults. Thus, issues and suggestions
 are very welcome in the GitHub repository where this specification is
-developed<span class='footnote-mark'><a id='fn4x0-bk' href='#fn4x0'><sup class='textsuperscript'>4</sup></a></span><a id='x1-17001f4'></a>.<br class='newline' />
+developed<span class='footnote-mark'><a href='#fn4x0' id='fn4x0-bk'><sup class='textsuperscript'>4</sup></a></span><a id='x1-17001f4'></a>.<br class='newline' />
 </p><!-- l. 632 --><p class='indent'>   Future development will go two paths in parallel: One path is the steady
 improvements of this specification in wording as well, if necessary, content. The other
 path is releasing <span class='cmti-10'>extension specifications</span>, these being additional specifications that
@@ -2049,7 +2049,7 @@ the main spec if it turns out to lack required functionality) and the ”bugfix�
 version with every change that does not affect its content, but its contents
 wording.<br class='newline' />
 </p><!-- l. 645 --><p class='indent'>   Recent versions will always be accessible via the specification download page of the project
-homepage<span class='footnote-mark'><a id='fn5x0-bk' href='#fn5x0'><sup class='textsuperscript'>5</sup></a></span><a id='x1-17002f5'></a>.<br class='newline' />
+homepage<span class='footnote-mark'><a href='#fn5x0' id='fn5x0-bk'><sup class='textsuperscript'>5</sup></a></span><a id='x1-17002f5'></a>.<br class='newline' />
 </p><!-- l. 647 --><p class='indent'>   The current versions major number is 0, since there might be need changes according
 to the feedback it receives. Further versions of this spec will be located together with the
 recent versions at <a href='https://phseiff.com/gender-render/\#download-specifications' class='url'><span class='cmtt-10'>https://phseiff.com/gender-render/\#download-specifications</span></a>.<br class='newline' />
@@ -2104,11 +2104,11 @@ forgotten.<br class='newline' />
 <!-- l. 672 --><p class='noindent'>This version of the specification is licensed under <a href='http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0'>OWFa 1.0</a> by phseiff (contact:
 <a href='mailto:phseiff@phseiff.com'>phseiff@phseiff.com</a>).
 </p>
-   <div class='footnotes'><!-- l. 186 --><p class='indent'>    <span class='footnote-mark'><a id='fn1x0' href='#fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><span class='cmr-8'>”Whitespace” as defined by the </span><a href='https://infra.spec.whatwg.org/#ascii-whitespace'><span class='cmr-8'>HTML Living Standard</span></a><span class='cmr-8'>.</span></p>
-<!-- l. 469 --><p class='indent'>     <span class='footnote-mark'><a id='fn2x0' href='#fn2x0-bk'><sup class='textsuperscript'>2</sup></a></span><span class='cmr-8'>Princeton University ”About WordNet.” </span><a href='https://wordnet.princeton.edu/'><span class='cmr-8'>WordNet</span></a><span class='cmr-8'>. Princeton University. 2010.</span></p>
-<!-- l. 470 --><p class='indent'>     <span class='footnote-mark'><a id='fn3x0' href='#fn3x0-bk'><sup class='textsuperscript'>3</sup></a></span><span class='cmr-8'>for example </span><a href='https://github.com/ecmonsen/gendered_words' class='url'><span class='cmtt-8'>https://github.com/ecmonsen/gendered_words</span></a> <span class='cmr-8'>on GitHub</span></p>
-<!-- l. 630 --><p class='indent'>     <span class='footnote-mark'><a id='fn4x0' href='#fn4x0-bk'><sup class='textsuperscript'>4</sup></a></span><a href='https://github.com/phseiff/gender-render/issues' class='url'><span class='cmtt-8'>https://github.com/phseiff/gender-render/issues</span></a></p>
-<!-- l. 645 --><p class='indent'>    <span class='footnote-mark'><a id='fn5x0' href='#fn5x0-bk'><sup class='textsuperscript'>5</sup></a></span><a href='https://phseiff.com/gender-render/\#download-specifications' class='url'><span class='cmtt-8'>https://phseiff.com/gender-render/\#download-specifications</span></a></p>               </div>
+   <div class='footnotes'><!-- l. 186 --><p class='indent'>    <span class='footnote-mark'><a href='#fn1x0-bk' id='fn1x0'><sup class='textsuperscript'>1</sup></a></span><span class='cmr-8'>”Whitespace” as defined by the </span><a href='https://infra.spec.whatwg.org/#ascii-whitespace'><span class='cmr-8'>HTML Living Standard</span></a><span class='cmr-8'>.</span></p>
+<!-- l. 469 --><p class='indent'>     <span class='footnote-mark'><a href='#fn2x0-bk' id='fn2x0'><sup class='textsuperscript'>2</sup></a></span><span class='cmr-8'>Princeton University ”About WordNet.” </span><a href='https://wordnet.princeton.edu/'><span class='cmr-8'>WordNet</span></a><span class='cmr-8'>. Princeton University. 2010.</span></p>
+<!-- l. 470 --><p class='indent'>     <span class='footnote-mark'><a href='#fn3x0-bk' id='fn3x0'><sup class='textsuperscript'>3</sup></a></span><span class='cmr-8'>for example </span><a href='https://github.com/ecmonsen/gendered_words' class='url'><span class='cmtt-8'>https://github.com/ecmonsen/gendered_words</span></a> <span class='cmr-8'>on GitHub</span></p>
+<!-- l. 630 --><p class='indent'>     <span class='footnote-mark'><a href='#fn4x0-bk' id='fn4x0'><sup class='textsuperscript'>4</sup></a></span><a href='https://github.com/phseiff/gender-render/issues' class='url'><span class='cmtt-8'>https://github.com/phseiff/gender-render/issues</span></a></p>
+<!-- l. 645 --><p class='indent'>    <span class='footnote-mark'><a href='#fn5x0-bk' id='fn5x0'><sup class='textsuperscript'>5</sup></a></span><a href='https://phseiff.com/gender-render/\#download-specifications' class='url'><span class='cmtt-8'>https://phseiff.com/gender-render/\#download-specifications</span></a></p>               </div>
  
 </body> 
 </html>
