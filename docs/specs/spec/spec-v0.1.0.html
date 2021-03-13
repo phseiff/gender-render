@@ -5,9 +5,9 @@ email templates with pronoun information</title>
 <meta charset='utf-8' /> 
 <meta name='generator' content='TeX4ht (http://www.tug.org/tex4ht/)' /> 
 <meta name='viewport' content='width=device-width,initial-scale=1' /> 
-<link href='spec-v0.1.0.css' type='text/css' rel='stylesheet' /> 
+<link type='text/css' rel='stylesheet' href='spec-v0.1.0.css' /> 
 <meta name='src' content='spec-v0.1.0.tex' /> 
-<link href='../../spec-styling.css' type='text/css' rel='stylesheet' /> 
+<link type='text/css' rel='stylesheet' href='../../spec-styling.css' /> 
 </head><body>
    <div class='maketitle'>
                                                                   
@@ -30,19 +30,19 @@ templates with pronoun information</h2>
                                                                   
 <h3 class='likesectionHead'><a id='x1-1000'></a>Contents</h3>
    <div class='tableofcontents'>
-   <span class='sectionToc'>1 <a href='#x1-20001' id='QQ2-1-3'>Abstract</a></span>
-<br />   <span class='sectionToc'>2 <a href='#x1-30002' id='QQ2-1-4'>Requirements</a></span>
-<br />   <span class='sectionToc'>3 <a href='#x1-40003' id='QQ2-1-5'>Design Decisions</a></span>
-<br />   <span class='sectionToc'>4 <a href='#x1-50004' id='QQ2-1-6'>Standard</a></span>
-<br />    <span class='subsectionToc'>4.1 <a href='#x1-60001' id='QQ2-1-7'>Template Language</a></span>
-<br />    <span class='subsectionToc'>4.2 <a href='#x1-70002' id='QQ2-1-9'>Pronoun Description Data</a></span>
-<br />    <span class='subsectionToc'>4.3 <a href='#x1-80003' id='QQ2-1-11'>Pronoun Renderer</a></span>
-<br />     <span class='subsubsectionToc'>4.3.1 <a href='#x1-90001' id='QQ2-1-12'>Pronoun Renderer specification</a></span>
-<br />     <span class='subsubsectionToc'>4.3.2 <a href='#x1-100002' id='QQ2-1-16'>Implementation guidelines</a></span>
-<br />   <span class='sectionToc'>5 <a href='#x1-170005' id='QQ2-1-25'>Specification developement</a></span>
-<br />   <span class='sectionToc'>6 <a href='#x1-180006' id='QQ2-1-26'>Exemplary Implementation</a></span>
-<br />   <span class='sectionToc'>7 <a href='#x1-190007' id='QQ2-1-27'>Outlook</a></span>
-<br />   <span class='sectionToc'>8 <a href='#x1-200008' id='QQ2-1-28'>License</a></span>
+   <span class='sectionToc'>1 <a id='QQ2-1-3' href='#x1-20001'>Abstract</a></span>
+<br />   <span class='sectionToc'>2 <a id='QQ2-1-4' href='#x1-30002'>Requirements</a></span>
+<br />   <span class='sectionToc'>3 <a id='QQ2-1-5' href='#x1-40003'>Design Decisions</a></span>
+<br />   <span class='sectionToc'>4 <a id='QQ2-1-6' href='#x1-50004'>Standard</a></span>
+<br />    <span class='subsectionToc'>4.1 <a id='QQ2-1-7' href='#x1-60001'>Template Language</a></span>
+<br />    <span class='subsectionToc'>4.2 <a id='QQ2-1-9' href='#x1-70002'>Pronoun Description Data</a></span>
+<br />    <span class='subsectionToc'>4.3 <a id='QQ2-1-11' href='#x1-80003'>Pronoun Renderer</a></span>
+<br />     <span class='subsubsectionToc'>4.3.1 <a id='QQ2-1-12' href='#x1-90001'>Pronoun Renderer specification</a></span>
+<br />     <span class='subsubsectionToc'>4.3.2 <a id='QQ2-1-16' href='#x1-100002'>Implementation guidelines</a></span>
+<br />   <span class='sectionToc'>5 <a id='QQ2-1-25' href='#x1-170005'>Specification developement</a></span>
+<br />   <span class='sectionToc'>6 <a id='QQ2-1-26' href='#x1-180006'>Exemplary Implementation</a></span>
+<br />   <span class='sectionToc'>7 <a id='QQ2-1-27' href='#x1-190007'>Outlook</a></span>
+<br />   <span class='sectionToc'>8 <a id='QQ2-1-28' href='#x1-200008'>License</a></span>
    </div>
                                                                   
 
@@ -208,7 +208,7 @@ escape, is also considered invalid.<br class='newline' />
 brackets) is considered part of its content. Said content is divided into sections
 through unescaped asterisks (”<span class='cmtt-10'>*</span>”, <span class='cmtt-10'>U+002A</span>). A section of a  gender*render -tag
 does not contain any unescaped asterisks, and it must contain at least one
-non-whitespace<span class='footnote-mark'><a href='#fn1x0' id='fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><a id='x1-6001f1'></a>
+non-whitespace<span class='footnote-mark'><a id='fn1x0-bk' href='#fn1x0'><sup class='textsuperscript'>1</sup></a></span><a id='x1-6001f1'></a>
 character. Colons (”<span class='cmtt-10'>:</span>”, <span class='cmtt-10'>U+003A</span>) are considered special characters in sections, and
 may thus appear at most once per section, and neither as the first nor as the last
 non-whitespace character of the section. If a section contains a colon, the characters
@@ -253,7 +253,7 @@ listed in this spec:
 <div class='center'>
 <!-- l. 212 --><p class='noindent'>
 <a id='x1-6002r1'></a>
-</p><!-- l. 215 --><div class='longtable'> <table class='longtable' id='TBL-2' cellpadding='0' cellspacing='0'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><colgroup id='TBL-2-3g'><col id='TBL-2-3' /></colgroup>
+</p><!-- l. 215 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-2' cellspacing='0'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><colgroup id='TBL-2-3g'><col id='TBL-2-3' /></colgroup>
                                                                   
 
                                                                   
@@ -488,7 +488,7 @@ listed in this spec:
   ”actress”)
   in
   english.                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-12-'><td class='td11' id='TBL-2-12-1' colspan='3' style='white-space:wrap; text-align:left;'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 1: </span><span class='content'>Types of context values in tags</span></div><!-- tex4ht:label?: x1-6002r1  -->                                 </div>          <a id='x1-6003'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-12-'><td style='white-space:wrap; text-align:left;' id='TBL-2-12-1' class='td11' colspan='3'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 1: </span><span class='content'>Types of context values in tags</span></div><!-- tex4ht:label?: x1-6002r1  -->                                 </div>          <a id='x1-6003'></a>
 
                                                                   
 </td></tr><tr style='vertical-align:baseline;' id='TBL-2-14-'><td class='td11' id='TBL-2-14-1' style='white-space:wrap; text-align:left;'>
@@ -568,7 +568,7 @@ particular:
 <div class='center'>
 <!-- l. 286 --><p class='noindent'>
 <a id='x1-7001r2'></a>
-</p><!-- l. 289 --><div class='longtable'> <table class='longtable' id='TBL-3' cellpadding='0' cellspacing='0'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /></colgroup><colgroup id='TBL-3-2g'><col id='TBL-3-2' /></colgroup><colgroup id='TBL-3-3g'><col id='TBL-3-3' /></colgroup>
+</p><!-- l. 289 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-3' cellspacing='0'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /></colgroup><colgroup id='TBL-3-2g'><col id='TBL-3-2' /></colgroup><colgroup id='TBL-3-3g'><col id='TBL-3-3' /></colgroup>
                                                                   
 
                                                                   
@@ -755,7 +755,7 @@ particular:
   multiple
   supported
   syntax.                                  </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-13-'><td class='td11' id='TBL-3-13-1' colspan='3' style='white-space:wrap; text-align:left;'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 2: </span><span class='content'>Supported properties in individual pronoun data</span></div><!-- tex4ht:label?: x1-7001r2  -->          </div>          <a id='x1-7002'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-13-'><td style='white-space:wrap; text-align:left;' id='TBL-3-13-1' class='td11' colspan='3'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 2: </span><span class='content'>Supported properties in individual pronoun data</span></div><!-- tex4ht:label?: x1-7001r2  -->          </div>          <a id='x1-7002'></a>
 
                                                                   
 </td></tr><tr style='vertical-align:baseline;' id='TBL-3-15-'><td class='td11' id='TBL-3-15-1' style='white-space:wrap; text-align:left;'>
@@ -783,7 +783,7 @@ gender*render -renderer, and one defining (additional) implementation guidelines
 that should be followed to ensure that all renderers use similar interfaces and users
 understand the renderer even if they used to work with a different implementation
 beforehand. The  gender*render implementation that comes with this specification
-(<a href='https://github.com/phseiff/gender-render' class='url'><span class='cmtt-10'>https://github.com/phseiff/gender-render</span></a>) also follows all of these
+(<a class='url' href='https://github.com/phseiff/gender-render'><span class='cmtt-10'>https://github.com/phseiff/gender-render</span></a>) also follows all of these
 guidelines.
 <a id='x1-8001r1'></a>
 </p>
@@ -847,7 +847,7 @@ used.
 
                                                                   
 <a id='x1-9001r3'></a>
-</p><!-- l. 363 --><div class='longtable'> <table class='longtable' id='TBL-4' cellpadding='0' cellspacing='0'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /></colgroup><colgroup id='TBL-4-2g'><col id='TBL-4-2' /></colgroup>
+</p><!-- l. 363 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-4' cellspacing='0'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /></colgroup><colgroup id='TBL-4-2g'><col id='TBL-4-2' /></colgroup>
                                                                   
 
                                                                   
@@ -972,7 +972,7 @@ used.
   not
   allow
   assigned.                                               </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-8-'><td class='td11' id='TBL-4-8-1' colspan='2' style='white-space:nowrap; text-align:center;'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 3: </span><span class='content'>Types of errors whilst rendering</span></div><!-- tex4ht:label?: x1-9001r3  -->                               </div>         <a id='x1-9002'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-8-'><td style='white-space:nowrap; text-align:center;' id='TBL-4-8-1' class='td11' colspan='2'>      <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 3: </span><span class='content'>Types of errors whilst rendering</span></div><!-- tex4ht:label?: x1-9001r3  -->                               </div>         <a id='x1-9002'></a>
 
                                                                   
 </td></tr><tr style='vertical-align:baseline;' id='TBL-4-10-'><td class='td11' id='TBL-4-10-1' style='white-space:wrap; text-align:left;'>
@@ -1055,7 +1055,7 @@ values specified by all  gender*render -tags used in the given template as
 <div class='center'>
 <!-- l. 413 --><p class='noindent'>
 <a id='x1-9003r4'></a>
-</p><!-- l. 416 --><div class='longtable'> <table class='longtable' id='TBL-5' cellpadding='0' cellspacing='0'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><colgroup id='TBL-5-4g'><col id='TBL-5-4' /></colgroup><colgroup id='TBL-5-5g'><col id='TBL-5-5' /></colgroup>
+</p><!-- l. 416 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-5' cellspacing='0'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><colgroup id='TBL-5-4g'><col id='TBL-5-4' /></colgroup><colgroup id='TBL-5-5g'><col id='TBL-5-5' /></colgroup>
                                                                   
 
                                                                   
@@ -1197,7 +1197,7 @@ values specified by all  gender*render -tags used in the given template as
   to
   any
   tag.                     </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-5-'><td class='td11' id='TBL-5-5-1' colspan='3' style='white-space:wrap; text-align:left;'></td>                 <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 4: </span><span class='content'>Id resolution</span></div><!-- tex4ht:label?: x1-9003r4  -->                                                         </div>                           <a id='x1-9004'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-5-'><td style='white-space:wrap; text-align:left;' id='TBL-5-5-1' class='td11' colspan='3'></td>                 <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 4: </span><span class='content'>Id resolution</span></div><!-- tex4ht:label?: x1-9003r4  -->                                                         </div>                           <a id='x1-9004'></a>
 
                                                                   
 </tr><tr style='vertical-align:baseline;' id='TBL-5-7-'><td class='td11' id='TBL-5-7-1' style='white-space:wrap; text-align:left;'>
@@ -1242,7 +1242,7 @@ the following:
 
                                                                   
 <a id='x1-9005r5'></a>
-</p><!-- l. 452 --><div class='longtable'> <table class='longtable' id='TBL-6' cellpadding='0' cellspacing='0'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup>
+</p><!-- l. 452 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-6' cellspacing='0'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup>
                                                                   
 
                                                                   
@@ -1308,7 +1308,7 @@ the following:
   Noun                   </p></td><td class='td11' id='TBL-6-4-2' style='white-space:wrap; text-align:left;'>
  <!-- l. 459 --><p class='noindent'>See
   below.                                                                             </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-5-'><td class='td11' id='TBL-6-5-1' colspan='2' style='white-space:nowrap; text-align:center;'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 5: </span><span class='content'>Rendering procedures for each syntactic context</span></div><!-- tex4ht:label?: x1-9005r5  -->          </div>               <a id='x1-9006'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-5-'><td style='white-space:nowrap; text-align:center;' id='TBL-6-5-1' class='td11' colspan='2'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 5: </span><span class='content'>Rendering procedures for each syntactic context</span></div><!-- tex4ht:label?: x1-9005r5  -->          </div>               <a id='x1-9006'></a>
                                                                   
 
                                                                   
@@ -1329,9 +1329,9 @@ determined is intentionally left vague since the english language is constantly
 shifting and unambigiously defining every rule for this would require to curate
 extensive lists. However, the recommended approach would be to use a graph of
 nouns that links every noun that refers to a person (for example based on
-WordNet<span class='footnote-mark'><a href='#fn2x0' id='fn2x0-bk'><sup class='textsuperscript'>2</sup></a></span><a id='x1-9007f2'></a>) to their
+WordNet<span class='footnote-mark'><a id='fn2x0-bk' href='#fn2x0'><sup class='textsuperscript'>2</sup></a></span><a id='x1-9007f2'></a>) to their
 synonyms according the gender implied by the synonyms. There are (not necessarily complete)
-datasets available<span class='footnote-mark'><a href='#fn3x0' id='fn3x0-bk'><sup class='textsuperscript'>3</sup></a></span><a id='x1-9008f3'></a>
+datasets available<span class='footnote-mark'><a id='fn3x0-bk' href='#fn3x0'><sup class='textsuperscript'>3</sup></a></span><a id='x1-9008f3'></a>
 that do exactly this. It might be a good idea to test these sets if they contain a
 gender-neutral version for every gendered noun, and if they have only a version
 ending with ”-man” and one version ending with ”-women”, to manually insert a
@@ -1410,7 +1410,7 @@ it:
 <div class='center'>
 <!-- l. 506 --><p class='noindent'>
 <a id='x1-12002r6'></a>
-</p><!-- l. 509 --><div class='longtable'> <table class='longtable' id='TBL-7' cellpadding='0' cellspacing='0'><colgroup id='TBL-7-1g'><col id='TBL-7-1' /></colgroup><colgroup id='TBL-7-2g'><col id='TBL-7-2' /></colgroup>
+</p><!-- l. 509 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-7' cellspacing='0'><colgroup id='TBL-7-1g'><col id='TBL-7-1' /></colgroup><colgroup id='TBL-7-2g'><col id='TBL-7-2' /></colgroup>
                                                                   
 
                                                                   
@@ -1577,7 +1577,7 @@ it:
   1
   as
   integers                                                                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-8-'><td class='td11' id='TBL-7-8-1' colspan='2' style='white-space:nowrap; text-align:center;'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 6: </span><span class='content'>OOP equivalents for low-level languages</span></div><!-- tex4ht:label?: x1-12002r6  -->                     </div>               <a id='x1-12003'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-8-'><td style='white-space:nowrap; text-align:center;' id='TBL-7-8-1' class='td11' colspan='2'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 6: </span><span class='content'>OOP equivalents for low-level languages</span></div><!-- tex4ht:label?: x1-12002r6  -->                     </div>               <a id='x1-12003'></a>
 
                                                                   
 </td></tr><tr style='vertical-align:baseline;' id='TBL-7-10-'><td class='td11' id='TBL-7-10-1' style='white-space:wrap; text-align:left;'>
@@ -1717,7 +1717,7 @@ method.<br class='newline' />every function suggested </p>
 <div class='center'>
 <!-- l. 590 --><p class='noindent'>
 <a id='x1-16002r7'></a>
-</p><!-- l. 593 --><div class='longtable'> <table class='longtable' id='TBL-8' cellpadding='0' cellspacing='0'><colgroup id='TBL-8-1g'><col id='TBL-8-1' /></colgroup><colgroup id='TBL-8-2g'><col id='TBL-8-2' /></colgroup>
+</p><!-- l. 593 --><div class='longtable'> <table class='longtable' cellpadding='0' id='TBL-8' cellspacing='0'><colgroup id='TBL-8-1g'><col id='TBL-8-1' /></colgroup><colgroup id='TBL-8-2g'><col id='TBL-8-2' /></colgroup>
                                                                   
 
                                                                   
@@ -1985,7 +1985,7 @@ method.<br class='newline' />every function suggested </p>
   should
   be
   present.                                                                            </p></td>
-</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-11-'><td class='td11' id='TBL-8-11-1' colspan='2' style='white-space:nowrap; text-align:center;'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 7: </span><span class='content'>Potential Warnings</span></div><!-- tex4ht:label?: x1-16002r7  -->                                                </div>               <a id='x1-16003'></a>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-11-'><td style='white-space:nowrap; text-align:center;' id='TBL-8-11-1' class='td11' colspan='2'>          <div class='multicolumn' style='white-space:nowrap; text-align:center;'> <div class='caption'><span class='id'>Table 7: </span><span class='content'>Potential Warnings</span></div><!-- tex4ht:label?: x1-16002r7  -->                                                </div>               <a id='x1-16003'></a>
 
                                                                   
 </td></tr><tr style='vertical-align:baseline;' id='TBL-8-13-'><td class='td11' id='TBL-8-13-1' style='white-space:wrap; text-align:left;'>
@@ -2010,7 +2010,7 @@ is usable and quite enough to be a valid proof of concept. I consider
 it to be enough to publish and share, but there will be imperfections
 or maybe even straight out design faults. Thus, issues and suggestions
 are very welcome in the GitHub repository where this specification is
-developed<span class='footnote-mark'><a href='#fn4x0' id='fn4x0-bk'><sup class='textsuperscript'>4</sup></a></span><a id='x1-17001f4'></a>.<br class='newline' />
+developed<span class='footnote-mark'><a id='fn4x0-bk' href='#fn4x0'><sup class='textsuperscript'>4</sup></a></span><a id='x1-17001f4'></a>.<br class='newline' />
 </p><!-- l. 632 --><p class='indent'>   Future development will go two paths in parallel: One path is the steady
 improvements of this specification in wording as well, if necessary, content. The other
 path is releasing <span class='cmti-10'>extension specifications</span>, these being additional specifications that
@@ -2049,10 +2049,10 @@ the main spec if it turns out to lack required functionality) and the ”bugfix�
 version with every change that does not affect its content, but its contents
 wording.<br class='newline' />
 </p><!-- l. 645 --><p class='indent'>   Recent versions will always be accessible via the specification download page of the project
-homepage<span class='footnote-mark'><a href='#fn5x0' id='fn5x0-bk'><sup class='textsuperscript'>5</sup></a></span><a id='x1-17002f5'></a>.<br class='newline' />
+homepage<span class='footnote-mark'><a id='fn5x0-bk' href='#fn5x0'><sup class='textsuperscript'>5</sup></a></span><a id='x1-17002f5'></a>.<br class='newline' />
 </p><!-- l. 647 --><p class='indent'>   The current versions major number is 0, since there might be need changes according
 to the feedback it receives. Further versions of this spec will be located together with the
-recent versions at <a href='https://phseiff.com/gender-render/\#download-specifications' class='url'><span class='cmtt-10'>https://phseiff.com/gender-render/\#download-specifications</span></a>.<br class='newline' />
+recent versions at <a class='url' href='https://phseiff.com/gender-render/\#download-specifications'><span class='cmtt-10'>https://phseiff.com/gender-render/\#download-specifications</span></a>.<br class='newline' />
 <a id='x1-17003r25'></a>
 </p>
 <h3 class='sectionHead'><span class='titlemark'>6   </span> <a id='x1-180006'></a>Exemplary Implementation</h3>
@@ -2104,11 +2104,11 @@ forgotten.<br class='newline' />
 <!-- l. 672 --><p class='noindent'>This version of the specification is licensed under <a href='http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0'>OWFa 1.0</a> by phseiff (contact:
 <a href='mailto:phseiff@phseiff.com'>phseiff@phseiff.com</a>).
 </p>
-   <div class='footnotes'><!-- l. 186 --><p class='indent'>    <span class='footnote-mark'><a href='#fn1x0-bk' id='fn1x0'><sup class='textsuperscript'>1</sup></a></span><span class='cmr-8'>”Whitespace” as defined by the </span><a href='https://infra.spec.whatwg.org/#ascii-whitespace'><span class='cmr-8'>HTML Living Standard</span></a><span class='cmr-8'>.</span></p>
-<!-- l. 469 --><p class='indent'>     <span class='footnote-mark'><a href='#fn2x0-bk' id='fn2x0'><sup class='textsuperscript'>2</sup></a></span><span class='cmr-8'>Princeton University ”About WordNet.” </span><a href='https://wordnet.princeton.edu/'><span class='cmr-8'>WordNet</span></a><span class='cmr-8'>. Princeton University. 2010.</span></p>
-<!-- l. 470 --><p class='indent'>     <span class='footnote-mark'><a href='#fn3x0-bk' id='fn3x0'><sup class='textsuperscript'>3</sup></a></span><span class='cmr-8'>for example </span><a href='https://github.com/ecmonsen/gendered_words' class='url'><span class='cmtt-8'>https://github.com/ecmonsen/gendered_words</span></a> <span class='cmr-8'>on GitHub</span></p>
-<!-- l. 630 --><p class='indent'>     <span class='footnote-mark'><a href='#fn4x0-bk' id='fn4x0'><sup class='textsuperscript'>4</sup></a></span><a href='https://github.com/phseiff/gender-render/issues' class='url'><span class='cmtt-8'>https://github.com/phseiff/gender-render/issues</span></a></p>
-<!-- l. 645 --><p class='indent'>    <span class='footnote-mark'><a href='#fn5x0-bk' id='fn5x0'><sup class='textsuperscript'>5</sup></a></span><a href='https://phseiff.com/gender-render/\#download-specifications' class='url'><span class='cmtt-8'>https://phseiff.com/gender-render/\#download-specifications</span></a></p>               </div>
+   <div class='footnotes'><!-- l. 186 --><p class='indent'>    <span class='footnote-mark'><a id='fn1x0' href='#fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><span class='cmr-8'>”Whitespace” as defined by the </span><a href='https://infra.spec.whatwg.org/#ascii-whitespace'><span class='cmr-8'>HTML Living Standard</span></a><span class='cmr-8'>.</span></p>
+<!-- l. 469 --><p class='indent'>     <span class='footnote-mark'><a id='fn2x0' href='#fn2x0-bk'><sup class='textsuperscript'>2</sup></a></span><span class='cmr-8'>Princeton University ”About WordNet.” </span><a href='https://wordnet.princeton.edu/'><span class='cmr-8'>WordNet</span></a><span class='cmr-8'>. Princeton University. 2010.</span></p>
+<!-- l. 470 --><p class='indent'>     <span class='footnote-mark'><a id='fn3x0' href='#fn3x0-bk'><sup class='textsuperscript'>3</sup></a></span><span class='cmr-8'>for example </span><a class='url' href='https://github.com/ecmonsen/gendered_words'><span class='cmtt-8'>https://github.com/ecmonsen/gendered_words</span></a> <span class='cmr-8'>on GitHub</span></p>
+<!-- l. 630 --><p class='indent'>     <span class='footnote-mark'><a id='fn4x0' href='#fn4x0-bk'><sup class='textsuperscript'>4</sup></a></span><a class='url' href='https://github.com/phseiff/gender-render/issues'><span class='cmtt-8'>https://github.com/phseiff/gender-render/issues</span></a></p>
+<!-- l. 645 --><p class='indent'>    <span class='footnote-mark'><a id='fn5x0' href='#fn5x0-bk'><sup class='textsuperscript'>5</sup></a></span><a class='url' href='https://phseiff.com/gender-render/\#download-specifications'><span class='cmtt-8'>https://phseiff.com/gender-render/\#download-specifications</span></a></p>               </div>
  
 </body> 
 </html>
