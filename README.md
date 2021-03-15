@@ -383,6 +383,8 @@ Clicking a version number downloads the specification as a pdf file, whilst the 
 
 * spec:
   * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
+  * [v0.5.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.5.0.pdf)
+    <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.5.0.html)</sup> - Add instructions for word splitting for ungendered-word-warnings to the specification.
   * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf)
     <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.html)</sup> - Change "gripd" to "idpd".
   * [v0.3.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.pdf)
