@@ -285,7 +285,47 @@ some context values that are referred to as direct mapped context values still p
     The priority of the \texttt{context}-section type is \texttt{1000}.
     If the \texttt{context}-section of a tag contains multiple values (e.g. "\texttt{\{foo:bar * context:Mr\_s Doe\}}"), the tag is interpreted as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value and are identical to the original tag in every other aspect (e.g. "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Doe\}}").\\
 
-    The other section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{950}.
+    Context values are always interpreted as being lower-case (all characters with lower-case versions, at least), meaning no context value with upper-case characters will ever be specified by the specification, and the rendering process interprets every context value as if it was entirely lower-case.
+    This includes custom properties ("\texttt{<}\emph{property}\texttt{>}") in \GenderRender-templates, which are interpreted as their lower-case equivalent as well, in case they contain upper-case letters.
+    Should a context value in a template be capitalized, this capitalization is interpreted as syntactic sugar to describe the tag's capitalization-value (a type of context section defined in the next paragraph) and the context value will be converted to lower-case in the parsing process.\\
+
+    The second (and priority-lowest) section type supported by this version of this Specification is the \texttt{capitalization}-type, whose priority is \texttt{800}.
+    The value of the \texttt{capitalization}-section describes how the word(s) to which the tag will be resolved will be capitalized, and may only take a limited set of values, each of whom corresponds to a different type of capitalization.
+    The potential \texttt{capitalization}-values of a tag are listed in the following table:
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{| >{\raggedright\arraybackslash}p{7em} | >{\raggedright\arraybackslash}p{4em} | >{\raggedright\arraybackslash}p{23em} |}
+                \hline
+                {value} & {example\linebreak (foobar)} & {short explanation, where necessary} \\
+                \hline\hline
+                lower-case & foobar & \\
+                \hline
+                capitalized & Foobar & \\
+                \hline
+                all-caps & FOOBAR & \\
+                \hline
+                studly-caps & FoObAr & every second letter lower-case, all other upper-case.\\
+                \hline
+                alt-studly-caps & fOoBaR & like studly-caps, but reversed.\\
+                \hline
+                \caption{Possible capitalization-values and their meaning}
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    The example-column of the table above illustrates the capitalization that will be applied to tags with the corresponding \texttt{capitalization}-value after they are resolved.
+    If a tag's capitalization value is specified explicitly, whilst its context value is not entirely lower-case, the \GenderRender-template is invalid;
+    if, on the other hand, the capitalization value is omitted, and the context value is capitalized according to one of the examples of the table above (which is the recommended way to specify a tag's capitalization value and may be considered syntactic sugar), then the capitalization value will be set to the corresponding value and the context value will be converted to lower-case during parsing.
+    A tag "\texttt{\{FoObAz\}}", for example, will become "\texttt{\{capitalization:studly-caps*foobaz\}}" during parsing.
+    This modification is applied \emph{after} the aforementioned splitting of tags with multiple context values into series of tags, to allow a more fine-grained customization of tag capitalization;
+    therefore, "\texttt{\{Foo bar\}}", for example, will become "\texttt{\{capitalization:capitalized*foo\} \{capitalization:lower-case*bar\}}".
+    If a tag's context value is capitalized in a different way than the ones listed in the example-column of the table above, the \GenderRender-template is invalid;
+    please note, however, that this behavior might change in the future in any minor release in case a fallback-value gets introduced and is therefore technically undefined, which implementation documentations should properly communicate to the user\footnote{See \href{https://github.com/phseiff/gender-render/issues/2\#issuecomment-798799367}{this comment on GitHub} for discussion on this.}.
+    templates with tags with a capitalization value which differs from all off the above-defined are invalid as well.\\
+    In cases where the capitalization of a tag's context value is ambiguous (like "Fo", which could be interpreted as both \texttt{capitalized} as well as \texttt{studly-caps}), the topmost of both possible interpretations, according to the order of the table above, takes precedence.\\
+
+    The third section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{950}.
     \texttt{id}-sections may take any value, as long as they take only one value, including (but not recommended to users for obvious reasons) values that contain escaped whitespace.
     Said value describes which individual the \GenderRender-tag refers to.
     Two \GenderRender-tags with the same id-value therefore refer to the same individual.
@@ -293,7 +333,7 @@ some context values that are referred to as direct mapped context values still p
     this is explored further in the renderer section.
     Whether there is an \texttt{id}-section is not part of the template specification, since it is not clear until the pronoun information is given.\\
 
-    Since there are only two section types defined by this specification, and one of them is mandatory, there is no practical need to use any section descriptors.
+    Since there are only three section types defined by this specification, the priority-highest of them being mandatory and the priority-lowest preferably being described using semantic sugar, there is no practical need to use any section descriptors.
     They are still defined as a language feature in this template to provide a way to port the template language to other natural languages that might require additional information without having to introduce new syntax elements for every language.
     Please keep in mind that further extension specifications will break backwards compatibility if they introduce section types with priority values higher than the lowest pre-existing one, which is why priority values are chosen relatively large and closely-spaced.\\
     It is guaranteed that no section type with a priority higher than the priority of the "id" section type will ever be introduced, so templates can always omit the section type descriptor for "context"- and "id"-sections, though omitting it for any other sections is generally unwise unless you (as the writer of the template) know that the set of extension specifications your implementation supports will never change.\\
@@ -398,6 +438,8 @@ some context values that are referred to as direct mapped context values still p
                  \hline\hline
                  \texttt{SyntaxError} & Used if the input not a valid template and pronoun data aren't valid, independent of the way they relate to each other. \\
                  \hline
+                 \texttt{InvalidCapitalization- Error} & Used if the capitalization of a context value or the capitalization value of a tag are invalid. \\
+                 \hline
                  \texttt{InvalidPDError} & Used if the given pronoun data is not valid. \\
                  \hline
                  \texttt{IdResolutionError} & Used if matching individual pronoun data to tags does not wo out.\\
@@ -425,13 +467,17 @@ some context values that are referred to as direct mapped context values still p
     as long as the renderer is guaranteed to produce the same input-output-pairs as any render that accords to this definition does, it is up to the programmer how the renderer works internally.
     Each of these steps vaguely corresponds to one of the error types defined above, and raises almost exclusively said error if it happens to be unfinisheable.\\
 
-    The first step is parsing the input values (template and pronoun data) and checking it for correctness.
-    If the received pronoun data is neither valid \GenderRender-pronoun data nor individual pronoun data, or if the received template is not a valid \GenderRender-template, a \texttt{SyntaxError} is risen.
-    If the given pronoun data is not valid, an \texttt{InvalidPDError} is risen, otherwise a \texttt{SyntaxError} occurs.
+    The first step is parsing the input values (template and pronoun data) and checking them for correctness.
+    If the received template is not a valid \GenderRender-template, a \texttt{SyntaxError} is risen;
+    unless the issue is with the capitalization settings of a tag, in which case a \texttt{InvalidCapitalizationError} is raised according to the table above.
+    If, on the other hand, the received pronoun data is neither valid \GenderRender-pronoun data nor individual pronoun data, an \texttt{InvalidPDError} is risen;
+    this takes precedence over raising a \texttt{SyntaxError} in case both the template as well as the pronoun data are invalid.
     Please note that for a \GenderRender-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
 
     This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Doe\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Doe\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).
     If a tags context value is not supported, an error may be risen, but this may differ from implementation to implementation to ensure backwards compatibility with versions that support a smaller set of context values.\\
+
+    After tags with multiple context values are split into sequences of multiple tags with one context value each, their capitalization value and their context value's capitalization are parsed and checked, taking into account the semantic sugar and other rules defined in regards to the \texttt{capitalization}-section (refer to the Template Language section for additional detail).\\
 
     The second step matches \GenderRender-tags to individual pronoun data passed to the renderer.
     The crux of this is checking whether all ids used by the pronoun data match ids used by the template and vice versa, and making sense of individual pronoun data passed to the renderer.
@@ -506,8 +552,12 @@ some context values that are referred to as direct mapped context values still p
     If a word is given as a gendered noun which isn't one according to the used data set, no error must be risen to ensure that every implementation terminates successfully for the same input data, but a (possibly suppressible) warning should be risen.
     If the implementation is also capable of determining if something is a word for a person a noun or a word at all, it may raise warnings for these as well.\\
 
-    After all of these steps are concluded, every \GenderRender-tag in the template will be replaced with a correctly gendered word for it.
-    Afterwards, the template must be unescaped to remove single backslashes and replace double backslashes with single ones.
+    After the string value a tag will be rendered to is determined, the capitalization option of the tag described by its \texttt{capitalization}-value is applied to said value by capitalizing it according to the capitalization-example provided in the capitalization value table above.
+    If a character does not have both a lowercase- and an uppercase-version, it is interpreted as already capitalized correctly by this process (an important distinction because another way to implement this would be to skip the character and proceed with the next character as if there had not been any character in between).
+    The whole process leading up to this, from the parsing of the template's context values and their semantic sugar to the capitalization of the final tag replacement, is referred to as the \emph{global capitalization system} ("global" because it is indiscriminately applied to every tag at the end of its rendering process), a word which can be found all throughout the reference implementation.\\
+
+    After all of these steps are concluded, every \GenderRender-tag in the template will be replaced with a correctly gendered and correctly capitalized word for it.
+    Afterwards, the rest of the template (save for the rendered tags) must be unescaped to remove single backslashes and replace double backslashes with single ones.
     If the implementation does not operate on a mutable string object (like they exist in some languages), the result should then be returned or outputted in another way, though this is not a must since some implications might not be encapsulated into their own function or program.\\
 
     \subsubsection{Implementation guidelines}
