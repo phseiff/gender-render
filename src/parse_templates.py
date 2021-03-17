@@ -103,75 +103,203 @@ class States:
 # the finite state machine, but without the escaped versions of all states since these are handled separately:
 
 
+class Transitions:
+    """Functions that modify (partially finished) `ParsedTemplate` data structures based on an added character.
+    These functions are used by `StateTransitioner` for its finite state machine.
+
+    All of these functions take a (partially finished) `ParsedTemplate` and a character and return the resulting
+    (possibly just partially finished) modified `ParsedTemplate`.
+    They may still perform in-place operations on the `ParsedTemplate` they receive."""
+
+    @staticmethod
+    def do_nothing(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Does nothing to the template."""
+        return r
+
+    # add character to the template:
+
+    @staticmethod
+    def add_to_text(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a character to the text segment the template ends with."""
+        r[-1] += c
+        return r
+
+    @staticmethod
+    def add_to_section_type(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a character to the section type of the last section of the tag the template ends with."""
+        last_section = r[-1].pop()
+        r[-1].append((last_section[0] + c, last_section[1]))
+        return r
+
+    @staticmethod
+    def add_to_section_value(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a character to the last value of the last section of the tag the template ends with."""
+        r[-1][-1][1][-1] += c
+        return r
+
+    @staticmethod
+    def add_to_new_explicitly_introduced_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """ToDo: Do we even need this?"""
+        section_values: List[str] = r[-1][-1][1]
+        if len(section_values) == 0:
+            section_values.append(c)
+        else:
+            section_values[-1] += c
+        return r
+
+    # start something new in the template:
+
+    @staticmethod
+    def start_new_tag(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a new empty tag to the end of the template."""
+        r.append([("", [])])
+        return r
+
+    @staticmethod
+    def start_new_section_after_typeless_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a new empty section to the end of the tag the template ends with."""
+        last_section = r[-1].pop()
+        r[-1].append(("", [last_section[0]]))
+        r[-1].append(("", []))
+        return r
+
+    @staticmethod
+    def start_second_section_value_in_typeless_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a new section value `c` to the end of the tag the template ends with, after discovering that what was
+        thought to be the section type was actually the first value of an un-typed section."""
+        last_section = r[-1].pop()
+        r[-1].append(("", [last_section[0], c]))
+        return r
+
+    @staticmethod
+    def start_new_section_value_and_delete_last_sections_value_if_empty(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a new empty value to the last section of the tag the template ends with, if there is no empty value at
+        its end yet."""
+        values_of_last_section: List[str] = r[-1][-1][1]
+        if values_of_last_section[-1] != "":
+            values_of_last_section.append("")
+        return r
+
+    @staticmethod
+    def start_new_section_and_delete_last_sections_value_if_empty(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Adds a new section to the tag the template ends with, and deletes the last value of the last section if it is
+        empty."""
+        values_of_last_section: List[str] = r[-1][-1][1]
+        if values_of_last_section[-1] == "":
+            del values_of_last_section[-1]
+        r[-1].append(("", []))
+        return r
+
+    # close things in the tag:
+
+    @staticmethod
+    def end_tag_after_typeless_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Ends a tag (and adds a new text segment behind it) which ends with a section without a specified type."""
+        last_section = r[-1].pop()
+        r[-1].append(("", [last_section[0]]))
+        r.append("")
+        return r
+
+    @staticmethod
+    def end_tag_and_delete_last_sections_value_if_empty(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Ends a tag and deletes its last section's last value if it is empty."""
+        values_of_last_section: List[str] = r[-1][-1][1]
+        if values_of_last_section[-1] == "":
+            del values_of_last_section[-1]
+        r.append("")
+        return r
+
+
 class StateTransitioner:
     """Translates between states using a finite state machine.
     This does not take into account the ability to escape characters."""
 
     state_transitions: Dict[str, Dict[str, Tuple[str, Callable[[ParsedTemplate, str], ParsedTemplate]]]] = {
         States.not_within_tags: {
-            "{": (States.in_empty_section,
-                lambda r, c: r+[[("", [])]]),
-            Chars.char: (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),
-            Chars.ws: (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),
-            ":": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c]),
-            "*": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1]+c])
+            "{": (
+                States.in_empty_section,
+                Transitions.start_new_tag),
+            Chars.ws: (
+                States.not_within_tags,
+                Transitions.add_to_text),
+            Chars.char: (
+                States.not_within_tags,
+                Transitions.add_to_text),
+            ":": (
+                States.not_within_tags,
+                Transitions.add_to_text),
+            "*": (
+                States.not_within_tags,
+                Transitions.add_to_text)
         },
         States.in_empty_section: {
-            Chars.ws: (States.in_empty_section,
-                lambda r, c: r),
-            Chars.char: (States.in_not_empty_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0]+c, r[-1][-1][1])]])
+            Chars.ws: (
+                States.in_empty_section,
+                Transitions.do_nothing),
+            Chars.char: (
+                States.in_not_empty_section,
+                Transitions.add_to_section_type)
         },
         States.in_not_empty_section: {
-            ":": (States.in_empty_value_section,
-                lambda r, c: r),
-            "*": (States.in_empty_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]]), ("", [])]]),
-            "}": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]])], ""]),
-            Chars.ws: (States.in_section_with_one_finished_word,
-                lambda r, c: r),
-            Chars.char: (States.in_not_empty_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0]+c, r[-1][-1][1])]])
+            ":": (
+                States.in_empty_value_section,
+                Transitions.do_nothing),
+            "*": (
+                States.in_empty_section,
+                Transitions.start_new_section_after_typeless_section),
+            "}": (
+                States.not_within_tags,
+                Transitions.end_tag_after_typeless_section),
+            Chars.ws: (
+                States.in_section_with_one_finished_word,
+                Transitions.do_nothing),
+            Chars.char: (
+                States.in_not_empty_section,
+                Transitions.add_to_section_type)
         },
         States.in_section_with_one_finished_word: {
-            ":": (States.in_empty_value_section,
-                lambda r, c: r),
-            "*": (States.in_empty_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]]), ("", [])]]),
-            "}": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0]])], ""]),
-            Chars.ws: (States.in_section_with_one_finished_word,
-                lambda r, c: r),
-            Chars.char: (States.in_not_empty_value_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[("", [r[-1][-1][0], c])]])
+            ":": (
+                States.in_empty_value_section,
+                Transitions.do_nothing),
+            "*": (
+                States.in_empty_section,
+                Transitions.start_new_section_after_typeless_section),
+            "}": (
+                States.not_within_tags,
+                Transitions.end_tag_after_typeless_section),
+            Chars.ws: (
+                States.in_section_with_one_finished_word,
+                Transitions.do_nothing),
+            Chars.char: (
+                States.in_not_empty_value_section,
+                Transitions.start_second_section_value_in_typeless_section)
         },
         States.in_empty_value_section: {
-            Chars.ws: (States.in_empty_value_section,
-                lambda r, c: r),
-            Chars.char: (States.in_not_empty_value_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], r[-1][-1][1][:-1]+[
-                    ((r[-1][-1][1][-1]+c) if len(r[-1][-1][1]) > 0 else c)
-                ])]])
+            Chars.ws: (
+                States.in_empty_value_section,
+                Transitions.do_nothing),
+            Chars.char: (
+                States.in_not_empty_value_section,
+                Transitions.add_to_new_explicitly_introduced_section)
         },
         States.in_not_empty_value_section: {
-            "*": (States.in_empty_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], (r[-1][-1][1]
-                       if r[-1][-1][1][-1] != "" else r[-1][-1][1][:-1])), ("", [])]]),
-            "}": (States.not_within_tags,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], r[-1][-1][1]
-                       if r[-1][-1][1][-1] != "" else r[-1][-1][1][:-1])]]+[""]),
-            Chars.ws: (States.in_not_empty_value_section,
-                lambda r, c: r[:-1] + [r[-1][:-1] + [(r[-1][-1][0], r[-1][-1][1]
-                       + ([""] if r[-1][-1][1][-1] != "" else []))]]),
-            Chars.char: (States.in_not_empty_value_section,
-                lambda r, c: r[:-1]+[r[-1][:-1]+[(r[-1][-1][0], r[-1][-1][1][:-1]+[(r[-1][-1][1][-1]+c)])]])
+            "*": (
+                States.in_empty_section,
+                Transitions.start_new_section_and_delete_last_sections_value_if_empty),
+            "}": (
+                States.not_within_tags,
+                Transitions.end_tag_and_delete_last_sections_value_if_empty),
+            Chars.ws: (
+                States.in_not_empty_value_section,
+                Transitions.start_new_section_value_and_delete_last_sections_value_if_empty),
+            Chars.char: (
+                States.in_not_empty_value_section,
+                Transitions.add_to_section_value)
         }
     }
+    """A data structure describing the template syntax as a finite state machine in which, for every state s1 and every
+    character c, `state_transitions[s1][c]` contains a tuple `(s2, f)` with s2 as the following state and f as the
+    function that is applied to the parsed data to include c in it."""
 
     @staticmethod
     def transition_state(state: str, char: str) -> Tuple[str, Callable[[ParsedTemplate, str], ParsedTemplate]]:
