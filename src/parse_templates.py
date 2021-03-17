@@ -109,7 +109,7 @@ class Transitions:
 
     All of these functions take a (partially finished) `ParsedTemplate` and a character and return the resulting
     (possibly just partially finished) modified `ParsedTemplate`.
-    They may still perform in-place operations on the `ParsedTemplate` they receive."""
+    They might possibly still perform in-place operations on the `ParsedTemplate` they receive, though."""
 
     @staticmethod
     def do_nothing(r: ParsedTemplate, c: str) -> ParsedTemplate:
@@ -137,16 +137,6 @@ class Transitions:
         r[-1][-1][1][-1] += c
         return r
 
-    @staticmethod
-    def add_to_new_explicitly_introduced_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
-        """ToDo: Do we even need this?"""
-        section_values: List[str] = r[-1][-1][1]
-        if len(section_values) == 0:
-            section_values.append(c)
-        else:
-            section_values[-1] += c
-        return r
-
     # start something new in the template:
 
     @staticmethod
@@ -156,11 +146,17 @@ class Transitions:
         return r
 
     @staticmethod
-    def start_new_section_after_typeless_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
+    def start_new_section_and_convert_section_type_to_section_value(r: ParsedTemplate, c: str) -> ParsedTemplate:
         """Adds a new empty section to the end of the tag the template ends with."""
         last_section = r[-1].pop()
         r[-1].append(("", [last_section[0]]))
         r[-1].append(("", []))
+        return r
+
+    @staticmethod
+    def start_first_section_value_in_typed_section(r: ParsedTemplate, c: str) -> ParsedTemplate:
+        """Starts a new section value with its first character `c` in a section with explicitely specified type."""
+        r[-1][-1][1].append(c)
         return r
 
     @staticmethod
@@ -246,7 +242,7 @@ class StateTransitioner:
                 Transitions.do_nothing),
             "*": (
                 States.in_empty_section,
-                Transitions.start_new_section_after_typeless_section),
+                Transitions.start_new_section_and_convert_section_type_to_section_value),
             "}": (
                 States.not_within_tags,
                 Transitions.end_tag_after_typeless_section),
@@ -263,7 +259,7 @@ class StateTransitioner:
                 Transitions.do_nothing),
             "*": (
                 States.in_empty_section,
-                Transitions.start_new_section_after_typeless_section),
+                Transitions.start_new_section_and_convert_section_type_to_section_value),
             "}": (
                 States.not_within_tags,
                 Transitions.end_tag_after_typeless_section),
@@ -280,7 +276,7 @@ class StateTransitioner:
                 Transitions.do_nothing),
             Chars.char: (
                 States.in_not_empty_value_section,
-                Transitions.add_to_new_explicitly_introduced_section)
+                Transitions.start_first_section_value_in_typed_section)
         },
         States.in_not_empty_value_section: {
             "*": (
