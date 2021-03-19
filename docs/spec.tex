@@ -299,15 +299,15 @@ some context values that are referred to as direct mapped context values still p
                 \hline
                 {value} & {example\linebreak (foobar)} & {short explanation, where necessary} \\
                 \hline\hline
-                lower-case & foobar & \\
+                lower-case & \texttt{foobar} & \\
                 \hline
-                capitalized & Foobar & \\
+                capitalized & \texttt{Foobar} & \\
                 \hline
-                all-caps & FOOBAR & \\
+                all-caps & \texttt{FOOBAR} & \\
                 \hline
-                studly-caps & FoObAr & every second letter lower-case, all other upper-case.\\
+                studly-caps & \texttt{FoObAr} & every second letter lower-case, all other upper-case.\\
                 \hline
-                alt-studly-caps & fOoBaR & like studly-caps, but reversed.\\
+                alt-studly-caps & \texttt{fOoBaR} & like studly-caps, but reversed.\\
                 \hline
                 \caption{Possible capitalization-values and their meaning}
             \end{longtable}
@@ -316,13 +316,15 @@ some context values that are referred to as direct mapped context values still p
 
     The example-column of the table above illustrates the capitalization that will be applied to tags with the corresponding \texttt{capitalization}-value after they are resolved.
     If a tag's capitalization value is specified explicitly, whilst its context value is not entirely lower-case, the \GenderRender-template is invalid;
-    if, on the other hand, the capitalization value is omitted, and the context value is capitalized according to one of the examples of the table above (which is the recommended way to specify a tag's capitalization value and may be considered syntactic sugar), then the capitalization value will be set to the corresponding value and the context value will be converted to lower-case during parsing.
+    if, on the other hand, the capitalization value is omitted, and the context value is capitalized according to one of the examples of the table above (which is the recommended way to specify a tag's capitalization value), then the capitalization value will be set to the corresponding value and the context value will be converted to lower-case during parsing\footnote{This uses the lowercasing algorithm used is described in section 3.13 of the Unicode Standard.}.
     A tag "\texttt{\{FoObAz\}}", for example, will become "\texttt{\{capitalization:studly-caps*foobaz\}}" during parsing.
     This modification is applied \emph{after} the aforementioned splitting of tags with multiple context values into series of tags, to allow a more fine-grained customization of tag capitalization;
     therefore, "\texttt{\{Foo bar\}}", for example, will become "\texttt{\{capitalization:capitalized*foo\} \{capitalization:lower-case*bar\}}".
+    When determining whether a string follows a specific type of capitalization, characters that are neither lowercase nor uppercase are interpreted as capitalized in accordance with the capitalization type that is being checked for (an important distinction because another way to implement this would be to skip the character and proceed with the next character as if there had be not been any character in between);
+    whether a character is uppercase, lowercase or neither is decided in accordance to the Unicode Standard.\\
     If a tag's context value is capitalized in a different way than the ones listed in the example-column of the table above, the \GenderRender-template is invalid;
     please note, however, that this behavior might change in the future in any minor release in case a fallback-value gets introduced and is therefore technically undefined, which implementation documentations should properly communicate to the user\footnote{See \href{https://github.com/phseiff/gender-render/issues/2\#issuecomment-798799367}{this comment on GitHub} for discussion on this.}.
-    templates with tags with a capitalization value which differs from all off the above-defined are invalid as well.\\
+    Templates with tags with a capitalization value which differs from all off the above-defined are invalid as well.\\
     In cases where the capitalization of a tag's context value is ambiguous (like "Fo", which could be interpreted as both \texttt{capitalized} as well as \texttt{studly-caps}), the topmost of both possible interpretations, according to the order of the table above, takes precedence.\\
 
     The third section type supported by this version of this Specification is the \texttt{id}-type, whose priority is \texttt{950}.
@@ -436,7 +438,7 @@ some context values that are referred to as direct mapped context values still p
                  \hline
                  Error name & commonly used for \\
                  \hline\hline
-                 \texttt{SyntaxError} & Used if the input not a valid template and pronoun data aren't valid, independent of the way they relate to each other. \\
+                 \texttt{SyntaxError} & Used if the input is not a valid template and pronoun data aren't valid, independent of the way they relate to each other. \\
                  \hline
                  \texttt{InvalidCapitalization- Error} & Used if the capitalization of a context value or the capitalization value of a tag are invalid. \\
                  \hline
@@ -450,7 +452,7 @@ some context values that are referred to as direct mapped context values still p
                  \hline
                  \texttt{InvalidInformationError} & Used if a property in a piece of individual pronoun data has a value it does not allow assigned. \\
                  \hline
-                \caption{Types of errors whilst rendering}
+                \caption{Types of errors that can occur whilst rendering}
             \end{longtable}
         \end{center}
     \end{flushleft}
@@ -459,8 +461,9 @@ some context values that are referred to as direct mapped context values still p
     This is applicable for some languages like Python, and you can safely ignore it if it isn't applicable to your language of choice.\\
     The errors (in languages where errors are objects) do not need to be defined as part of the global scope, if libraries or modules in this language commonly use their own scope (as is the case wit most common languages), and should default to the best practices for their respective language.\\
     If the language is object-oriented, including custom errors, the errors defined by this specification may be derived from pre-existing error types, where fitting, as long as catching the exception based on the name defined by this specification is still possible.\\
-    Where possible, additional information regarding the cause of failure and how to fix it should be included, but the way this is done is considered an implementation detail.
-    Implementations should keep in mind that people using \GenderRender might not neccessarily have read the spec, and might profit from self-explanatory detailed Tracebacks.\\
+    Implementations in languages that support error hierarchies with the ability to find out whether a caught exception has been raised specifically, as opposed to being triggered by raising one of its derivates, may implement an arbitrary (as long as it is well-defined in their documentation) error hierarchy between its exceptions, based on good judgement\footnote{Refer to the \emph{Error Hierarchy} section for additional recommendations.}.\\
+    Where possible, additional information regarding the cause of failure and how to fix it should be included when raising an error, but the way this is done is considered an implementation detail.
+    Implementations should keep in mind that people using \GenderRender might not necessarily have read the spec, and might profit from self-explanatory detailed Tracebacks.\\
 
     The rendering process uses different steps, described as follows.
     Please note that the order in which these steps are executed is not relevant;
@@ -473,6 +476,8 @@ some context values that are referred to as direct mapped context values still p
     If, on the other hand, the received pronoun data is neither valid \GenderRender-pronoun data nor individual pronoun data, an \texttt{InvalidPDError} is risen;
     this takes precedence over raising a \texttt{SyntaxError} in case both the template as well as the pronoun data are invalid.
     Please note that for a \GenderRender-template to be valid, not only does the syntax as describes via a formal grammar or a finite state machine be matched, but also does the determination of non-explicitly specified section types need work out, as described in the template-part of this specification.\\
+
+    % ToDo: Are we allready testing whether this precedence is properly handled by the implementation?
 
     This step also contains unwrapping tags with multiple whitespace-separated context values, such as "\texttt{\{foo:bar * context:Mr\_s Doe\}}", which are processed from a form along the lines of "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Doe\}}" to two different tags separated by a single space ("\texttt{ }", \texttt{U+0020}).
     If a tags context value is not supported, an error may be risen, but this may differ from implementation to implementation to ensure backwards compatibility with versions that support a smaller set of context values.\\
@@ -630,7 +635,7 @@ some context values that are referred to as direct mapped context values still p
     This is the functionality that every \GenderRender implementation should expose, if appropriate (within good judgement) its main namespace.\\
 
     \begin{description}
-        \item[object \texttt{Template}:] A class representing a parsed, but not yet rendered, \GenderRender-template.
+        \item[class \texttt{Template}:] A class representing a parsed, but not yet rendered, \GenderRender-template.
                                          Its constructor takes the template-related information that any \GenderRender-renderer takes, parses and processes it as far as possible, and an additional \texttt{render}-method accepts the pronoun-related information that any \GenderRender-renderer takes and renders both, with the result then being returned.
                                          This practice of implementing an object or data structure just for processing the template and separating this process from the actual render is motivated by the need for increased performance in case of multiple subsequent renders of one identical template.\\
                                          The constructor accepts one positional argument, "\texttt{template}", which accepts a string, and one optional argument "\texttt{takes\_file\_path}", which defaults to false and accepts a boolean.
@@ -644,7 +649,7 @@ some context values that are referred to as direct mapped context values still p
                                         Implementations may write \texttt{render} as a method that accepts a JSON-like object (like a \texttt{dict} in Python or an object in Javascript) if it receives one instead of a string containing json.
         \item[function \texttt{render\_template()}:] \texttt{render\_template()} is a shorthand for \texttt{Template().render()}.
                                                      Order in which arguments are passed to \texttt{render\_plate()} is first required arguments for Template(), then required arguments for render(), then optional arguments shared by Template(), then optional arguments for Template() and then optional arguments for render().
-        \item[object \texttt{PronounData}:] A class representing a parsed piece of individual pronoun data, with all calculations that can be done before knowing which template it will be inserted in already done.
+        \item[class \texttt{PronounData}:] A class representing a parsed piece of individual pronoun data, with all calculations that can be done before knowing which template it will be inserted in already done.
                                             This type of object is accepted by every function which accepts pronoun data, such as \texttt{Template().render()} or \texttt{render\_template()} wherever these functions accept a piece of pronoun data (the \texttt{pronoun \_data}-argument).
                                             Its constructor accepts the same arguments as the  \texttt{render()}-method as described in the preceding sections of this list.
     \end{description}
@@ -667,8 +672,8 @@ some context values that are referred to as direct mapped context values still p
     This ensures compatibility of values for the \texttt{warning\_settings}-argument across all implementations of \GenderRender.
     The default value for the \texttt{warning\_settings} argument is up to the implementation, but should be chosen to comply with the warning sensitivity common in programs written in the respective language.
     The value of the argument should be passed from every function to every function it calls (assuming both functions are part of the program and have potential warnings to raise).
-    \texttt{render\_template()}, for example, should pass the users warning preferences on to \texttt{Template()} as well as its \texttt{.render()} method.\\
-every function suggested
+    \texttt{render\_template()}, for example, should pass the user's warning preferences on to \texttt{Template()} as well as its \texttt{.render()} method.\\
+
     \begin{flushleft}
         \begin{center}
             \begin{longtable}{|>{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{28em} |}
@@ -701,12 +706,64 @@ every function suggested
         \end{center}
     \end{flushleft}
 
+    % ToDo: Should I add a warning for when a tag has a specified capitalization value?
+
     Not all of these warnings need to be implemented, and an arbitrary amount of additional warnings may be implemented in addition to them.
-    Warnings should come with the information required to track them down to their cause.\\
+    Warnings should come with the information required to track them down to their cause (the rerence implementation might set a good example here).\\
 
     The recommended approach to warnings about the presence of ungendered words of any form (these warnings all start with "\texttt{FreeUngendered}" in the table above) would be to split the text surrounding tags into words, with non-letter symbols serving as separators, and checking every word for presence in a dedicated list or other data structure of gendered words.
     Since not all letters are part of ASCII code, checking whether a character is part of the alphabet is not enough to check whether it is a letter in many languages;
     implementations should instead check whether a character is a "Letter" according to the Unicode standard to determine whether it is part of a word or a separator between words\footnote{Compare to how the \texttt{str.isalpha()}-method works in the Python programming language, for example.}.\\
+
+    In addition to the warnings defined by this section of the specification, implementations may implement an arbitrary amount of additional warnings to give even more fine-grained feedback during the parsing and rendering process.
+    These additional warnings can be disabled by default or enabled by default, depending on design decisions made by the implementation;
+    the ability to suppress warnings that comes with \GenderRender makes both decisions valid.\\
+
+    The following is a list of all additional warnings the \GenderRender reference implementation uses (or used in previous versions) in addition to the ones specified above;
+    they where never part of the specification, though, since their usefulness can be debated and/or is highly language dependant.
+    The reason why there is still a section in this specification for them is because it might be of interest for other implementations to see which additional warnings where implemented in the reference implementation and why (if ever) they where removed:\\
+
+    \begin{flushleft}
+        \begin{center}
+            \begin{longtable}{|>{\raggedright\arraybackslash}p{8em} | >{\raggedright\arraybackslash}p{14em} | >{\raggedright\arraybackslash}p{14em} |}
+                 \hline
+                 warning name & warning meaning\linebreak (slightly modified from the docstring) & reason for removal\\
+                 \hline\hline
+                 \texttt{DefaultValue- UsedWarning} & An attribute with a default value was looked up in a piece of individual pronoun data, but not found, so its default value was used.
+                 This is in itself not a problem and perfectly fine behavior;
+                 this warning is only raised to inform the user in case they forgot to define the property or pythonically prefer explicit to implicit.
+                 & N/A\\
+                 \hline
+                 \texttt{GenderedNouns- BuildFromWeb- Warning} & The data containing the gendered and especially neutral versions of all english hyponyms for "person" could not be found;
+                 therefore, it will be downloaded and saved from the internet.
+                 This should only happen once per installation and only when initializing the module for the first time, and it should not happen at all with the  PyPi installation.
+                 & N/A\\
+                 \hline
+                \texttt{NounGendering- GuessingsWarning} & Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun rather than hardcoded values.
+                 This warning exists because the data used by the implementation to find the correctly gendered version of every word had holes, missing information and contradictions in the hundreds, all of whom where fixed by an algorithm and not yet manually checked for correctness.
+                 & N/A\\
+                 \hline
+                \caption{Additional Warnings in the reference implementation, and why they where removed}
+            \end{longtable}
+        \end{center}
+    \end{flushleft}
+
+    \subsubsubsection{Error Hierarchy}
+
+    Some languages (mainly object-oriented languages such as Python and Java) have error hierarchies, where Error- and Exceptions Types can have sub-types, and catching an Exception catches all of its sub-exceptions as well (usually, that means that Errors and Exceptions are implemented as classes that just inherit from each other).
+    For this reason, implementations in such languages (like the reference implementation) might want to define hierarchies between the \GenderRender exceptions they define.
+    This is in accordance to this specification, which does not forbid such behavior.
+    Implementations may also add additional exceptions into their error hierarchies, and decide freely from which pre-existing exception they derive the exceptions defined by this specification;
+    the only limitation is that catching an exception defined by this specification must always catch every issue that, as fined by this specification, raises said exception.\\
+
+    Some languages might not allow to check whether a caught exception is exactly the exception one tried to catch or an exception derived from this exception (so catching exception A does not allow one to determine whether exception A was risen or exception B when B is derived from A).
+    Implementations in languages like this may not derive exceptions defined by this specification from other exceptions defined by this specification, since e.g. deriving \texttt{DoubledInformationError} from \texttt{InvalidPDError} in such a language would make it impossible to specifically catch \texttt{InvalidPDError}.\\
+
+    The following graphic shows the (exemplary) error hierarchy used by the reference implementation, which might serve as a good example.
+    Arrows go from parent exception to child exception, and exceptions in dashed lines are exceptions that the implementation added on top of the set of specified exceptions to allow for even more fine-grained error handling.
+    Ultimately, the hierarchy between different exceptions is opinionated and the ideal error hierarchy might vary depending on the application area and language of the implementation, but the following hierarchy might still be of worth and work quite well for many implementations that qualify for using an error hierarchy:\\
+
+    \includegraphics[width=10cm]{images/hierarchy-errors.png}\\
 
 \section{Specification developement}
 

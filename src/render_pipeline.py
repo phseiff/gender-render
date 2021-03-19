@@ -12,6 +12,7 @@ from . import warnings
 from . import errors
 from . import gender_nouns
 from .handle_context_values import ContextValues
+from . import global_capitalization_system
 
 
 class GRenderer:
@@ -133,28 +134,54 @@ class GRenderer:
         return new_template, new_grpd
 
     @staticmethod
-    def render_final_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
+    def actually_render_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
+                                       grpd: parse_pronoun_data.GRPD) -> (parse_templates.ParsedTemplateRefined,
+                                                                          parse_pronoun_data.GRPD):
+        """Accepts a parsed template with a piece of gender\\*render pronoun data, both with matching id values and
+        already resolved addressing, and renders all context values, storing their values in the slot originally
+        intended for them."""
+        new_template = copy.deepcopy(parsed_template)
+        new_grpd = copy.deepcopy(grpd)
+
+        for i in range(1, len(new_template), 2):
+            id_value = new_template[i]["id"]
+            context_value = new_template[i]["context"]
+
+            if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
+                # render tag by looking it up in the individual pronoun data of the individual:
+                new_template[i]["context"] = ContextValues.get_value(grpd, id_value, context_value)
+
+            else:  # type(context_value) is gender_nouns.GenderedNoun:
+                # render tag by correctly gendering the noun it represents.
+                gender = ContextValues.get_value(grpd, id_value, "gender-nouns")
+                new_template[i]["context"] = context_value.render_noun(gender)
+
+        return new_template, new_grpd
+
+    @staticmethod
+    def apply_capitalization(parsed_template: parse_templates.ParsedTemplateRefined,
+                             grpd: parse_pronoun_data.GRPD) -> (parse_templates.ParsedTemplateRefined,
+                                                                parse_pronoun_data.GRPD):
+        """Capitalizes every tag's context value in accordance to its capitalization value."""
+        new_template = copy.deepcopy(parsed_template)
+        new_grpd = copy.deepcopy(grpd)
+        for i in range(1, len(new_template), 2):
+            new_template[i]["context"] = global_capitalization_system.apply_capitalization_to_tag(new_template[i])
+        return new_template, new_grpd
+
+    @staticmethod
+    def convert_to_string(parsed_template: parse_templates.ParsedTemplateRefined,
                                     grpd: parse_pronoun_data.GRPD) -> str:
         """Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values,
         and returns the rendered template as a string.
         This should be the last step in the rendering pipeline."""
-
         result = ""
+
         for i in range(len(parsed_template)):
             if not i % 2:  # <- is a string
                 result += parsed_template[i]
             else:  # <- is a tag
-                id_value = parsed_template[i]["id"]
-                context_value = parsed_template[i]["context"]
-
-                if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
-                    # render tag by looking it up in the individual pronoun data of the individual:
-                    result += ContextValues.get_value(grpd, id_value, context_value)
-
-                else:  # type(context_value) is gender_nouns.GenderedNoun:
-                    # render tag by correctly gendering the noun it represents.
-                    gender = ContextValues.get_value(grpd, id_value, "gender-nouns")
-                    result += context_value.render_noun(gender)
+                result += parsed_template[i]["context"]
 
         return result
 
@@ -175,6 +202,8 @@ class GRenderer:
         parsed_template, grpd = GRenderer.id_resolution(parsed_template, ids_used_in_template,
                                                         template_contains_unspecified_ids, grpd)
         parsed_template, grpd = GRenderer.resolve_addressing(parsed_template, grpd)
-        result = GRenderer.render_final_context_values(parsed_template, grpd)
+        parsed_template, grpd = GRenderer.actually_render_context_values(parsed_template, grpd)
+        parsed_template, grpd = GRenderer.apply_capitalization(parsed_template, grpd)
+        result = GRenderer.convert_to_string(parsed_template, grpd)
 
         return result

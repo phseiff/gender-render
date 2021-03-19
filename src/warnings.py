@@ -78,9 +78,9 @@ class FreeGenderedPersonNounWarning(FreeUngenderedPersonNounWarning):
 
 class NounGenderingGuessingsWarning(GRWarning):
     """Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
-    rather than hardcoded values.
-    This warning type is not listed in the specification since it is highly implementation-dependant and should not
-    be necessary in a perfect implementation."""
+    rather than hardcoded values."""
+    # This warning is not part of the specification since it is too specific of a design decision to expect every
+    #  implementation to follow it.
     pass
 
 

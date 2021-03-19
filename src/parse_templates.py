@@ -9,6 +9,7 @@ from . import errors
 from . import handle_context_values
 from . import gender_nouns
 from . import warnings
+from . import global_capitalization_system
 
 # Some helpful type hints:
 
@@ -316,7 +317,8 @@ class SectionTypes:
 
     section_types_w_priorities = [
         ("context", 1000., True),
-        ("id", 950., False)
+        ("id", 950., False),
+        ("capitalization", 900, False)
     ]
     """All supported section types as a list of tuples in the form of (name, priority, can_have_multiple_values)"""
 
@@ -529,8 +531,18 @@ class GRParser:
         return result
 
     @staticmethod
+    def set_capitalization_value_for_all_tags(parsed_template: ParsedTemplateRefined) -> ParsedTemplateRefined:
+        """Takes a parsed template as returned by `GRParser.convert_tags_to_indexable_dicts` and makes sure every
+        tag has a capitalization value."""
+        # ToDo: Test this function!
+        result = copy.deepcopy(parsed_template)
+        for i in range(1, len(parsed_template), 2):
+            global_capitalization_system.assign_and_check_capitalization_value_of_tag(result[i])
+        return result
+
+    @staticmethod
     def convert_context_values_to_canonicals(parsed_template: ParsedTemplateRefined) -> ParsedTemplateRefined:
-        """Converts a parsed template as returned by GRParser.convert_tags_to_indexable_dicts to a parsed template
+        """Converts a parsed template as returned by `GRParser.convert_tags_to_indexable_dicts` to a parsed template
         where every context value is canonical."""
         result = copy.deepcopy(parsed_template)
         for i in range(1, len(parsed_template), 2):
@@ -539,12 +551,13 @@ class GRParser:
 
     @staticmethod
     def full_parsing_pipeline(template: str) -> ParsedTemplateRefined:
-        """Walks template through the full parsing pipeline defined by GRParser, and returns the result."""
+        """Walks template through the full parsing pipeline defined by `GRParser`, and returns the result."""
         template = GRParser.parse_gr_template_from_str(template)
         template = GRParser.assign_types_to_all_sections(template)
         template = GRParser.split_tags_with_multiple_context_values(template)
         template = GRParser.make_sure_that_sections_dont_exceed_allowed_amount_of_values(template)
         template = GRParser.convert_tags_to_indexable_dicts(template)
+        template = GRParser.set_capitalization_value_for_all_tags(template)
         template = GRParser.convert_context_values_to_canonicals(template)
         return template
 
