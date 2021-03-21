@@ -10,6 +10,9 @@ import os
 import pathlib
 import shutil
 import json
+import inspect
+import pkgutil
+import test
 
 try:
     from wheezy.template.engine import Engine
@@ -101,6 +104,58 @@ def make_html_for_all_specs():
         # delete copied styling and configuration file:
         os.remove("docs/specs/" + spec_name + "/spec-styling.css")
         os.remove("docs/specs/" + spec_name + "/config.cfg")
+
+
+def all_functions_are_tested_properly() -> bool:
+    # get two dicts of all modules from gender_render and its tests:
+    import src as gender_render
+    gr_submodules = dict()
+    for importer, modname, ispkg in pkgutil.iter_modules(gender_render.__path__, gender_render.__name__ + "."):
+        gr_submodules[modname] = importer.find_module(modname).load_module(modname)
+
+    test_submodules = dict()
+    for importer, modname, ispkg in pkgutil.iter_modules(test.__path__, test.__name__ + "."):
+        test_submodules[modname] = importer.find_module(modname).load_module(modname)
+
+    # check for all submodules of gender_render:
+    all_tested = True
+
+    for modname, module in gr_submodules.items():
+        if modname == "__init__":
+            continue
+        # if modname.startswith("_") and ("test" + modname) in test_submodules:
+        #     test_modname = "test" + modname  # el
+        if ("test_" + modname) in test_submodules:
+            test_modname = "test_" + modname
+        else:
+            print("No tests for submodule", modname)
+            all_tested = False
+            continue
+        test_module = test_submodules[test_modname]
+        classes_in_module = [t[0] for t in inspect.getmembers(module, inspect.isclass)]
+        classes_in_test_module = [t[0] for t in inspect.getmembers(test_module, inspect.isclass)]
+        methods_in_test_module = list()
+        for test_class_name in classes_in_test_module:
+            methods_in_test_module += [t[0] for t in inspect.getmembers(test_module.__dict__[test_class_name],
+                                       inspect.ismethod)]
+        for class_name in classes_in_module:
+            if ("Test" + class_name) not in classes_in_test_module:
+                print("No class Test" + class_name + " in " + test_modname)
+                all_tested = False
+            else:
+                test_class = test_module.__dict__["Test" + class_name]
+                class_methods = [t[0] for t in inspect.getmembers(module.__dict__[class_name], inspect.ismethod)]
+                for class_method in class_methods:
+                    if ("test_" + class_method) not in test_class.__dict__:
+                        print("Method gender_render." + modname + "." + class_name + "." + class_method + " not tested")
+                        all_tested = False
+                functions = [t[0] for t in inspect.getmembers(module, inspect.isfunction)]
+                for function in functions:
+                    if ("test_" + function) not in methods_in_test_module:
+                        print("Function gender_render." + modname + "." + function + " not tested.")
+                        all_tested = False
+
+    return all_tested
 
 
 def main():
@@ -268,5 +323,9 @@ def main():
 if __name__ == "__main__":
     if "make-html" in sys.argv:
         make_html_for_all_specs()
+    elif "check_test_coverage" and not all_functions_are_tested_properly():
+        # Apparently, not all methods and functions have their own testing equivalent.
+        sys.exit(1)
     else:
         main()
+        all_functions_are_tested_properly()

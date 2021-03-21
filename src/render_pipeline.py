@@ -163,7 +163,7 @@ class GRenderer:
                              grpd: parse_pronoun_data.GRPD) -> (parse_templates.ParsedTemplateRefined,
                                                                 parse_pronoun_data.GRPD):
         """Capitalizes every tag's context value in accordance to its capitalization value."""
-        new_template = copy.deepcopy(parsed_template)
+        new_template = copy.deepcopy(parsed_template)  # Test this!
         new_grpd = copy.deepcopy(grpd)
         for i in range(1, len(new_template), 2):
             new_template[i]["context"] = global_capitalization_system.apply_capitalization_to_tag(new_template[i])
@@ -171,7 +171,7 @@ class GRenderer:
 
     @staticmethod
     def convert_to_string(parsed_template: parse_templates.ParsedTemplateRefined,
-                                    grpd: parse_pronoun_data.GRPD) -> str:
+                          grpd: parse_pronoun_data.GRPD) -> str:
         """Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values,
         and returns the rendered template as a string.
         This should be the last step in the rendering pipeline."""

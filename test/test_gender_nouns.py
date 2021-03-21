@@ -784,18 +784,15 @@ class TestGenderedNoun(unittest.TestCase):
             n.render_noun("neutral")
             self.assertEqual(w, [])
 
-        # make sure the word is saved in the right uppercase/lowercase form, but warnings are risen based on its
-        # lowercase form:
-        with warnings.catch_warnings(record=True) as w:
-            n = gn.GenderedNoun("Bigot")
-            self.assertEqual(w, [])
-        self.assertEqual(n.word, "Bigot")
+        # make sure we correctly removed the capitalization code from the code for nouns gendering:
+        with self.assertWarns(ws.NotAPersonNounWarning):
+            n = gn.GenderedNoun("Bishop")
+        self.assertEqual(n.word, "Bishop")
 
     def test_render_noun(self):
         with warnings.catch_warnings(record=True) as w:
             # every test case refers to a specific type of lookup-scenario; and every test case has ana additional test
-            # case for the scenario that the resulting word contains underscores attached, as well as one for the
-            # scenario that the given word is uppercase:
+            # case for the scenario that the resulting word contains underscores attached:
 
             # test for a non-existent version of a neutral word (careerist is neutral and has no male version, so it
             # should instead give us itself):
@@ -804,8 +801,6 @@ class TestGenderedNoun(unittest.TestCase):
             self.assertEqual(gn.GenderedNoun("careerist").render_noun("male"), "careerist")
             # correctly replace underscores with whitespace in this scenario:
             self.assertEqual(gn.GenderedNoun("big_spender").render_noun("male"), "big spender")
-            # uppercase:
-            self.assertEqual(gn.GenderedNoun("Careerist").render_noun("male"), "Careerist")
 
             # test for non-existent version of word with neutral version ("townee" is male, has a neutral version, but
             # no female version, so if we request the female version of it, we should get its neutral version):
@@ -814,23 +809,17 @@ class TestGenderedNoun(unittest.TestCase):
             self.assertEqual(gn.GenderedNoun("townee").render_noun("female"), "townee")
             # correctly replace underscores with whitespace in this scenario:
             self.assertEqual(gn.GenderedNoun("closet_queen").render_noun("female"), "closet monarch")
-            # uppercase:
-            self.assertEqual(gn.GenderedNoun("Townee").render_noun("female"), "Townee")
 
             # test for word that is already the right gender (tests for both neutral as well as non-neutral gender):
             self.assertEqual(gn.GENDER_DICT["townsman"]["gender"], "male")
             self.assertEqual(gn.GenderedNoun("townsman").render_noun("male"), "townsman")
             # correctly replace underscores with whitespace in this scenario:
             self.assertEqual(gn.GenderedNoun("sea_scout").render_noun("female"), "sea scout")
-            # uppercase:
-            self.assertEqual(gn.GenderedNoun("Townsman").render_noun("male"), "Townsman")
 
             self.assertEqual(gn.GENDER_DICT["tourist"]["gender"], "neutral")
             self.assertEqual(gn.GenderedNoun("tourist").render_noun("neutral"), "tourist")
             # correctly replace underscores with whitespace in this scenario:
             self.assertEqual(gn.GenderedNoun("second_cousin").render_noun("female"), "second cousin")
-            # uppercase:
-            self.assertEqual(gn.GenderedNoun("Tourist").render_noun("neutral"), "Tourist")
 
             # return correctly gendered version for words from the gender_map, if word is not the gender it requests and
             #  has the gender in its gender map (test for requesting a non-neutral as well as the neutral version):
@@ -839,13 +828,9 @@ class TestGenderedNoun(unittest.TestCase):
             self.assertEqual(gn.GenderedNoun("big_brother").render_noun("female"), "big sister")
             # correctly replace underscores with whitespace in this scenario:
             self.assertEqual(gn.GenderedNoun("ring_girl").render_noun("male"), "ring boy")
-            # uppercase:
-            self.assertEqual(gn.GenderedNoun("Big_brother").render_noun("female"), "Big sister")
 
             self.assertEqual(set(gn.GENDER_DICT["black_man"]["gender_map"].keys()), {"female", "neutral"})
             self.assertEqual(gn.GENDER_DICT["black_man"]["gender"], "male")
             self.assertEqual(gn.GenderedNoun("black_man").render_noun("neutral"), "black person")
             # correctly replace underscores with whitespace in this scenario:
             self.assertEqual(gn.GenderedNoun("ring_girl").render_noun("neutral"), "ring bean")
-            # uppercase:
-            self.assertEqual(gn.GenderedNoun("Black_man").render_noun("neutral"), "Black person")

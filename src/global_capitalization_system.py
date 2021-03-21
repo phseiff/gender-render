@@ -80,7 +80,7 @@ CAPITALIZATION_TABLE: CapitalizationMethodTable = OrderedDict([
 def get_capitalization_from_context_value(context_value: str) -> str:
     """Returns the capitalization type of a context value, and raises an error if it matches none."""
     for capitalization_type_name, capitalization_method in CAPITALIZATION_TABLE.items():
-        if capitalization_method.is_applied():
+        if capitalization_method.is_applied(context_value):
             return capitalization_type_name
     raise errors.InvalidCapitalizationError("A tag has the context value '" + context_value + "'.\n"
                                             + "This does not fit any allowed capitalization type.\n"

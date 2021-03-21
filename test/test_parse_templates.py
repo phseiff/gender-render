@@ -151,7 +151,7 @@ class TestSectionTypes(unittest.TestCase):
         # test if fictional section type does not exist:
         self.assertFalse(pt.SectionTypes.section_type_exists("test test test"))
 
-    def test_create_section_types_for_untyped_tag(self):
+    def test_create_section_types_for_untyped_tag(self):  # ToDo: Start by fixing this, adapting it to the new sections.
         # allows valid finished typings:
         for typing in [
             ["id", "context"], ["context", "id"],  # <- fully specified

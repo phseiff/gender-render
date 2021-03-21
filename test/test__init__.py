@@ -9,6 +9,10 @@ import src.errors as err
 import src.gender_nouns as gn
 from src import render_template
 
+# This doesn't work!!
+# from build_and_push import all_functions_are_tested_properly
+# all_functions_are_tested_properly()
+
 
 class TestInit(unittest.TestCase):
 
