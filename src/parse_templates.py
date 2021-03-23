@@ -318,7 +318,7 @@ class SectionTypes:
     section_types_w_priorities = [
         ("context", 1000., True),
         ("id", 950., False),
-        ("capitalization", 900, False)
+        ("capitalization", 900., False)
     ]
     """All supported section types as a list of tuples in the form of (name, priority, can_have_multiple_values)"""
 

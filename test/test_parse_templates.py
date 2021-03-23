@@ -97,6 +97,26 @@ class TestStates(unittest.TestCase):
             self.assertEqual(pt.States.switch_escapement(pt.States.escape(state)), state)
             self.assertEqual(pt.States.switch_escapement(state), pt.States.escape(state))
 
+    def test_escape(self):
+        # already covered by self.test_escapement_methods().
+        # still listed as its own method for the coverage checker.
+        pass
+
+    def test_unescape(self):
+        # already covered by self.test_escapement_methods().
+        # still listed as its own method for the coverage checker.
+        pass
+
+    def test_is_escaped(self):
+        # already covered by self.test_escapement_methods().
+        # still listed as its own method for the coverage checker.
+        pass
+
+    def test_switch_escapement(self):
+        # already covered by self.test_escapement_methods().
+        # still listed as its own method for the coverage checker.
+        pass
+
 
 class TestStateTransitioner(unittest.TestCase):
 
@@ -173,7 +193,7 @@ class TestSectionTypes(unittest.TestCase):
 
         # raise an error if typing is too long:
         self.assertRaises(err.SyntaxPostprocessingError,
-                          lambda: pt.SectionTypes.create_section_types_for_untyped_tag(["", "", ""]))
+                          lambda: pt.SectionTypes.create_section_types_for_untyped_tag(["", "", "", ""]))
 
         # raise an error if section type is used more than once:
         self.assertRaises(err.SyntaxPostprocessingError,
@@ -186,6 +206,8 @@ class TestSectionTypes(unittest.TestCase):
         # raise an error if the output typing has no context-section:
         self.assertRaises(err.SyntaxPostprocessingError,
                           lambda: pt.SectionTypes.create_section_types_for_untyped_tag(["id"]))
+        self.assertRaises(err.SyntaxPostprocessingError,
+                          lambda: pt.SectionTypes.create_section_types_for_untyped_tag(["capitalization", "id"]))
 
 
 class TestGRParser(unittest.TestCase):
@@ -471,9 +493,39 @@ class TestGRParser(unittest.TestCase):
         pt.SectionTypes.section_types_w_priorities = [val for val in pt.SectionTypes.section_types_w_priorities
                                                       if val[0] not in ("wuwu", "wuiwui", "wowo")]
 
+    def test_set_capitalization_value_for_all_tags(self):
+        # test for normal context values:
+        inp = ["test ",
+               {"context": "foo", "foo": "bar"}, " text ",  # make sure other section types are ignored.
+               {"context": "Fo"}, " test ",  # make sure that, when in doubt, the highest-fitting cap type is used.
+               # {"context": "", " "} # this is not tested, since context values are never empty.
+               {"context": "F1Oo"}, " text "  # make sure non-capitalizable letters are skipped.
+               ]
+        out = ["test ",
+               {"context": "foo", "foo": "bar", "capitalization": "lower-case"}, " text ",
+               {"context": "fo", "capitalization": "capitalized"}, " test ",
+               {"context": "f1oo", "capitalization": "studly-caps"}, " text "
+               ]
+        self.assertEqual(pt.GRParser.set_capitalization_value_for_all_tags(inp), out)
+
+        # test if errors are correctly risen:
+
+        # doubled (and contradicting information):
+        wrong1 = ["test ", {"context": "Foo", "capitalization": "lower-case"}, " test"]
+        # doubled (and non-contradicting information):
+        wrong2 = ["test ", {"context": "Foo", "capitalization": "capitalized"}, " test "]
+        # invalid capitalization value:
+        wrong3 = ["test ", {"context": "foo", "capitalization": "bar"}, " test "]
+        # invalid capitalization:
+        wrong4 = ["test ", {"context": "FOo"}, " test"]
+
+        for wrong in [wrong1, wrong2, wrong3, wrong4]:
+            self.assertRaises(err.InvalidCapitalizationError,
+                              lambda: pt.GRParser.set_capitalization_value_for_all_tags(wrong))
+
     def test_convert_context_values_to_canonicals(self):
         # set test example values for context values and canonical context values:
-        inp, out = ("Mr_s", "address")  # ToDo: Maybe iterate over several key-value pairs? Feel free to pull-request.
+        inp, out = ("mr_s", "address")  # ToDo: Maybe iterate over several key-value pairs? Feel free to pull-request.
         inp2, out2 = ("they", "subject")
 
         # test for one context value:
@@ -508,23 +560,30 @@ class TestGRParser(unittest.TestCase):
         self.assertEqual(pt.GRParser.full_parsing_pipeline("wuwutt JJkk * ii :\n\n "), ["wuwutt JJkk * ii :\n\n "])
 
         # template with one tag (left-aligned, right-aligned, middle), two tags (separate, adjacent):
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("{they} text"), ["", {"context": "subject"}, " text"])
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("text {they}"), ["text ", {"context": "subject"}, ""])
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("t {they} t"), ["t ", {"context": "subject"}, " t"])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{they} text"),
+                         ["", {"context": "subject", "capitalization": "lower-case"}, " text"])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("text {they}"),
+                         ["text ", {"context": "subject", "capitalization": "lower-case"}, ""])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("t {they} t"),
+                         ["t ", {"context": "subject", "capitalization": "lower-case"}, " t"])
         # the aforementioned multiple-tags:
         self.assertEqual(pt.GRParser.full_parsing_pipeline("t {they} t2{them}"),
-                         ["t ", {"context": "subject"}, " t2", {"context": "object"}, ""])
+                         ["t ", {"context": "subject", "capitalization": "lower-case"},
+                          " t2", {"context": "object", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("t {they}{them} t2"),
-                         ["t ", {"context": "subject"}, "", {"context": "object"}, " t2"])
+                         ["t ", {"context": "subject", "capitalization": "lower-case"},
+                          "", {"context": "object", "capitalization": "lower-case"}, " t2"])
 
         # extra whitespace & ":"/"*" outside of tags & escaped characters:
         self.assertEqual(pt.GRParser.full_parsing_pipeline("t { they\n} t2{ them \t}"),
-                         ["t ", {"context": "subject"}, " t2", {"context": "object"}, ""])
+                         ["t ", {"context": "subject", "capitalization": "lower-case"},
+                          " t2", {"context": "object", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("ww : \\{ oo ** "), ["ww : { oo ** "])
 
         # tag with multiple sections & an extra tag:
         self.assertEqual(pt.GRParser.full_parsing_pipeline("test {id:tom * context:they} tt {them}"),
-                         ["test ", {"id": "tom", "context": "subject"}, " tt ", {"context": "object"}, ""])
+                         ["test ", {"id": "tom", "context": "subject", "capitalization": "lower-case"},
+                          " tt ", {"context": "object", "capitalization": "lower-case"}, ""])
 
         # errors when syntax errors occur:
         self.assertRaises(err.SyntaxError, lambda: pt.GRParser.full_parsing_pipeline("ww {context:"))
@@ -537,16 +596,19 @@ class TestGRParser(unittest.TestCase):
         # -- now we come to type assignments:
 
         # implicitly typed:
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("{they}"), ["", {"context": "subject"}, ""])
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("{foo*they}"), ["", {"id": "foo", "context": "subject"}, ""])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{they}"),
+                         ["", {"context": "subject", "capitalization": "lower-case"}, ""])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{foo*they}"),
+                         ["", {"id": "foo", "context": "subject", "capitalization": "lower-case"}, ""])
         # (partially) explicitly typed:
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("{context:they}"), ["", {"context": "subject"}, ""])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{context:they}"),
+                         ["", {"context": "subject", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{foo*context:they}"),
-                         ["", {"id": "foo", "context": "subject"}, ""])
+                         ["", {"id": "foo", "context": "subject", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{id:foo*they}"),
-                         ["", {"id": "foo", "context": "subject"}, ""])
+                         ["", {"id": "foo", "context": "subject", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{id:foo * context:they}"),
-                         ["", {"id": "foo", "context": "subject"}, ""])
+                         ["", {"id": "foo", "context": "subject", "capitalization": "lower-case"}, ""])
 
         # errors in typing:
         self.assertRaises(err.SyntaxPostprocessingError, lambda: pt.GRParser.full_parsing_pipeline("{foo:bar}"))
@@ -556,23 +618,39 @@ class TestGRParser(unittest.TestCase):
 
         # -- split text into multiple context values:
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{context:they them}"),
-                         ["", {"context": "subject"}, " ", {"context": "object"}, ""])
+                         ["", {"context": "subject", "capitalization": "lower-case"},
+                          " ", {"context": "object", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{context: they them Mr_s}"),
-                         ["", {"context": "subject"}, " ", {"context": "object"}, " ", {"context": "address"}, ""])
+                         ["", {"context": "subject", "capitalization": "lower-case"},
+                          " ", {"context": "object", "capitalization": "lower-case"},
+                          " ", {"context": "address", "capitalization": "capitalized"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{foo*they them}"),
-                         ["", {"context": "subject", "id": "foo"}, " ", {"context": "object", "id": "foo"}, ""])
+                         ["", {"context": "subject", "id": "foo", "capitalization": "lower-case"},
+                          " ", {"context": "object", "id": "foo", "capitalization": "lower-case"}, ""])
         self.assertEqual(pt.GRParser.full_parsing_pipeline("{context:they them * foo}"),
-                         ["", {"context": "subject", "id": "foo"}, " ", {"context": "object", "id": "foo"}, ""])
+                         ["", {"context": "subject", "id": "foo", "capitalization": "lower-case"},
+                          " ", {"context": "object", "id": "foo", "capitalization": "lower-case"}, ""])
 
-        # -- error if section exceeds allowed amount of values:
+        # -- error if section exceeds the allowed amount of values:
         self.assertRaises(err.SyntaxPostprocessingError, lambda: pt.GRParser.full_parsing_pipeline("{foo bar*they}"))
 
+        # -- assigning capitalization:
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{<FoObAr>}"),
+                         ["", {"context": "<foobar>", "capitalization": "alt-studly-caps"}, ""])
+        # ^ also tests if canonicals are created AFTER capitalizing
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{They them}"),
+                         ["", {"context": "subject", "capitalization": "capitalized"},
+                          " ", {"context": "object", "capitalization": "lower-case"}, ""])
+        # ^ makes sure that FIRST tags are split and THEN tags are capitalization analysed
+
         # -- conversion of context values to canonicals:
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("{they}"), ["", {"context": "subject"}, ""])
-        self.assertEqual(pt.GRParser.full_parsing_pipeline("{<foo>  }"), ["", {"context": "<foo>"}, ""])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{they}"),
+                         ["", {"context": "subject", "capitalization": "lower-case"}, ""])
+        self.assertEqual(pt.GRParser.full_parsing_pipeline("{<foo>  }"),
+                         ["", {"context": "<foo>", "capitalization": "lower-case"}, ""])
         with self.assertWarns(ws.NounGenderingGuessingsWarning):  # <- confirm that parsing the noun raises a warning
             self.assertEqual(pt.GRParser.full_parsing_pipeline("{maid}"),
-                             ["", {"context": gn.GenderedNoun("maid")}, ""])
+                             ["", {"context": gn.GenderedNoun("maid"), "capitalization": "lower-case"}, ""])
 
     def test_get_all_specified_id_values(self):
         # test for template without tags:
@@ -604,7 +682,7 @@ class TestGRParser(unittest.TestCase):
         # make sure that the template is not modified by the method:
         self.assertEqual(inp, inp_original)
 
-    def test_pronoun_data_contains_unspecified_ids(self):
+    def test_template_contains_unspecified_ids(self):
         # test for template without tags:
         self.assertFalse(pt.GRParser.template_contains_unspecified_ids(["wuwuwu"]))
 

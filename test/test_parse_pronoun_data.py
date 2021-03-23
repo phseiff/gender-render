@@ -58,7 +58,7 @@ class TestGRPDParser(unittest.TestCase):
         for inp, out in VALID_IDPDS + VALID_GRPDS:
             self.assertEqual(ppd.GRPDParser.pd_string_to_dict(inp), out)
 
-    def test_type_of_dict(self):
+    def test_type_of_pd(self):
         # error if input is not a dict:
         self.assertRaises(err.InvalidPDError, lambda: ppd.GRPDParser.type_of_pd("{\"they\": \"xe\"}"))
 

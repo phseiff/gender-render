@@ -9,10 +9,6 @@ import src.errors as err
 import src.gender_nouns as gn
 from src import render_template
 
-# This doesn't work!!
-# from build_and_push import all_functions_are_tested_properly
-# all_functions_are_tested_properly()
-
 
 class TestInit(unittest.TestCase):
 
@@ -20,7 +16,7 @@ class TestInit(unittest.TestCase):
         # templates:
         for f_name in ("valid.gr", "valid.wuwuwu"):
             with open(f_name, "w") as f:
-                f.write("""text test  {obj} text""")
+                f.write("""text test  {ObJ} text""")
         for f_name in ("invalid.gr", "invalid.wuwuwu"):
             with open(f_name, "w") as f:
                 f.write("""text test  {id:fufu} text""")
@@ -50,17 +46,18 @@ class TestInit(unittest.TestCase):
         with self.assertWarns(ws.IdMatchingNecessaryWarning):
             # ^ also check if template parsing properly raises warning
             self.assertEqual(render_template(
-                "wawa wuwu {id:foo*actor}", """{"gender-nouns": "female"}"""),
-                "wawa wuwu actress")
-        # ^ this makes sure that the whole render pipeline is called by containing gendered nouns and requiring correct
-        # id resolution.
+                "wawa wuwu {id:foo*Actor}", """{"gender-nouns": "female"}"""),
+                "wawa wuwu Actress")
+        # ^ this makes sure that the whole render pipeline is called by containing gendered nouns, requiring correct id
+        # resolution and capitalization.
 
         # test with a string as a template and a dict as the pd:
         with self.assertWarns(ws.UnknownPropertyWarning):
             # ^ also check if pd parsing properly raises warnings
             self.assertEqual(render_template(
-                "wawa {id:foo*they} rock", {"foo": {"subj": "xe", "wawa": "xen"}}),
+                "wawa {id:foo*they} rock", {"foo": {"subj": "Xe", "wawa": "xen"}}),
                 "wawa xe rock")
+            # ^ also check if capitalization of values in the pd is properly ignored
 
         # -- test if errors are risen correctly:
 
@@ -80,7 +77,7 @@ class TestInit(unittest.TestCase):
         with self.assertWarns(ws.IdMatchingNecessaryWarning):
             self.assertEqual(render_template(
                 "valid.gr", "valid.grpd", takes_file_path=True),
-                "text test  them text")
+                "text test  ThEm text")
 
         # error for invalid gr:
         self.assertRaises(err.SyntaxPostprocessingError, lambda: render_template(

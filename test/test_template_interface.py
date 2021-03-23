@@ -18,7 +18,7 @@ class TestTemplate(unittest.TestCase):
         #  just the parser.
         for f_name in ("valid.gr", "valid.wuwuwu"):
             with open(f_name, "w") as f:
-                f.write("""text test  {carpenter} text""")
+                f.write("""text test  {Carpenter} text""")
         for f_name in ("invalid.gr", "invalid.wuwuwu"):
             with open(f_name, "w") as f:
                 f.write("""text test  {id:fufu} text""")
@@ -34,7 +34,9 @@ class TestTemplate(unittest.TestCase):
         template = "text test {they} wuw {id:foo*first-name}"
         tr = Template(template)
         self.assertEqual(tr.parsed_template,
-                         ["text test ", {"context": "subject"}, " wuw ", {"id": "foo", "context": "personal-name"}, ""])
+                         ["text test ",
+                          {"context": "subject", "capitalization": "lower-case"}, " wuw ",
+                          {"id": "foo", "context": "personal-name", "capitalization": "lower-case"}, ""])
         self.assertEqual(tr.contains_unspecified_ids, True)
         self.assertEqual(tr.used_ids, frozenset({"foo"}))
         # for a template where all tags have id values assigned:
@@ -47,7 +49,9 @@ class TestTemplate(unittest.TestCase):
         with self.assertWarns(ws.NotAWordWarning):
             template = "text test {wuwuwu} wuwu"
             tr = Template(template)
-            self.assertEqual(tr.parsed_template, ["text test ", {"context": gn.GenderedNoun("wuwuwu")}, " wuwu"])
+            self.assertEqual(tr.parsed_template,
+                             ["text test ",
+                              {"context": gn.GenderedNoun("wuwuwu"), "capitalization": "lower-case"}, " wuwu"])
         # raise an error for invalid input:
         self.assertRaises(err.SyntaxError, lambda: Template("fufufu \\"))
         self.assertRaises(err.SyntaxPostprocessingError, lambda: Template("{fufu*fufa*wuwu}"))
@@ -55,8 +59,10 @@ class TestTemplate(unittest.TestCase):
         # initialize with file name - for correct file type:
         with warnings.catch_warnings(record=True) as w:
             tr = Template("valid.gr", takes_file_path=True)
+            # as a side effect, we check that the template interface correctly capitalizes:
             self.assertEqual(tr.parsed_template,
-                             ["text test  ", {"context": gn.GenderedNoun("carpenter")}, " text"])
+                             ["text test  ",
+                              {"context": gn.GenderedNoun("carpenter"), "capitalization": "capitalized"}, " text"])
             self.assertEqual(tr.contains_unspecified_ids, True)
             self.assertEqual(tr.used_ids, frozenset())
             self.assertTrue(len(w) == 0)
@@ -66,9 +72,9 @@ class TestTemplate(unittest.TestCase):
         # initialize with file name - for incorrect file type:
         with self.assertWarns(ws.UnexpectedFileFormatWarning):  # <- raises warning
             tr = Template("valid.wuwuwu", takes_file_path=True)
-            "{text test  {carpenter} text"
             self.assertEqual(tr.parsed_template,
-                             ["text test  ", {"context": gn.GenderedNoun("carpenter")}, " text"])
+                             ["text test  ",
+                              {"context": gn.GenderedNoun("carpenter"), "capitalization": "capitalized"}, " text"])
             self.assertEqual(tr.contains_unspecified_ids, True)
             self.assertEqual(tr.used_ids, frozenset())
         # raises error properly:
@@ -82,9 +88,10 @@ class TestTemplate(unittest.TestCase):
         ws.WarningManager.set_warning_settings(ws.ENABLE_DEFAULT_WARNINGS)
 
     def test_render(self):
-        tr = Template("wuwu wawa {id:foo * context:they} tsts {them}")
+        tr = Template("wuwu wawa {id:foo * context:They} tsts {them}")
         # ^ this is chosen in a way that proves that we walk through the rendering pipeline directly as it requires
         #  id resolution.
+        # it also contains capitalization, so we test that as well.
 
         parsed_template_backup = copy.deepcopy(tr.parsed_template)
 
@@ -92,29 +99,29 @@ class TestTemplate(unittest.TestCase):
 
         # parse directly with pd in string form:
         with self.assertWarns(ws.IdMatchingNecessaryWarning):
-            self.assertEqual(tr.render("""{"foo": {"subj": "ze"}, "bar": {"them": "zen"}}"""), "wuwu wawa ze tsts zen")
+            self.assertEqual(tr.render("""{"foo": {"subj": "ze"}, "bar": {"them": "zen"}}"""), "wuwu wawa Ze tsts zen")
 
         # parse directly with pd in dict form:
         with self.assertWarns(ws.IdMatchingNecessaryWarning):
-            self.assertEqual(tr.render({"foo": {"subj": "ze"}, "bar": {"them": "zen"}}), "wuwu wawa ze tsts zen")
+            self.assertEqual(tr.render({"foo": {"subj": "ze"}, "bar": {"them": "zen"}}), "wuwu wawa Ze tsts zen")
 
         # parse from a PronounData-object:
         with self.assertWarns(ws.IdMatchingNecessaryWarning):
             self.assertEqual(tr.render(PronounData({"foo": {"subj": "ze"}, "bar": {"them": "zen"}})),
-                             "wuwu wawa ze tsts zen")
+                             "wuwu wawa Ze tsts zen")
 
         # parse from a file:
         with open("test.grpd", "w") as f:
             f.write("""{"foo": {"subj": "ze"}, "bar": {"them": "zen"}}""")
         with self.assertWarns(ws.IdMatchingNecessaryWarning):
-            self.assertEqual(tr.render("test.grpd", takes_file_path=True), "wuwu wawa ze tsts zen")
+            self.assertEqual(tr.render("test.grpd", takes_file_path=True), "wuwu wawa Ze tsts zen")
         os.remove("test.grpd")
 
         # parse from a file with wrong file name:
         with self.assertWarns(ws.UnexpectedFileFormatWarning):
             with open("test.wuwuwu", "w") as f:
                 f.write("""{"foo": {"subj": "ze"}, "bar": {"them": "zen"}}""")
-            self.assertEqual(tr.render("test.wuwuwu", takes_file_path=True), "wuwu wawa ze tsts zen")
+            self.assertEqual(tr.render("test.wuwuwu", takes_file_path=True), "wuwu wawa Ze tsts zen")
             os.remove("test.wuwuwu")
 
         # check if errors are raised properly:

@@ -1,0 +1,10 @@
+# This is a list of methods, classes and functions that do not need to be tested.
+
+# whitelisted because it is a small helper function in a soon-to-be obsolete submodule, and already indirectly tested either way:
+gender_render.gender_nouns.lwarn
+
+# whitelisted because its functions are nothing but functionality from gender_render.parse_templates.StateTransitioner that was moved out to give better readability (and the StatTransitioner is already tested either way):
+gender_render.parse_templates.Transitions
+
+# Helper function whose effectivity is already implied by other tests passing:
+gender_render.warnings.get_all_subclasses

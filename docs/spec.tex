@@ -174,7 +174,7 @@ Template system and implementation specification for rendering gender-neutral em
     Files whose content is a valid \GenderRender-template are referred to as files containing \GenderRender-templates in the following section, and \emph{not} as \GenderRender-templates on their own.
     It is recommended to save such files with the file type \texttt{.grt} (short for "gender render template").\\
 
-    The purpose of \GenderRender-templates is to write texts in a gender-neutral way (at least in regards to some of the individuals they refer to), and to be valid input for the \GenderRender-renderer, who is described in a later section.\\
+    The purpose of \GenderRender-templates is to write texts in a gender-neutral way (at least in regards to some of the individuals they refer to), and to be valid input for the \GenderRender-renderer, which is described in a later section.\\
 
     \GenderRender-templates may contain an arbitrary number (including zero) of \GenderRender-tags.
     A \GenderRender-tag is defined a sequence of characters that starts with an unescaped left curly bracket ("\texttt{\{}", \texttt{U+007B}) and ends with an unescaped right curly bracket ("\texttt{\}}", \texttt{U+007D}) without containing any unescaped curly brackets (\texttt{U+007B} as well as \texttt{U+007D}) in between.
@@ -285,7 +285,7 @@ some context values that are referred to as direct mapped context values still p
     The priority of the \texttt{context}-section type is \texttt{1000}.
     If the \texttt{context}-section of a tag contains multiple values (e.g. "\texttt{\{foo:bar * context:Mr\_s Doe\}}"), the tag is interpreted as a sequence of multiple different tags separated by single spaces ("\texttt{ }", \texttt{U+0020}) that differ only in their context value and are identical to the original tag in every other aspect (e.g. "\texttt{\{foo:bar * context:Mr\_s\} \{foo:bar * context:Doe\}}").\\
 
-    Context values are always interpreted as being lower-case (all characters with lower-case versions, at least), meaning no context value with upper-case characters will ever be specified by the specification, and the rendering process interprets every context value as if it was entirely lower-case.
+    Context values are always interpreted as being lower-case (all characters with lower-case versions, at least), meaning no context value with upper-case characters will ever be specified by the specification, and the rendering process interprets every context value as if it was entirely lower-case (capitalized values on the table above are capitalized merely for readability).
     This includes custom properties ("\texttt{<}\emph{property}\texttt{>}") in \GenderRender-templates, which are interpreted as their lower-case equivalent as well, in case they contain upper-case letters.
     Should a context value in a template be capitalized, this capitalization is interpreted as syntactic sugar to describe the tag's capitalization-value (a type of context section defined in the next paragraph) and the context value will be converted to lower-case in the parsing process.\\
 
@@ -316,12 +316,15 @@ some context values that are referred to as direct mapped context values still p
 
     The example-column of the table above illustrates the capitalization that will be applied to tags with the corresponding \texttt{capitalization}-value after they are resolved.
     If a tag's capitalization value is specified explicitly, whilst its context value is not entirely lower-case, the \GenderRender-template is invalid;
-    if, on the other hand, the capitalization value is omitted, and the context value is capitalized according to one of the examples of the table above (which is the recommended way to specify a tag's capitalization value), then the capitalization value will be set to the corresponding value and the context value will be converted to lower-case during parsing\footnote{This uses the lowercasing algorithm used is described in section 3.13 of the Unicode Standard.}.
+    if, on the other hand, the capitalization value is omitted, and the context value is capitalized according to one of the examples of the table above (which is the recommended way to specify a tag's capitalization value), then the capitalization value will be set to the corresponding value and the context value will be converted to lower-case during parsing\footnote{This uses the lower-casing algorithm described in section 3.13 of the Unicode Standard.}.
     A tag "\texttt{\{FoObAz\}}", for example, will become "\texttt{\{capitalization:studly-caps*foobaz\}}" during parsing.
     This modification is applied \emph{after} the aforementioned splitting of tags with multiple context values into series of tags, to allow a more fine-grained customization of tag capitalization;
     therefore, "\texttt{\{Foo bar\}}", for example, will become "\texttt{\{capitalization:capitalized*foo\} \{capitalization:lower-case*bar\}}".
-    When determining whether a string follows a specific type of capitalization, characters that are neither lowercase nor uppercase are interpreted as capitalized in accordance with the capitalization type that is being checked for (an important distinction because another way to implement this would be to skip the character and proceed with the next character as if there had be not been any character in between);
+    When determining whether a string follows a specific type of capitalization, characters that are neither lowercase nor uppercase are interpreted as capitalized in accordance with the capitalization type that is being checked for (an important distinction because another way to implement this would be to skip the character and proceed with the next character as if there had not been any character in between);
     whether a character is uppercase, lowercase or neither is decided in accordance to the Unicode Standard.\\
+    % Custom properties ("\texttt{<}\emph{property}\texttt{>}") are handled slightly different from other context values in that analysing their capitalization starts with their second letter rather than their first one;
+    % this ensures that using the \texttt{capitalized} capitalization type on them is possible and that \texttt{studly-caps} does not look like it is intended to be \texttt{alt-studly-caps} and vice versa.\\
+    % ToDo: In a future version, maybe start capitalization analysis and applyance with the first capitalizable character rather than the first character in general?
     If a tag's context value is capitalized in a different way than the ones listed in the example-column of the table above, the \GenderRender-template is invalid;
     please note, however, that this behavior might change in the future in any minor release in case a fallback-value gets introduced and is therefore technically undefined, which implementation documentations should properly communicate to the user\footnote{See \href{https://github.com/phseiff/gender-render/issues/2\#issuecomment-798799367}{this comment on GitHub} for discussion on this.}.
     Templates with tags with a capitalization value which differs from all off the above-defined are invalid as well.\\

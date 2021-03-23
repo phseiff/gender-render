@@ -3,7 +3,7 @@
 This file is executed as a means to build the project before pushing.
 I tried getting it to work with github actions, but trust me, all that stuff wasn't easy to get to work.
 """
-
+import ast
 import sys
 import subprocess
 import os
@@ -106,56 +106,132 @@ def make_html_for_all_specs():
         os.remove("docs/specs/" + spec_name + "/config.cfg")
 
 
-def all_functions_are_tested_properly() -> bool:
-    # get two dicts of all modules from gender_render and its tests:
-    import src as gender_render
-    gr_submodules = dict()
-    for importer, modname, ispkg in pkgutil.iter_modules(gender_render.__path__, gender_render.__name__ + "."):
-        gr_submodules[modname] = importer.find_module(modname).load_module(modname)
+def list_functions(file):
+    # inspired from https://stackoverflow.com/a/48809285/9816158
+    with open(file, "r") as f:
+        p = ast.parse(f.read())
 
-    test_submodules = dict()
-    for importer, modname, ispkg in pkgutil.iter_modules(test.__path__, test.__name__ + "."):
-        test_submodules[modname] = importer.find_module(modname).load_module(modname)
+    # get all functions from the given python file.
+    return [fun.name for fun in p.body if isinstance(fun, ast.FunctionDef)]
 
-    # check for all submodules of gender_render:
-    all_tested = True
 
-    for modname, module in gr_submodules.items():
-        if modname == "__init__":
-            continue
-        # if modname.startswith("_") and ("test" + modname) in test_submodules:
-        #     test_modname = "test" + modname  # el
-        if ("test_" + modname) in test_submodules:
-            test_modname = "test_" + modname
+def list_classes(file):
+    # taken from https://stackoverflow.com/a/48809285/9816158
+    with open(file, "r") as f:
+        p = ast.parse(f.read())
+
+    # get all classes from the given python file.
+    classes = [c for c in p.body if isinstance(c, ast.ClassDef)]
+
+    out = dict()
+    for c in classes:
+        out[c.name] = [fun.name for fun in c.body if isinstance(fun, ast.FunctionDef)]
+
+    return out
+
+
+def all_functions_are_tested_properly() -> int:  # <-- returns # of untested functions/modules/etc
+    # get list of modules we need to test:
+    gr_submodules_file_names = [("src/" + f) for f in os.listdir("src") if f.endswith(".py")]
+    gr_test_modules_file_names = [("test/" + f) for f in os.listdir("test") if f.endswith(".py")]
+
+    # lists to store (potentially fully) tested elements and (fully) untested elements in:
+    untested = list()
+    tested = list()
+
+    # test files for test presence:
+    for modname in gr_submodules_file_names:
+        modname_ending = modname.replace("src/", "")
+        modname_for_logs = modname_ending.replace(".py", "")
+        if modname_ending.startswith("_") and ("test/test" + modname_ending) in gr_test_modules_file_names:
+            test_modname = "test/test" + modname_ending
+        elif ("test/test_" + modname_ending) in gr_test_modules_file_names:
+            test_modname = "test/test_" + modname_ending
         else:
-            print("No tests for submodule", modname)
-            all_tested = False
+            classes_and_methods_in_module = list_classes(modname)
+            if list_functions(modname):
+                untested.append("gender_render." + modname_for_logs)
+                continue
+            for _, methods in classes_and_methods_in_module.items():
+                if methods:  # only raise the error if there are actually classes with methods in there.
+                    untested.append("gender_render." + modname_for_logs)
             continue
-        test_module = test_submodules[test_modname]
-        classes_in_module = [t[0] for t in inspect.getmembers(module, inspect.isclass)]
-        classes_in_test_module = [t[0] for t in inspect.getmembers(test_module, inspect.isclass)]
-        methods_in_test_module = list()
-        for test_class_name in classes_in_test_module:
-            methods_in_test_module += [t[0] for t in inspect.getmembers(test_module.__dict__[test_class_name],
-                                       inspect.ismethod)]
-        for class_name in classes_in_module:
-            if ("Test" + class_name) not in classes_in_test_module:
-                print("No class Test" + class_name + " in " + test_modname)
-                all_tested = False
-            else:
-                test_class = test_module.__dict__["Test" + class_name]
-                class_methods = [t[0] for t in inspect.getmembers(module.__dict__[class_name], inspect.ismethod)]
-                for class_method in class_methods:
-                    if ("test_" + class_method) not in test_class.__dict__:
-                        print("Method gender_render." + modname + "." + class_name + "." + class_method + " not tested")
-                        all_tested = False
-                functions = [t[0] for t in inspect.getmembers(module, inspect.isfunction)]
-                for function in functions:
-                    if ("test_" + function) not in methods_in_test_module:
-                        print("Function gender_render." + modname + "." + function + " not tested.")
-                        all_tested = False
+        tested.append("gender_render." + modname_for_logs)
+        classes_and_methods_in_module = list_classes(modname)
+        functions_in_module = list_functions(modname)
+        classes_and_methods_in_test_module = list_classes(test_modname)
+        functions_in_test_module = set()
+        for _, functions in classes_and_methods_in_test_module.items():
+            functions_in_test_module |= set(functions)
 
-    return all_tested
+        # test classes for test presence:
+        for class_name, class_methods in classes_and_methods_in_module.items():
+            class_methods = [m for m in class_methods if m == "__init__" or not m.startswith("__")]
+            if not class_methods:
+                continue  # skipp empty classes like errors and warnings
+            if ("Test" + class_name) not in classes_and_methods_in_test_module:
+                untested.append("gender_render." + modname_for_logs + "." + class_name)
+            else:
+                tested.append("gender_render." + modname_for_logs + "." + class_name)
+                test_class_methods = classes_and_methods_in_test_module["Test" + class_name]
+                # test class methods for test presence:
+                for class_method in class_methods:
+                    m = ("test_" + class_method) if not class_method.startswith("_") else ("test" + class_method)
+                    if m not in test_class_methods:
+                        untested.append("gender_render." + modname_for_logs + "." + class_name + "." + class_method)
+                    else:
+                        tested.append("gender_render." + modname_for_logs + "." + class_name + "." + class_method)
+        # test functions for test presence:
+        for function in functions_in_module:
+            if ("test_" + function) not in functions_in_test_module:
+                untested.append("gender_render." + modname_for_logs + "." + function)
+            else:
+                tested.append("gender_render." + modname_for_logs + "." + function)
+
+    # check which of these are allowed to not be tested:
+    with open("test/no-unittest-needed-list.txt", "r") as whitelist:
+        whitelisted = set(whitelist.read().split("\n")) - {""}
+
+    whitelisted_and_not_tested = set()
+    whitelisted_and_tested = set()
+    not_whitelisted_and_not_tested = set()
+    for untested_element in untested:
+        for whitelisted_element in whitelisted:
+            if untested_element.startswith(whitelisted_element):
+                whitelisted_and_not_tested.add(untested_element)
+                break
+        else:
+            not_whitelisted_and_not_tested.add(untested_element)
+    for tested_element in tested:
+        for whitelisted_element in whitelisted:
+            if tested_element.startswith(whitelisted_element):
+                for tested_element2 in tested:
+                    if (tested_element.startswith(tested_element2) and tested_element2.startswith(whitelisted_element)
+                            and tested_element != tested_element2):
+                        # this means that the bigger context of the element is already in our list
+                        break
+                else:
+                    whitelisted_and_tested.add(tested_element)
+                    break
+
+    # print details:
+    for header, elements in [
+        ("\n# Not tested (bad!):", not_whitelisted_and_not_tested),
+        ("\n# Not tested, but no test needed:", whitelisted_and_not_tested),
+        ("\n# No test needed, yet still tested (bad!):", whitelisted_and_tested)
+    ]:
+        print(header)
+        if elements:
+            for element in sorted(list(elements)):
+                print(element)
+        else:
+            print("None")
+    if len(not_whitelisted_and_not_tested) + len(whitelisted_and_tested):
+        print("\nUnittest testing is not sufficient.")
+    else:
+        print("\nTesting passed. All functions have their unittests.")
+
+    return len(not_whitelisted_and_not_tested) + len(whitelisted_and_tested)
 
 
 def main():
@@ -323,9 +399,10 @@ def main():
 if __name__ == "__main__":
     if "make-html" in sys.argv:
         make_html_for_all_specs()
-    elif "check_test_coverage" and not all_functions_are_tested_properly():
-        # Apparently, not all methods and functions have their own testing equivalent.
-        sys.exit(1)
+    elif "check-test-coverage" in sys.argv:
+        if not all_functions_are_tested_properly():
+            # Apparently, not all methods and functions have their own testing equivalent.
+            sys.exit(1)
     else:
         main()
         all_functions_are_tested_properly()

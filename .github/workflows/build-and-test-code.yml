@@ -62,6 +62,7 @@ jobs:
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
           coverage report --fail-under=100 --skip-covered -m
+          ./build_and_push.py check-test-coverage
 
           # upload coverage to codecov.io:
           coverage xml

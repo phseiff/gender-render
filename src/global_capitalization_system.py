@@ -24,7 +24,7 @@ from . import errors
 
 # Helper functions
 # - these functions are tolerant versions of str.isupper() and str.islower(), in that they don't return False if there
-#   are no cased characters.
+#   are no cased characters, and evaluate to True for empty strings.
 
 def isupper(s: str) -> bool:
     return all((not c.islower()) for c in s)
@@ -87,7 +87,8 @@ def get_capitalization_from_context_value(context_value: str) -> str:
                                             + "Refer to the specification to learn how to use capitalization in tags.")
 
 
-def assign_and_check_capitalization_value_of_tag(tag: Dict[str, Union[str, List[str]]]):
+def assign_and_check_capitalization_value_of_tag(tag: Dict[str, Union[str, List[str]]])\
+        -> Dict[str, Union[str, List[str]]]:
     """Assigns a tag (with one context value) (given in the same format as the format they have in
     `parse_templates.ParsedTemplateRefined`) a capitalization value if it does not have one yet, and raises an
     `errors.InvalidCapitalizationError` should it find issues with the tag's capitalization value or its context value's
@@ -113,6 +114,8 @@ def assign_and_check_capitalization_value_of_tag(tag: Dict[str, Union[str, List[
 
     # make context value lower-case:
     tag["context"] = tag["context"].lower()
+
+    return tag  # <-- technically not necessary since this function is supposed to run in-place, but it eases testing.
 
 
 def apply_capitalization_to_tag(tag: Dict[str, Union[str, List[str]]]) -> str:
