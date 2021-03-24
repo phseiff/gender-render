@@ -1,6 +1,18 @@
 Copyright (c) 2021 phseiff
 
-The following license in in regards to the files in the test-directory and the src-directory of this repository.
+The following license applies to the code in the test-directory and the src-directory of this repository (in case you
+are reading this in the project's GitHub repository or a clone of the repository),
+or the code in the test-directory and the src-directory of these files from PyPi (in case you received this License as
+a part of a download from PyPi), depending on where you got this software from.
+This includes all the code you get installed as an importable Python module on your system (by default) when using
+PIP3 to install this version of the project from PyPi ("code", in this and the above context, referring to
+".py"-files).
+
+It does not, however, include any of the data sets that come with the software and are used by it; these data sets
+mainly (yet not necessarily) use the file format `.gdn`, and are required by the softare to work correctly.
+The software downloads (and potentially modifies) these data sets from the web if it doesn't find them with the
+installation; they are merely included in the installation to ensure you don't run into bad surprises if you install the
+package and attempt to use it offline for the first time.
 ----------------------------------------------------------------------------------------------------------------
 
 MIT License

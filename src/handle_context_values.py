@@ -31,9 +31,9 @@ class ContextValues:
         ["ipossessive", "theirs", "iposs"],
         ["reflexive", "themself", "reflex"],
 
-        ["address", "Mr_s", "Mr", "Mrs"],
-        ["surname", "Doe", "name", "family-names"],
-        ["personal-name", "Jean", "first-name"],
+        ["address", "mr_s", "mr", "mrs"],
+        ["surname", "doe", "name", "family-names"],
+        ["personal-name", "jean", "first-name"],
 
         # properties of individual pronoun data:
         ["gender-addressing"],

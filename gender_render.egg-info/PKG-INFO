@@ -6,6 +6,7 @@ Home-page: https://github.com/phseiff/gender-render/
 Author: phseiff
 Author-email: phseiff@phseiff.com
 License: MIT
+(limited to python-files that are actually part of the package installation,    which excludes data sets and documentation/specifications that come with the software;    refer to the `LICENSE-implementation.txt`-file that comes with this version of the software on PyPi for the full    definition of what is covered by this license and what is not.)
 Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src="https://phseiff.com/images/brought-to-you-by-phseiff.svg" alt="brought to you by phseiff:"></a>-->
         <img src="https://phseiff.com/gender-render/docs/images/title.svg" alt="{gender*render}"></p>
         
@@ -391,6 +392,8 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         
         * spec:
           * [download latest](https://phseiff.com/gender-render/docs/specs/spec/latest.pdf)
+          * [v0.6.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.6.0.pdf)
+            <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.6.0.html)</sup> - Add capitalization system, suggest error hierarchy, list implementation-specific warnings.
           * [v0.5.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.5.0.pdf)
             <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.5.0.html)</sup> - Add instructions for word splitting for ungendered-word-warnings to the specification.
           * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf)
@@ -459,6 +462,7 @@ Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src
         In general, be decent and don't put shame on the 21st century.
         See [here](CODE_OF_CONDUCT.md) for additional information.
         
+Keywords: template-engine template-language specification gender-equality gender pronouns grammatical-gender
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Requires-Python: >=3.6

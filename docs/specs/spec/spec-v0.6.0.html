@@ -1,0 +1,2702 @@
+<!DOCTYPE html> 
+<html lang='en' xml:lang='en'> 
+<head> <title> Template system and implementation specification for rendering gender-neutral
+email templates with pronoun information</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (http://www.tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='spec-v0.6.0.css' type='text/css' rel='stylesheet' /> 
+<meta content='spec-v0.6.0.tex' name='src' /> 
+<link href='../../spec-styling.css' type='text/css' rel='stylesheet' /> 
+</head><body>
+   <div class='maketitle'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class='titleHead'> <div class='titlegraphics'>  <img src='../../images/title-black-.png' alt='PIC' /></div> Template system and implementation
+specification for rendering gender-neutral email
+templates with pronoun information</h2>
+      <div class='author'><span class='cmr-12'>phseiff</span>
+<br /> <a href='https://phseiff.com'><span class='cmr-12'>from phseiff.com</span></a>
+<br />      <a href='https://github.com/phseiff/gender-render/#download-specifications--changelog'><span class='cmr-12'>v0.6.0</span></a></div><br />
+<div class='date'><span class='cmr-12'>March 24, 2021</span></div>
+   </div><p><a id='Q1-1-1'></a></p>
+                                                                  
+
+                                                                  
+<h3 class='likesectionHead'><a id='x1-1000'></a>Contents</h3>
+   <div class='tableofcontents'>
+   <span class='sectionToc'>1 <a href='#x1-20001' id='QQ2-1-3'>Abstract</a></span>
+<br />   <span class='sectionToc'>2 <a href='#x1-30002' id='QQ2-1-4'>Requirements</a></span>
+<br />   <span class='sectionToc'>3 <a href='#x1-40003' id='QQ2-1-5'>Design Decisions</a></span>
+<br />   <span class='sectionToc'>4 <a href='#x1-50004' id='QQ2-1-6'>Standard</a></span>
+<br />    <span class='subsectionToc'>4.1 <a href='#x1-60001' id='QQ2-1-7'>Template Language</a></span>
+<br />    <span class='subsectionToc'>4.2 <a href='#x1-70002' id='QQ2-1-10'>Pronoun Description Data</a></span>
+<br />    <span class='subsectionToc'>4.3 <a href='#x1-80003' id='QQ2-1-12'>Pronoun Renderer</a></span>
+<br />     <span class='subsubsectionToc'>4.3.1 <a href='#x1-90001' id='QQ2-1-13'> gender*render Renderer specification</a></span>
+<br />     <span class='subsubsectionToc'>4.3.2 <a href='#x1-100002' id='QQ2-1-17'>Implementation guidelines</a></span>
+<br />   <span class='sectionToc'>5 <a href='#x1-180005' id='QQ2-1-28'>Specification developement</a></span>
+<br />   <span class='sectionToc'>6 <a href='#x1-190006' id='QQ2-1-29'>Exemplary Implementation</a></span>
+<br />   <span class='sectionToc'>7 <a href='#x1-200007' id='QQ2-1-30'>Outlook</a></span>
+<br />   <span class='sectionToc'>8 <a href='#x1-210008' id='QQ2-1-31'>License</a></span>
+   </div>
+                                                                  
+
+                                                                  
+<p><a id='x1-1001r1'></a></p>
+<h3 class='sectionHead'><span class='titlemark'>1   </span> <a id='x1-20001'></a>Abstract</h3>
+<!-- l. 98 --><p class='noindent'>Our society, as well as the way we perceive gender, are steadily evolving. This
+evolution does not hold in light of technological questions, and it is our -the ”IT
+people”’s duty- to address and do our best to solve the social issues that arise from
+our technology. One such technology are email- and other text templates, which are
+becoming increasingly popular to automate customer interactions of any kind, be it
+in newsletters, notifications or program menus. Many such templates are
+gender-specific, in that they address the reader in a gendered fashion (”Dear Mrs.
+Dursley, …”). Such templates are relatively easily implemented by providing two
+versions of the email, one for every binary gender. However, some texts are far more
+complicated, because they address multiple people (each with their own gender
+unknown at the time of writing), or people in the third person (throwing
+their pronouns into the mix). In addition, an increasingly height amount of
+people uses non-binary pronouns, or gender-neutral pronouns, many of whom
+might not yet be discovered at the time of writing, which makes these people
+marginalized when it comes to being correctly addressed even in automated
+emails.<br class='newline' />
+</p><!-- l. 106 --><p class='indent'>   Similar issues exist in electronic entertainment industries, namely the computer
+game industry. Many computer games, especially RPGs, allow players to
+choose their gender, thereby altering the dialogues they receive from the
+game in regards to pronouns and other grammatical implications of gender.
+Since being inclusive towards different identities moves more and more into
+focus in the industry, the need arises to allow players to choose from more
+than just two genders, which, in its most inclusive form, requires players to
+be able to customize their pronoun preferences in the character creation
+menu.<br class='newline' />
+</p><!-- l. 110 --><p class='indent'>   This creates the requirement for creating template systems for the english
+language, and, in extension, any natural language (since all languages work
+differently), that support writing complex texts in a gender-neutral fashion and later
+”render” them to correctly gendered texts, given the pronoun preferences of every
+person they refer to.<br class='newline' />
+</p><!-- l. 112 --><p class='indent'>   gender*render is an attempt at creating one such template language, including a
+Specification, to serve as a proof of concept as well as a starting point for people who
+want to implement similar things. The vision behind this proof of concept is not only
+to show <span class='cmti-10'>how </span>addressing people with unconventional preferred pronouns can be
+automized, but also to show <span class='cmti-10'>that </span>it can be easily automized, to debunk the myth that
+properly addressing non-binary people in an automated fashion is simply technically
+impossible.<br class='newline' />
+</p><!-- l. 115 --><p class='indent'>   In essence,  gender*render accepts a gender-neutral template for a text in a
+specific syntax with special annotations on how to render it into a gender-neutral
+                                                                  
+
+                                                                  
+version, as well as data describing the pronoun preferences of all people it refers to,
+and returns a correctly gendered text from it; a task less trivial than one might
+assume at first glance.<br class='newline' />
+<a id='x1-2001r3'></a>
+</p>
+<h3 class='sectionHead'><span class='titlemark'>2   </span> <a id='x1-30002'></a>Requirements</h3>
+<!-- l. 120 --><p class='noindent'>There are multiple requirements for such a template language, whom I will list here,
+including short explanation of why they are required wherever I deem it
+necessary:
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'>The language must be easy to use even for less tech affine people. This
+     means that the atoms of the language, such as tags et cetera, must be
+     as short as possible, and should not clash with commonly used words or
+     signs, so the amount of escape characters the user needs to use is minimal.
+     </li>
+     <li class='itemize'>The language must support different scenarios:
+         <ul class='itemize2'>
+         <li class='itemize'>One person being addressed versus multiple people being addressed
+         </li>
+         <li class='itemize'>Only people mentioned in first person, only people mentioned in third
+         person, or a mixture of both
+         </li>
+         <li class='itemize'>Everyone using pronouns versus some people preferring not to use
+         any pronouns</li></ul>
+     </li>
+     <li class='itemize'>The fact that multiple scenarios are supported may not make using the
+     template language for only a subset of them more complicated that it needs to
+     be.
+     </li>
+     <li class='itemize'>Rendering templates may only require the information needed for rendering
+     the template. For example, rendering a template that never addresses
+     anyone in the first person should not require providing information
+     as to whether the person goes by ”Mr”, ”Mrs” or any other form of
+     address. This is especially relevant since users do not want and should
+     not need to provide more information that necessary for rendering
+     the templates, especially considering the intimate nature of preferred
+     pronouns.
+     </li>
+     <li class='itemize'>The syntax should be describable using a context-free grammar in
+                                                                  
+
+                                                                  
+     conjunctive normal form, which allows easy syntax checking and syntax
+     highlighting.
+     </li>
+     <li class='itemize'>The data containing a persons preferred pronouns should be given in a
+     widely-used, standardized format, such as JSON.</li></ul>
+<p><a id='x1-3001r4'></a></p>
+<h3 class='sectionHead'><span class='titlemark'>3   </span> <a id='x1-40003'></a>Design Decisions</h3>
+<!-- l. 141 --><p class='noindent'>The following decisions where made based on the the technical requirements ruled
+out in the corresponding section:
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'>The language uses a syntax similar to pythons build-in string formatting
+     syntax, using curly brackets to annotate gender-specific parts of a sentence.
+     Backslashes are used as escape characters for the rare occurrences where
+     curly brackets are actually needed.
+     </li>
+     <li class='itemize'>In addition to grammatical terms (e.g. ”possessive pronoun”), using the
+     gender-neutral form (e.g. ”their”) in tags is supported, potentially making
+     texts more fluid to write and easier to read in their un-rendered form.
+     </li>
+     <li class='itemize'>If tags contain IDs to annotate which person is referred to, a mapping
+     of  IDs  to  pronoun  preferences  is  accepted  for  rendering.  If  no  such
+     IDs  are  added  to  the  document  because  only  one  person  of  unknown
+     gender  is  addressed  in  the  document,  the  pronoun  preferences  are
+     directly  accepted  by  the  renderer,  without  having  to  be  part  of  a
+     person-to-pronoun-mapping. This supports referring to multiple persons
+     in one text without making the writing of texts that refer to only one
+     person any more troublesome.
+     </li>
+     <li class='itemize'>The pronoun information is given to the renderer as a piece of JSON data
+     (or a similar object if the language used by the implementation supports
+     such objects, e.g. dicts in Python, but strings of JSON data should always
+     be supported). Information that is not required by the template may be
+     left out in the template.
+     </li>
+     <li class='itemize'>Templates can be parsed before being rendered and then used for multiple
+     renderings. This should debunk the idea that gender-sensitive template
+     systems are to inefficient to use them.</li></ul>
+<!-- l. 156 --><p class='indent'>   These design decisions contain only those that are relevant to the requirements
+listet in the previous section; in-depth explanation and definition of the way the
+template system works are given in the next section.
+                                                                  
+
+                                                                  
+<a id='x1-4001r5'></a>
+</p>
+<h3 class='sectionHead'><span class='titlemark'>4   </span> <a id='x1-50004'></a>Standard</h3>
+<!-- l. 161 --><p class='noindent'>This section contains the actual standard. It is divided into three subsections; one for
+defining the template language and how gender-neutral texts are described with it,
+one for defining the data structure used to describe the pronoun preferences of all
+people mentioned in a template, and one for guidelines and specification on
+implementing a renderer for the template language.<br class='newline' />
+</p><!-- l. 167 --><p class='indent'>   The terms ”MUST”, ”MUST NOT”, ”SHOULD”, ”SHOULD NOT” and ”MAY”
+in this document are used as defined by the <a href='https://tools.ietf.org/html/rfc2119'>RFC 4627</a>. Additionally, the term *does*
+implies that it *must do*, not that it *can do*.
+<a id='x1-5001r1'></a>
+</p>
+<h4 class='subsectionHead'><span class='titlemark'>4.1   </span> <a id='x1-60001'></a>Template Language</h4>
+<!-- l. 172 --><p class='noindent'>Any text that follows the syntax of the following definition is considered a valid
+gender*render -template. Any text that does not follow the following is not
+considered a valid  gender*render -template. Files whose content is a valid
+gender*render -template are referred to as files containing  gender*render -templates
+in the following section, and <span class='cmti-10'>not </span>as  gender*render -templates on their own. It is
+recommended to save such files with the file type <span class='cmtt-10'>.grt </span>(short for ”gender render
+template”).<br class='newline' />
+</p><!-- l. 177 --><p class='indent'>   The purpose of  gender*render -templates is to write texts in a gender-neutral
+way (at least in regards to some of the individuals they refer to), and to be
+valid input for the  gender*render -renderer, which is described in a later
+section.<br class='newline' />
+</p><!-- l. 179 --><p class='indent'>   gender*render -templates may contain an arbitrary number (including zero) of
+gender*render -tags. A  gender*render -tag is defined a sequence of characters
+that starts with an unescaped left curly bracket (”<span class='cmsy-10'>{</span>”, <span class='cmtt-10'>U+007B</span>) and ends
+with an unescaped right curly bracket (”<span class='cmsy-10'>}</span>”, <span class='cmtt-10'>U+007D</span>) without containing any
+unescaped curly brackets (<span class='cmtt-10'>U+007B </span>as well as <span class='cmtt-10'>U+007D</span>) in between. The purpose of
+gender*render -tags is to describe gender-specific sentence components in a
+gender-neutral fashion, these usually being mentions of a person in the third person
+singular.<br class='newline' />
+</p><!-- l. 183 --><p class='indent'>   A character is considered escaped if it is proceeded by an unescaped backslash
+(”<span class='cmsy-10'>∖</span>”, <span class='cmtt-10'>U+005C</span>) or by a backslash which is not proceeded by other backslash. A
+backslash which is not escaped is called an escape-character. A template which
+contains backslashes which are neither escaped nor escape characters is not
+considered a valid  gender*render -template, as is any template which contains
+unescaped curly brackets who are not part of any valid  gender*render -tag. A
+template which ends with an escape character, which isn’t followed by a character to
+                                                                  
+
+                                                                  
+escape, is also considered invalid.<br class='newline' />
+</p><!-- l. 188 --><p class='indent'>   Every character of a  gender*render -tag except the first and last characters (the
+brackets) is considered part of its content. Said content is divided into sections
+through unescaped asterisks (”<span class='cmtt-10'>*</span>”, <span class='cmtt-10'>U+002A</span>). A section of a  gender*render -tag
+does not contain any unescaped asterisks, and it must contain at least one
+non-whitespace<span class='footnote-mark'><a href='#fn1x0' id='fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><a id='x1-6001f1'></a>
+character. Colons (”<span class='cmtt-10'>:</span>”, <span class='cmtt-10'>U+003A</span>) are considered special characters in sections, and
+may thus appear at most once per section, and neither as the first nor as the last
+non-whitespace character of the section. If a section contains a colon, the characters
+of the section beforehand the colon (minus all leading or trailing whitespace) are
+called the sections <span class='cmti-10'>type descriptor</span>, and the characters on the right side of the colon
+(minus all leading or trailing whitespace) are called the sections <span class='cmti-10'>values</span>, where every
+whitespace-separated word is one value, with the order mattering. If a section does
+not contain a colon, all of its content is considered part of its value-section. Whether
+a section type allows multiple values or just one depends on the section
+type.<br class='newline' />
+</p><!-- l. 197 --><p class='indent'>   Colons proceeded by an escape character are not considered to be special chars,
+and instead behave like any other character; analogously, escaped whitespace behaves
+like any other character and thereby indirectly enables the usage of whitespace in
+section values as well as section types. Individual section values as well as
+section types may therefore not contain whitespace, but may very well contain
+escaped whitespace, which is then parsed into ”normal” whitespace by the
+parser.<br class='newline' />
+</p><!-- l. 201 --><p class='indent'>   There are multiple different types of section, assigned to sections by their type
+descriptor. A section whose type is ”foo” is called a ”foo-section”. Every
+type of section has a unique priority, as a real number between 0 and 1000,
+assigned by this specification. After parsing a tag, its right-most section with
+no type descriptor and no assigned section type is automatically assigned
+the section type with the highest priority of all section types that are not
+assigned to any section of the tag (by this rule or a section type descriptor)
+yet; this calculation is then repeated for every type-less section of the tag
+from right to left. Every  gender*render -tag must have at least one section,
+and may only have one section of every type; this takes into account the
+assigned section type of sections without a type descriptor. In addition, a tag
+may not contain more sections than there are section types defined by the
+spec.<br class='newline' />
+</p><!-- l. 210 --><p class='indent'>   The most basic type of section is the <span class='cmtt-10'>context</span>-type, which describes the
+syntactic context (what grammatical case or attribute of a person it stands
+for) of the  gender*render -tag. Every  gender*render -tag must have one
+context-section.<br class='newline' />
+</p><!-- l. 213 --><p class='indent'>   There is an infinite amount of possible context values (values that a tag’s context
+                                                                  
+
+                                                                  
+section may have), only a subset of whom is hard-coded into this specification (the
+other ones are evaluated and interpreted at runtime). These values are referred to as
+<span class='cmti-10'>specified context values</span>. Some specified context values are referred to as <span class='cmti-10'>canonical
+</span><span class='cmti-10'>context values</span>, whilst the others are aliases of canonical context values, which
+are interpreted identical to the canonical context value they correspond
+to.<br class='newline' />Whilst the canonical context value is usually the most descriptive of its aliases, it is
+not necessarily recommended to actually use it in a  gender*render -template.
+Instead, every canonical context value has an alias referred to as its <span class='cmti-10'>recommended
+</span><span class='cmti-10'>alias</span>, which is the least descriptive of its aliases, but fits into the flow of every text,
+as it imitates an exemplary gender-neutral version of the thing the context value
+represents; e.g. rather than saying ”<span class='cmsy-10'>{</span>subject<span class='cmsy-10'>} </span>did all the hard work <span class='cmsy-10'>{</span>reflexive<span class='cmsy-10'>}</span>”, one
+can say ”<span class='cmsy-10'>{</span>they<span class='cmsy-10'>} </span>did all the hard work <span class='cmsy-10'>{</span>themself<span class='cmsy-10'>}</span>” by using the recommended
+aliases.<br class='newline' />Some non-specified context values are regarded as canonical context values as well,
+but (contrary to how specified context values behave), not every non-specified
+context value that is also non-canonical is automatically an alias to a canonical
+non-specified context values, since some are simply evaluated outside the scheme of
+canonical context values and their aliases.<br class='newline' />
+</p><!-- l. 223 --><p class='indent'>   When applied to a tag (e.g. ”the tag’s canonical context value”), the canonical
+context value refers to the canonical context value of which the context value of the
+tag is an alias, or the context value of the tag itself, in case it is a canonical context
+values.<br class='newline' />
+</p><!-- l. 225 --><p class='indent'>   Another important distinction to be made in regards to different types of
+context values (this one important when it comes to actually rendering the
+template) is between <span class='cmti-10'>direct-mapped </span>and <span class='cmti-10'>non-direct-mapped </span>context values. Tags
+with direct-mapped context values are (usually) simply replaced with the
+corresponding attribute of the pronoun data of the person the tag corresponds to
+<span class='footnote-mark'><a href='#fn2x0' id='fn2x0-bk'><sup class='textsuperscript'>2</sup></a></span><a id='x1-6002f2'></a>
+during rendering. For example, the tag ”context:foo” will be replaced with the
+”foo”-attribute of the pronoun data of the person that the tag corresponds
+to, as will ”context:bar” if ”bar” is an alias for ”foo”, assuming ”foo” is a
+direct-mapped context value. What tags with context values that are not
+direct-mapped are rendered to, on the other hand, depends on logic that is
+executed on rendering time based on the context value of the tag and pronoun
+data of the individual the tag corresponds to. Note that there are some
+exceptions to this rules; some context values that are referred to as direct mapped
+context values still perform some additional tests before being rendered in
+the expected direct-mapped way or behave different in some cases, such as
+the ”<span class='cmti-10'>address</span>”-context value. The distinction between direct-mapped and
+non-direct-mappe context value is ultimately made by the specification on an
+individual and conceptual basis rather than strictly according to this rule of
+thumb.<br class='newline' />Every specified context value from this main specification is direct-mapped (though
+                                                                  
+
+                                                                  
+the oppositete does not apply), but please note that extension specifications
+<span class='footnote-mark'><a href='#fn3x0' id='fn3x0-bk'><sup class='textsuperscript'>3</sup></a></span><a id='x1-6003f3'></a> may
+specify specified context values that are not directly mapped. It’s also worth noting
+that direct-mapped context value always fall into the scheme of canonical context
+values and their aliases, though the opposite does not necessarily apply to all
+extension specs.<br class='newline' />
+</p><!-- l. 235 --><p class='indent'>   Please note that the distinction between canonical context value, recommended
+alias and other aliases is hardly relevant to the actual user, since all they need to
+know is that there are multiple possible values for each grammatical context; the
+reason why the concept of canonical context values (as opposed to simply listing
+multiple coequal values for every context) is included in the specification is that it is
+(a) useful for implementations, and (b) to conceptualize this central design pattern
+of the  gender*render template language, which can be found everywhere
+throughout the specification. This can be analogously applied to the concept
+of specified/ unspecified and direct-mapped/ not direct-mapped context
+values.<br class='newline' />
+</p><!-- l. 239 --><p class='indent'>   The following table lists the possible values a <span class='cmtt-10'>context</span>-section’s value may have,
+as well as their meanings, though the syntactic validity of the template does not
+depend on whether the values and types of the the  gender*render -tags are listed in
+this specification. For specified context values, the first value listed for every context
+(bold) is the recommended one, whilst the last one (italic) is the canonical
+one:
+</p>
+<div class='flushleft'>
+<!-- l. 244 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 245 --><p class='noindent'>
+<a id='x1-6004r1'></a>
+</p><!-- l. 248 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-2' cellspacing='0'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><colgroup id='TBL-2-3g'><col id='TBL-2-3' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-1-1'>
+ <!-- l. 248 --><p class='noindent'>syntactic
+  context
+  indicated
+  by
+  the
+  value(s)             </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-1-2'>
+ <!-- l. 248 --><p class='noindent'>possible
+  values,
+  synonymous
+  to
+  each
+  other                      </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-1-3'>
+ <!-- l. 248 --><p class='noindent'>short
+  explanation,
+  where
+  necessary                                </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-2-1' colspan='3'> <div style='white-space:nowrap; text-align:left;' class='multicolumn'>Specified context values that refer to grammatical cases of pronouns:</div>
+</td></tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-3-1'>
+ <!-- l. 252 --><p class='noindent'>Subject             </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-3-2'>
+ <!-- l. 252 --><p class='noindent'><span class='cmbx-10'>they</span>,
+  subj,
+  <span class='cmti-10'>subject</span>                   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-3-3'>
+ <!-- l. 253 --><p class='noindent'>                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-4-1'>
+ <!-- l. 254 --><p class='noindent'>Object              </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-4-2'>
+ <!-- l. 254 --><p class='noindent'><span class='cmbx-10'>them</span>,
+  obj,
+  <span class='cmti-10'>object</span>                    </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-4-3'>
+ <!-- l. 255 --><p class='noindent'>                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-5-1'>
+ <!-- l. 256 --><p class='noindent'>Dependant
+  possessive
+  Determiner        </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-5-2'>
+ <!-- l. 256 --><p class='noindent'><span class='cmbx-10'>their</span>,
+  dposs,
+  <span class='cmti-10'>dpossessive</span>             </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-5-3'>
+ <!-- l. 257 --><p class='noindent'>                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-6-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-6-1'>
+ <!-- l. 258 --><p class='noindent'>Independent
+  possessive
+  Determiner        </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-6-2'>
+ <!-- l. 258 --><p class='noindent'><span class='cmbx-10'>theirs</span>,
+  iposs,
+  <span class='cmti-10'>ipossessive</span>              </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-6-3'>
+ <!-- l. 259 --><p class='noindent'>                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-7-1'>
+ <!-- l. 260 --><p class='noindent'>Reflexive           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-7-2'>
+ <!-- l. 260 --><p class='noindent'><span class='cmbx-10'>themself</span>,
+  reflex,
+  <span class='cmti-10'>reflexive</span>                 </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-7-3'>
+ <!-- l. 261 --><p class='noindent'>                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-8-1' colspan='3'> <div style='white-space:nowrap; text-align:left;' class='multicolumn'>Specified context values that refer to non-grammatical attributes of a person:</div>
+</td></tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-9-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-9-1'>
+ <!-- l. 264 --><p class='noindent'>Form
+  of
+  Address            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-9-2'>
+ <!-- l. 264 --><p class='noindent'><span class='cmbx-10'>Mr_s</span>,
+  Mr,
+  Mrs,
+  <span class='cmti-10'>address</span>                  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-9-3'>
+ <!-- l. 265 --><p class='noindent'>                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-10-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-10-1'>
+ <!-- l. 266 --><p class='noindent'>Surname           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-10-2'>
+ <!-- l. 266 --><p class='noindent'><span class='cmbx-10'>Doe</span>,
+  name,
+  family-name,
+  <span class='cmti-10'>surname</span>                </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-10-3'>
+ <!-- l. 266 --><p class='noindent'>(This
+  is
+  a
+  reference
+  to
+  ”John
+  Doe”,
+  a
+  commonly
+  used
+  placeholder
+  for
+  names.)                                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-11-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-11-1'>
+ <!-- l. 268 --><p class='noindent'>Personal
+  name                </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-11-2'>
+ <!-- l. 268 --><p class='noindent'><span class='cmbx-10'>Joan</span>,
+  first-name,
+  <span class='cmti-10'>personal-name</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-11-3'>
+ <!-- l. 268 --><p class='noindent'>(This
+  is,
+  analogously
+  to
+  ”Doe”
+  for
+  family
+  names,
+  a
+  reference
+  to
+  ”John
+  Doe”,
+  but
+  ”Jean”
+  is
+  gender-neutral
+  and
+  thus
+  makes
+  for
+  a
+  much
+  better
+  placeholder
+  than
+  ”John”.)                                </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-12-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-12-1' colspan='3'> <div style='white-space:nowrap; text-align:left;' class='multicolumn'>Non-specified, yet direct-mapped context values:</div>
+</td></tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-13-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-13-1'>
+ <!-- l. 272 --><p class='noindent'>Custom
+  property            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-13-2'>
+ <!-- l. 272 --><p class='noindent'>”<span class='cmtt-10'>&lt;</span>”
+  <span class='cmti-10'>property</span>
+  ”<span class='cmtt-10'>&gt;</span>”
+  <span class='cmr-5'>(Note
+   </span><span class='cmr-5'>that
+   </span><span class='cmr-5'>”</span><span class='cmtt-8x-x-62'>&lt;</span><span class='cmr-5'>”
+   </span><span class='cmti-7x-x-71'>property
+   </span><span class='cmr-5'>”</span><span class='cmtt-8x-x-62'>&gt;</span><span class='cmr-5'>”
+   </span><span class='cmr-5'>is
+   </span><span class='cmr-5'>considered
+   </span><span class='cmr-5'>its
+   </span><span class='cmr-5'>own
+   </span><span class='cmr-5'>canonical
+   </span><span class='cmr-5'>context
+   </span><span class='cmr-5'>value,
+   </span><span class='cmr-5'>even
+   </span><span class='cmr-5'>though
+   </span><span class='cmr-5'>it
+   </span><span class='cmr-5'>has
+   </span><span class='cmr-5'>no
+   </span><span class='cmr-5'>aliases.)</span>                              </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-13-3'>
+ <!-- l. 272 --><p class='noindent'><span class='cmti-10'>property</span>
+  can
+  be
+  any
+  string
+  without
+  whitespace,
+  and
+  refers
+  to
+  a
+  property
+  of
+  an
+  individual
+  that
+  is
+  defined
+  by
+  its
+  pronoun
+  data
+  as
+  a
+  string,
+  yet
+  not
+  part
+  of
+  the
+  spec.                                     </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-14-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-14-1' colspan='3'> <div style='white-space:nowrap; text-align:left;' class='multicolumn'>Non-specified non-direct-mapped context values:</div>
+</td></tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-15-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-15-1'>
+ <!-- l. 276 --><p class='noindent'>Gender-specific
+  Noun                </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-15-2'>
+ <!-- l. 276 --><p class='noindent'>any
+  nominative,
+  with
+  whitespaces
+  replaced
+  by
+  underscores
+  (”<span class='cmtt-10'>_</span>”,
+  <span class='cmtt-10'>U+005F</span>)
+  <span class='cmr-5'>(note
+   </span><span class='cmr-5'>that
+   </span><span class='cmr-5'>custom
+   </span><span class='cmr-5'>properties
+   </span><span class='cmr-5'>take
+   </span><span class='cmr-5'>precedence
+   </span><span class='cmr-5'>over
+   </span><span class='cmr-5'>gender-specific
+   </span><span class='cmr-5'>words,
+   </span><span class='cmr-5'>so
+   </span><span class='cmr-5'>context
+   </span><span class='cmr-5'>values
+   </span><span class='cmr-5'>only
+   </span><span class='cmr-5'>qualify
+   </span><span class='cmr-5'>as
+   </span><span class='cmr-5'>this
+   </span><span class='cmr-5'>type
+   </span><span class='cmr-5'>of
+   </span><span class='cmr-5'>context
+   </span><span class='cmr-5'>value
+   </span><span class='cmr-5'>if
+   </span><span class='cmr-5'>they
+   </span><span class='cmr-5'>don’t
+   </span><span class='cmr-5'>qualify
+   </span><span class='cmr-5'>as
+   </span><span class='cmr-5'>a
+   </span><span class='cmr-5'>custom
+   </span><span class='cmr-5'>property.)</span>                            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-15-3'>
+ <!-- l. 276 --><p class='noindent'>If
+  the
+  value
+  of
+  the
+  <span class='cmtt-10'>section</span>
+ does
+  not
+  match
+  any
+  of
+  the
+  above,
+  its
+  content
+  is
+  understood
+  as
+  being
+  a
+  noun
+  which
+  either
+  server
+  as
+  a
+  substitution
+  or
+  as
+  a
+  description
+  of
+  a
+  person.
+  For
+  example,
+  the
+  sentence
+  ”<span class='cmsy-10'>{</span>name<span class='cmsy-10'>}</span>
+ is
+  an
+  <span class='cmsy-10'>{</span>actor<span class='cmsy-10'>}</span>”
+  or
+  ”the
+  <span class='cmsy-10'>{</span>actor<span class='cmsy-10'>}</span>
+ asked
+  for
+  applause”
+  would
+  be
+  good
+  candidates
+  for
+  using
+  said
+  type
+  of
+  value
+  since
+  ”actor”
+  has
+  two
+  different
+  gendered
+  forms
+  (”actor”
+  and
+  ”actress”)
+  in
+  english.                                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-2-16-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-16-1' colspan='3'>      <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 1: </span><span class='content'>Types of context values in tags</span></div><!-- tex4ht:label?: x1-6004r1  -->                                 </div>          <a id='x1-6005'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-2-18-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-18-1'>
+ <!-- l. 280 --><p class='noindent'>              </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-2-19-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-19-1'>
+ <!-- l. 280 --><p class='noindent'>              </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-2-20-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-20-1'>                </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-20-2'>                   </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-2-20-3'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 285 --><p class='indent'>   The priority of the <span class='cmtt-10'>context</span>-section type is <span class='cmtt-10'>1000</span>. If the <span class='cmtt-10'>context</span>-section of a tag
+contains multiple values (e.g. ”<span class='cmsy-10'>{</span><span class='cmtt-10'>foo:bar * context:Mr_s Doe</span><span class='cmsy-10'>}</span>”), the tag is
+interpreted as a sequence of multiple different tags separated by single spaces (”  ”,
+<span class='cmtt-10'>U+0020</span>) that differ only in their context value and are identical to the original
+tag in every other aspect (e.g. ”<span class='cmsy-10'>{</span><span class='cmtt-10'>foo:bar * context:Mr_s</span><span class='cmsy-10'>} {</span><span class='cmtt-10'>foo:bar *
+</span><span class='cmtt-10'>context:Doe</span><span class='cmsy-10'>}</span>”).<br class='newline' />
+</p><!-- l. 288 --><p class='indent'>   Context values are always interpreted as being lower-case (all characters with
+lower-case versions, at least), meaning no context value with upper-case characters
+will ever be specified by the specification, and the rendering process interprets every
+context value as if it was entirely lower-case (capitalized values on the table above are
+capitalized merely for readability). This includes custom properties (”<span class='cmtt-10'>&lt;</span><span class='cmti-10'>property</span><span class='cmtt-10'>&gt;</span>”) in
+gender*render -templates, which are interpreted as their lower-case equivalent as
+well, in case they contain upper-case letters. Should a context value in a template be
+capitalized, this capitalization is interpreted as syntactic sugar to describe
+the tag’s capitalization-value (a type of context section defined in the next
+paragraph) and the context value will be converted to lower-case in the parsing
+process.<br class='newline' />
+</p><!-- l. 292 --><p class='indent'>   The second (and priority-lowest) section type supported by this version of
+this Specification is the <span class='cmtt-10'>capitalization</span>-type, whose priority is <span class='cmtt-10'>800</span>. The
+value of the <span class='cmtt-10'>capitalization</span>-section describes how the word(s) to which the
+tag will be resolved will be capitalized, and may only take a limited set
+of values, each of whom corresponds to a different type of capitalization.
+The potential <span class='cmtt-10'>capitalization</span>-values of a tag are listed in the following
+table:
+</p>
+<div class='flushleft'>
+<!-- l. 296 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 297 --><p class='noindent'>
+<a id='x1-6006r2'></a>
+</p><!-- l. 300 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-3' cellspacing='0'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /></colgroup><colgroup id='TBL-3-2g'><col id='TBL-3-2' /></colgroup><colgroup id='TBL-3-3g'><col id='TBL-3-3' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-1-1'>
+ <!-- l. 300 --><p class='noindent'>value                </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-1-2'>
+ <!-- l. 300 --><p class='noindent'>example
+  (foobar)   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-1-3'>
+ <!-- l. 300 --><p class='noindent'>short
+  explanation,
+  where
+  necessary                                                           </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-2-1'>
+ <!-- l. 302 --><p class='noindent'>lower-case          </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-2-2'>
+ <!-- l. 302 --><p class='noindent'><span class='cmtt-10'>foobar</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-2-3'>
+ <!-- l. 303 --><p class='noindent'>                                             </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-3-1'>
+ <!-- l. 304 --><p class='noindent'>capitalized         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-3-2'>
+ <!-- l. 304 --><p class='noindent'><span class='cmtt-10'>Foobar</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-3-3'>
+ <!-- l. 305 --><p class='noindent'>                                             </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-4-1'>
+ <!-- l. 306 --><p class='noindent'>all-caps             </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-4-2'>
+ <!-- l. 306 --><p class='noindent'><span class='cmtt-10'>FOOBAR</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-4-3'>
+ <!-- l. 307 --><p class='noindent'>                                             </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-5-1'>
+ <!-- l. 308 --><p class='noindent'>studly-caps        </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-5-2'>
+ <!-- l. 308 --><p class='noindent'><span class='cmtt-10'>FoObAr</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-5-3'>
+ <!-- l. 308 --><p class='noindent'>every
+  second
+  letter
+  lower-case,
+  all
+  other
+  upper-case.                                                        </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-6-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-6-1'>
+ <!-- l. 310 --><p class='noindent'>alt-studly-caps    </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-6-2'>
+ <!-- l. 310 --><p class='noindent'><span class='cmtt-10'>fOoBaR</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-6-3'>
+ <!-- l. 310 --><p class='noindent'>like
+  studly-caps,
+  but
+  reversed.                                                           </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-3-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-7-1' colspan='3'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 2: </span><span class='content'>Possible capitalization-values and their meaning</span></div><!-- tex4ht:label?: x1-6006r2  -->          </div>                <a id='x1-6007'></a>
+</td></tr><tr style='vertical-align:baseline;' id='TBL-3-9-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-9-1'>
+ <!-- l. 313 --><p class='noindent'>              </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-3-10-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-10-1'>
+ <!-- l. 313 --><p class='noindent'>              </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-3-11-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-11-1'>                </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-11-2'>          </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-3-11-3'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 317 --><p class='indent'>   The example-column of the table above illustrates the capitalization that will be
+applied to tags with the corresponding <span class='cmtt-10'>capitalization</span>-value after they are resolved.
+If a tag’s capitalization value is specified explicitly, whilst its context value is not
+entirely lower-case, the  gender*render -template is invalid; if, on the other hand, the
+capitalization value is omitted, and the context value is capitalized according to one
+of the examples of the table above (which is the recommended way to specify a
+tag’s capitalization value), then the capitalization value will be set to the
+corresponding value and the context value will be converted to lower-case during
+parsing<span class='footnote-mark'><a href='#fn4x0' id='fn4x0-bk'><sup class='textsuperscript'>4</sup></a></span><a id='x1-6008f4'></a>. A
+tag ”<span class='cmsy-10'>{</span><span class='cmtt-10'>FoObAz</span><span class='cmsy-10'>}</span>”, for example, will become ”<span class='cmsy-10'>{</span><span class='cmtt-10'>capitalization:studly-caps*foobaz</span><span class='cmsy-10'>}</span>”
+during parsing. This modification is applied <span class='cmti-10'>after </span>the aforementioned splitting of tags
+                                                                  
+
+                                                                  
+with multiple context values into series of tags, to allow a more fine-grained
+customization of tag capitalization; therefore, ”<span class='cmsy-10'>{</span><span class='cmtt-10'>Foo bar</span><span class='cmsy-10'>}</span>”, for example, will become
+”<span class='cmsy-10'>{</span><span class='cmtt-10'>capitalization:capitalized*foo</span><span class='cmsy-10'>} {</span><span class='cmtt-10'>capitalization:lower-case*bar</span><span class='cmsy-10'>}</span>”.
+When determining whether a string follows a specific type of capitalization,
+characters that are neither lowercase nor uppercase are interpreted as capitalized in
+accordance with the capitalization type that is being checked for (an important
+distinction because another way to implement this would be to skip the character
+and proceed with the next character as if there had not been any character in
+between); whether a character is uppercase, lowercase or neither is decided in
+accordance to the Unicode Standard.<br class='newline' />If a tag’s context value is capitalized in a different way than the ones listed in the
+example-column of the table above, the  gender*render -template is invalid; please
+note, however, that this behavior might change in the future in any minor release in
+case a fallback-value gets introduced and is therefore technically undefined,
+which implementation documentations should properly communicate to the
+user<span class='footnote-mark'><a href='#fn5x0' id='fn5x0-bk'><sup class='textsuperscript'>5</sup></a></span><a id='x1-6009f5'></a>.
+Templates with tags with a capitalization value which differs from all off the
+above-defined are invalid as well.<br class='newline' />In cases where the capitalization of a tag’s context value is ambiguous (like ”Fo”,
+which could be interpreted as both <span class='cmtt-10'>capitalized </span>as well as <span class='cmtt-10'>studly-caps</span>), the
+topmost of both possible interpretations, according to the order of the table above,
+takes precedence.<br class='newline' />
+</p><!-- l. 333 --><p class='indent'>   The third section type supported by this version of this Specification is the
+<span class='cmtt-10'>id</span>-type, whose priority is <span class='cmtt-10'>950</span>. <span class='cmtt-10'>id</span>-sections may take any value, as long as they take
+only one value, including (but not recommended to users for obvious reasons) values
+that contain escaped whitespace. Said value describes which individual the
+gender*render -tag refers to. Two  gender*render -tags with the same id-value
+therefore refer to the same individual. The id-value can be omitted by the user if
+there is only one individual mentioned in the whole template, and in some other
+cases; this is explored further in the renderer section. Whether there is an <span class='cmtt-10'>id</span>-section
+is not part of the template specification, since it is not clear until the pronoun
+information is given.<br class='newline' />
+</p><!-- l. 341 --><p class='indent'>   Since there are only three section types defined by this specification, the
+priority-highest of them being mandatory and the priority-lowest preferably being
+described using semantic sugar, there is no practical need to use any section
+descriptors. They are still defined as a language feature in this template to provide a
+way to port the template language to other natural languages that might require
+additional information without having to introduce new syntax elements for every
+language. Please keep in mind that further extension specifications will break
+backwards compatibility if they introduce section types with priority values higher
+than the lowest pre-existing one, which is why priority values are chosen relatively
+large and closely-spaced.<br class='newline' />It is guaranteed that no section type with a priority higher than the priority of the
+”id” section type will ever be introduced, so templates can always omit the section
+                                                                  
+
+                                                                  
+type descriptor for ”context”- and ”id”-sections, though omitting it for any other
+sections is generally unwise unless you (as the writer of the template) know that
+the set of extension specifications your implementation supports will never
+change.<br class='newline' />
+</p><!-- l. 346 --><p class='indent'>   To end this section of the spec, here is a graphic of the  gender*render -template
+syntax described as a finite state machine (not taking into account the fact that not
+every section type is valid, and the rules about assigned section types and every type
+of section only existing once):<br class='newline' />
+</p><!-- l. 348 --><p class='indent'>   <img src='../../images/template-as-finite-state-machine.png' alt='PIC' />
+<a id='x1-6010r7'></a>
+</p>
+<h4 class='subsectionHead'><span class='titlemark'>4.2   </span> <a id='x1-70002'></a>Pronoun Description Data</h4>
+<!-- l. 352 --><p class='noindent'>Pronouns description data, to which we will refer as  gender*render -pronoun-data
+for the rest of this essay to spare us some words, is the way the user tells the render
+the pronouns of all people mentioned in a template so the renderer can render it. Any
+piece of text that fits the criteria described below is considered  gender*render
+-pronoun-data, yet not every such piece of text necessarily works with every
+template, since it must provide the information required by the template for the
+rendering to work. Files that contain  gender*render -pronoun-data should use the
+file extension <span class='cmtt-10'>.grpd</span>.<br class='newline' />
+</p><!-- l. 356 --><p class='indent'>   gender*render -pronoun-data is a type of json data, which makes it easily parsable
+by any language.<br class='newline' />
+</p><!-- l. 358 --><p class='indent'>   To describe a single individual’s pronouns (to whom we will refer to as individual
+pronoun data), a json object is used; several of these are then combined to provide
+pronoun data for all individuals. If a piece of individual pronoun data is written into
+a file, the file extension <span class='cmtt-10'>.idpd </span>should be used. Any json object whose properties are
+strings without whitespace, and whose items are strings, is syntactically valid
+individual pronoun data, though it might not be semantically valid, and even if it is,
+it might not work with every template depending on the information the template
+requires.<br class='newline' />
+</p><!-- l. 363 --><p class='indent'>   Analogously to what the concept of canonical context values and their
+aliases is for context values, individual pronoun data differentiates between
+specified properties (json properties for individual pronoun data that are
+hard-coded into this specification) and non-specified properties (those who are
+not hardcoded into the specification, yet are still valid). If, for example,
+”foo” is an alias for the attribute ”bar”, and a piece of individual pronoun
+data’s ”foo”-property has the value ”foobar”, then this individual pronoun
+data’s ”bar”-attribute’s value is ”foobar”. Every specified property is either
+an <span class='cmti-10'>attribute</span>, or an alias for an attribute. The same goes for non-specified
+properties, contrarily to the behavior of context values, where not every
+                                                                  
+
+                                                                  
+non-specified context value is necessarily either canonical or an alias for a canonical
+one.<br class='newline' />
+</p><!-- l. 368 --><p class='indent'>   Every specified direct-mapped canonical context value is also a specified attribute
+when used as a property in individual pronoun data, and every alias of a specified
+direct-mapped canonical context value is also an alias for said attribute, when used
+as a property. Additionally, for every non-specified direct-mapped canonical context
+value (”custom property”) ”<span class='cmtt-10'>&lt;</span><span class='cmti-10'>property</span><span class='cmtt-10'>&gt;</span>”, ”<span class='cmtt-10'>&lt;</span><span class='cmti-10'>property</span><span class='cmtt-10'>&gt;</span>” is a non-specified
+individual pronoun data attribute, whilst ”<span class='cmti-10'>property</span>” (assuming it is not already a
+specified property) and ”<span class='cmtt-10'>_</span><span class='cmti-10'>property</span>” (with an <span class='cmtt-10'>U+005F </span>underscore) are aliases of
+it.<br class='newline' />
+</p><!-- l. 371 --><p class='indent'>   When rendering a tag with a direct-mapped context value whose canonical
+context value is ”foo”, the tag simply gets replaced with the value of the
+”foo”-attribute of the individual pronoun data of the individual the tag refers to with
+its ”id”-value; this behavior is explained in-depth later in the rendering
+section and subject to a view exceptions. A piece of individual pronoun
+data that lacks an attribute required by a specific template for a tag that
+refers to said piece of individual pronoun data is not valid for rendering this
+template.<br class='newline' />
+</p><!-- l. 375 --><p class='indent'>   Any piece of individual pronoun data that contains multiple properties that are
+aliases of the same attribute is always invalid (attributes count as their own aliases,
+for this purpose).<br class='newline' />
+</p><!-- l. 377 --><p class='indent'>   When it comes to describing individual pronoun data as the end user of a
+gender*render implementation, the recommendation is to use the attribute value
+itself, since it is the most descriptive of its aliases. If this is not an option for
+whatever reason, users can use the alias that doubles as the recommended alias of the
+corresponding context value (with the advantage of making the mapping between
+template and individual pronoun data more comprehensible), ore one of the other
+aliases, which are usually more descriptive whilst still being shorter than the full
+attribute.<br class='newline' />
+</p><!-- l. 380 --><p class='indent'>   The following table gives you an overview over all attributes and properties that
+are not derived from direct-mapped context values according to the rules described
+above; the attribute in every list of properties is highlighted in italics. If one of these
+properties with a limited set of potential values has a value that is not allowed, the
+template is invalid.<br class='newline' />
+</p>
+<div class='flushleft'>
+<!-- l. 385 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 386 --><p class='noindent'>
+                                                                  
+
+                                                                  
+<a id='x1-7001r3'></a>
+</p><!-- l. 389 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-4' cellspacing='0'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /></colgroup><colgroup id='TBL-4-2g'><col id='TBL-4-2' /></colgroup><colgroup id='TBL-4-3g'><col id='TBL-4-3' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-1-1'>
+ <!-- l. 389 --><p class='noindent'>information
+  provided
+  by
+  attribute           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-1-2'>
+ <!-- l. 389 --><p class='noindent'>attribute
+  name
+  and
+  property
+  name(s)                  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-1-3'>
+ <!-- l. 389 --><p class='noindent'>short
+  explanation,
+  where
+  necessary                                </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-2-1'>
+ <!-- l. 391 --><p class='noindent'>Gender-specific
+  addressing         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-2-2'>
+ <!-- l. 391 --><p class='noindent'>gender-addressing     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-2-3'>
+ <!-- l. 391 --><p class='noindent'>If
+  set
+  to
+  ”false”
+  or
+  ”f”,
+  the
+  first
+  name
+  of
+  an
+  individual
+  is
+  used
+  instead
+  of
+  its
+  addressing;
+  the
+  only
+  other
+  valid
+  values
+  are
+  ”true”
+  or
+  ”t”.
+  Defaults
+  to
+  true.                                      </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-3-1'>
+ <!-- l. 395 --><p class='noindent'>Gender-specific
+  Noun
+  handling           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-3-2'>
+ <!-- l. 395 --><p class='noindent'>gender-nouns           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-3-3'>
+ <!-- l. 395 --><p class='noindent'>Describes
+  whether
+  the
+  person
+  wants
+  gender-specific
+  nouns
+  to
+  use
+  the
+  female
+  version
+  where
+  possible
+  (e.g. ”actress”
+  instead
+  of
+  ”actor”),
+  the
+  male
+  version
+  where
+  possible
+  (e.g. ”fireman”
+  instead
+  of
+  ”firefighter”),
+  or
+  the
+  gender-neutral
+  version
+  where
+  possible
+  (e.g. ”firefighter”).
+  Possible
+  values
+  for
+  this
+  property
+  are
+  <span class='cmtt-10'>"female"</span>,
+  <span class='cmtt-10'>"male"</span>
+ and
+  <span class='cmtt-10'>"neutral"</span>.
+  Defaults
+  to
+  neutral.                                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-4-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-4-1' colspan='3'>      <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 3: </span><span class='content'>Supported properties in individual pronoun data</span></div><!-- tex4ht:label?: x1-7001r3  -->          </div>          <a id='x1-7002'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-4-6-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-6-1'>
+ <!-- l. 400 --><p class='noindent'>              </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-4-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-7-1'>
+ <!-- l. 400 --><p class='noindent'>              </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-4-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-8-1'>                </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-8-2'>                   </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-4-8-3'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 404 --><p class='indent'>   gender*render -pronoun-data is simply a json object whose properties are ids
+(strings without whitespace) corresponding to ids of  gender*render -tags, and whose
+items are the individual pronoun data corresponding to their respective ids. Since the
+ids used by the  gender*render -pronoun-data need to correspond to those used by
+the template, not every valid piece of  gender*render -pronoun-data worked with
+every template. As specified later in the spec, renderers accept  gender*render
+-pronoun-data as well as individual pronoun data in cases where no or only one id is
+used.
+<a id='x1-7003r10'></a>
+</p>
+<h4 class='subsectionHead'><span class='titlemark'>4.3   </span> <a id='x1-80003'></a>Pronoun Renderer</h4>
+<!-- l. 410 --><p class='noindent'>This section describes the way  gender*render -specification conforming
+pronoun renderers work. It is divided into two subsections, one defining a
+gender*render -renderer, and one defining (additional) implementation guidelines
+that should be followed to ensure that all renderers use similar interfaces and users
+understand the renderer even if they used to work with a different implementation
+beforehand. The  gender*render implementation that comes with this specification
+(<a href='https://github.com/phseiff/gender-render' class='url'><span class='cmtt-10'>https://github.com/phseiff/gender-render</span></a>) also follows all of these
+guidelines.
+<a id='x1-8001r1'></a>
+</p>
+<h5 class='subsubsectionHead'><span class='titlemark'>4.3.1   </span> <a id='x1-90001'></a> gender*render Renderer specification</h5>
+<!-- l. 416 --><p class='noindent'>Any program that follows the specifications below is considered a  gender*render
+-renderer. The purpose of such programs is to take  gender*render -templates and
+gender*render -pronoun data and render them to texts that are gendered
+correctly according to the preferences voiced in the pronoun data. We will
+refer to  gender*render -renderers simply as renderers for the rest of this
+section to aid the reading flow. An implementation that follows not only
+the main specification (this one), but also all extension specifications
+<span class='footnote-mark'><a href='#fn6x0' id='fn6x0-bk'><sup class='textsuperscript'>6</sup></a></span><a id='x1-9001f6'></a> may
+call itself a <span class='cmti-10'>full  </span>gender*render implementation, or an <span class='cmti-10'>extended  </span>gender*render
+implementation.<br class='newline' />
+                                                                  
+
+                                                                  
+</p><!-- l. 421 --><p class='indent'>   A renderer must take at least two inputs, a  gender*render -template and a piece
+of pronoun data. As for the piece of pronoun data a renderer accepts, every
+renderer must accept  gender*render -pronoun data as well as individual
+pronoun data, which is then processed into full  gender*render -pronoun
+data following a number of steps explained below. The renderer may also be
+written in a way that allows to pass it a path to a <span class='cmtt-10'>.gr</span>-file containing a
+gender*render -template instead of the template directly, or even in a way which
+exclusively allows this way of usage, though the later is not recommended
+and does not comply with the implementation suggestions given by this
+document. Analogously, the renderer may be written in a way that allows to
+pass it a path to a <span class='cmtt-10'>.grpd</span>-file containing  gender*render -pronoun data or
+a path to a <span class='cmtt-10'>.gripd</span>-file containing individual pronoun data instead of the
+content of the  gender*render -pronoun data directly, or even in a way which
+exclusively allows this way of usage, though the later is not recommended
+and does not comply with the implementation suggestions given by this
+document.<br class='newline' />
+</p><!-- l. 426 --><p class='indent'>   Along the rendering process, several errors might occur for several reasons. The
+way errors are classified and communicated to the user is not an implementation
+detail, but a part of the specification, since classifying errors is especially important
+due the logical, yet sometimes contra intuitive way  gender*render renders templates.
+This specification thus defines not only what should raise an error, but also suggests
+different error names for different types of errors.<br class='newline' />
+</p><!-- l. 430 --><p class='indent'>   If the language of the implementation allows defining and raising custom error
+types, these error types must be defined and risen accordingly. If the language does
+not allow to define custom error types, yet allows to return information even if the
+execution of a program or function fails, the program or function must return
+information indicating what type of error occurred in a reasonable way. However, if
+the language of the implementation provides a standardized way to indicate a
+function failed to run, yet does not provide a way to return additional information
+about the cause of this failure, the implementation should use the standardized way
+of failing if an error occurs instead of returning information about the cause of
+failure.<br class='newline' />
+</p><!-- l. 434 --><p class='indent'>   The following types of errors are defined by this specification, and are used as
+described below. Please note that whilst the names of the errors are always written in
+camel case throughout this specification, the way they are written should be
+according to the official style guide of the language they are implemented in, if there
+is any. If the naming conventions of the language comply with the names
+of the errors defined in this specification, or if the language does not have
+any naming conventions, the names defined in this specification must be
+used.
+</p>
+<div class='flushleft'>
+<!-- l. 438 --><p class='noindent'>
+                                                                  
+
+                                                                  
+ </p>
+<div class='center'>
+<!-- l. 439 --><p class='noindent'>
+<a id='x1-9002r4'></a>
+</p><!-- l. 442 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-5' cellspacing='0'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-1-1'>
+ <!-- l. 442 --><p class='noindent'>Error
+  name                                  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-1-2'>
+ <!-- l. 442 --><p class='noindent'>commonly
+  used
+  for                                                       </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-2-1'>
+ <!-- l. 444 --><p class='noindent'><span class='cmtt-10'>SyntaxError</span>               </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-2-2'>
+ <!-- l. 444 --><p class='noindent'>Used
+  if
+  the
+  input
+  is
+  not
+  a
+  valid
+  template
+  and
+  pronoun
+  data
+  aren’t
+  valid,
+  independent
+  of
+  the
+  way
+  they
+  relate
+  to
+  each
+  other.                                                   </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-3-1'>
+ <!-- l. 446 --><p class='noindent'><span class='cmtt-10'>InvalidCapitalization-
+ </span><span class='cmtt-10'>Error</span>                     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-3-2'>
+ <!-- l. 446 --><p class='noindent'>Used
+  if
+  the
+  capitalization
+  of
+  a
+  context
+  value
+  or
+  the
+  capitalization
+  value
+  of
+  a
+  tag
+  are
+  invalid.                                                 </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-4-1'>
+ <!-- l. 448 --><p class='noindent'><span class='cmtt-10'>InvalidPDError</span>            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-4-2'>
+ <!-- l. 448 --><p class='noindent'>Used
+  if
+  the
+  given
+  pronoun
+  data
+  is
+  not
+  valid.                                                    </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-5-1'>
+ <!-- l. 450 --><p class='noindent'><span class='cmtt-10'>IdResolutionError</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-5-2'>
+ <!-- l. 450 --><p class='noindent'>Used
+  if
+  matching
+  individual
+  pronoun
+  data
+  to
+  tags
+  does
+  not
+  wo
+  out.                                                      </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-6-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-6-1'>
+ <!-- l. 452 --><p class='noindent'><span class='cmtt-10'>MissingInformationError</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-6-2'>
+ <!-- l. 452 --><p class='noindent'>Used
+  if
+  the
+  individual
+  pronoun
+  data
+  a
+  tag
+  refers
+  to
+  does
+  not
+  contain
+  the
+  information
+  the
+  tag
+  requires.                                                </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-7-1'>
+ <!-- l. 454 --><p class='noindent'><span class='cmtt-10'>DoubledInformationError</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-7-2'>
+ <!-- l. 454 --><p class='noindent'>Used
+  if
+  individual
+  pronoun
+  data
+  defines
+  a
+  property
+  multiple
+  times
+  with
+  different
+  names
+  (possible
+  since
+  gender*render
+  defines
+  multiple
+  different
+  names
+  for
+  each
+  property).                                              </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-8-1'>
+ <!-- l. 456 --><p class='noindent'><span class='cmtt-10'>InvalidInformationError</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-8-2'>
+ <!-- l. 456 --><p class='noindent'>Used
+  if
+  a
+  property
+  in
+  a
+  piece
+  of
+  individual
+  pronoun
+  data
+  has
+  a
+  value
+  it
+  does
+  not
+  allow
+  assigned.                                               </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-5-9-'><td style='white-space:nowrap; text-align:center;' class='td11' id='TBL-5-9-1' colspan='2'>      <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 4: </span><span class='content'>Types of errors that can occur whilst rendering</span></div><!-- tex4ht:label?: x1-9002r4  -->           </div>         <a id='x1-9003'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-5-11-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-11-1'>
+ <!-- l. 459 --><p class='noindent'>                          </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-5-12-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-12-1'>
+ <!-- l. 459 --><p class='noindent'>                          </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-5-13-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-13-1'>                           </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-5-13-2'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 463 --><p class='indent'>   If the language of the implementation already has an error type of the name
+<span class='cmtt-10'>SyntaxError</span>, and this error can be raised by the implementation manually, the
+implementation does not need to define a custom equivalent of this error type in their
+own namespace, and may instead use the pre-defined type. This is applicable for
+some languages like Python, and you can safely ignore it if it isn’t applicable to your
+language of choice.<br class='newline' />The errors (in languages where errors are objects) do not need to be defined as part
+of the global scope, if libraries or modules in this language commonly use their own
+scope (as is the case wit most common languages), and should default to the best
+practices for their respective language.<br class='newline' />If the language is object-oriented, including custom errors, the errors defined by this
+specification may be derived from pre-existing error types, where fitting, as long as
+catching the exception based on the name defined by this specification is still
+possible.<br class='newline' />Implementations in languages that support error hierarchies with the ability to find out
+whether a caught exception has been raised specifically, as opposed to being triggered by
+raising one of its derivates, may implement an arbitrary (as long as it is well-defined
+in their documentation) error hierarchy between its exceptions, based on good
+judgement<span class='footnote-mark'><a href='#fn7x0' id='fn7x0-bk'><sup class='textsuperscript'>7</sup></a></span><a id='x1-9004f7'></a>.<br class='newline' />Where possible, additional information regarding the cause of failure and how to fix
+it should be included when raising an error, but the way this is done is considered an
+implementation detail. Implementations should keep in mind that people using
+gender*render might not necessarily have read the spec, and might profit from
+self-explanatory detailed Tracebacks.<br class='newline' />
+</p><!-- l. 471 --><p class='indent'>   The rendering p-rocess uses different steps, described as follows. Please note that
+the order in which these steps are executed is not relevant; as long as the renderer is
+guaranteed to produce the same input-output-pairs as any render that accords to
+this definition does, it is up to the programmer how the renderer works
+internally. Each of these steps vaguely corresponds to one of the error types
+defined above, and raises almost exclusively said error if it happens to be
+unfinisheable.<br class='newline' />
+</p><!-- l. 476 --><p class='indent'>   The first step is parsing the input values (template and pronoun data) and
+checking them for correctness. If the received template is not a valid  gender*render
+                                                                  
+
+                                                                  
+-template, a <span class='cmtt-10'>SyntaxError </span>is risen; unless the issue is with the capitalization settings
+of a tag, in which case a <span class='cmtt-10'>InvalidCapitalizationError </span>is raised according to the
+table above. If, on the other hand, the received pronoun data is neither valid
+gender*render -pronoun data nor individual pronoun data, an <span class='cmtt-10'>InvalidPDError </span>is
+risen; this takes precedence over raising a <span class='cmtt-10'>SyntaxError </span>in case both the template as
+well as the pronoun data are invalid. Please note that for a  gender*render -template
+to be valid, not only does the syntax as describes via a formal grammar or a finite
+state machine be matched, but also does the determination of non-explicitly
+specified section types need work out, as described in the template-part of this
+specification.<br class='newline' />
+</p><!-- l. 485 --><p class='indent'>   This step also contains unwrapping tags with multiple whitespace-separated
+context values, such as ”<span class='cmsy-10'>{</span><span class='cmtt-10'>foo:bar * context:Mr_s Doe</span><span class='cmsy-10'>}</span>”, which are processed from
+a form along the lines of ”<span class='cmsy-10'>{</span><span class='cmtt-10'>foo:bar * context:Mr_s</span><span class='cmsy-10'>} {</span><span class='cmtt-10'>foo:bar * context:Doe</span><span class='cmsy-10'>}</span>”
+to two different tags separated by a single space (”  ”, <span class='cmtt-10'>U+0020</span>). If a tags
+context value is not supported, an error may be risen, but this may differ from
+implementation to implementation to ensure backwards compatibility with versions
+that support a smaller set of context values.<br class='newline' />
+</p><!-- l. 488 --><p class='indent'>   After tags with multiple context values are split into sequences of multiple tags
+with one context value each, their capitalization value and their context value’s
+capitalization are parsed and checked, taking into account the semantic sugar and
+other rules defined in regards to the <span class='cmtt-10'>capitalization</span>-section (refer to the Template
+Language section for additional detail).<br class='newline' />
+</p><!-- l. 490 --><p class='indent'>   The second step matches  gender*render -tags to individual pronoun data passed
+to the renderer. The crux of this is checking whether all ids used by the pronoun data
+match ids used by the template and vice versa, and making sense of individual
+pronoun data passed to the renderer. This step as well as the next one check not
+only whether the passed information are valid each on their own, but also
+whether they are matching. The procedures defined during this part of the
+specification walk a thin, yet clear, line between being too static and therefore
+forcing the user to provide not required information and reduce the ease of
+use of  gender*render , and being to lash and therefore making debugging
+unnecessarily difficult. Understanding this part of the specification is crucial for
+using  gender*render , and the information it gives should therefore be part
+of communicating the way  gender*render can be used by implementation
+documentations.<br class='newline' />
+</p><!-- l. 496 --><p class='indent'>   The first part of this step is to deal with the fact that different amounts of <span class='cmtt-10'>id</span>
+values can be used by different tags, and some tags don’t have id values specified, and
+the given pronoun data might be individual pronoun data and therefore not specify
+any id values. To resolve this issue, the renderer assigns every  gender*render -tag an
+id value if it doesn’t have one already, and converts the given pronoun data to
+gender*render -pronoun data if it is individual pronoun data. The way this is
+done is described by the following table, which refers to the amount of id
+                                                                  
+
+                                                                  
+values specified by all  gender*render -tags used in the given template as
+#ids:
+</p>
+<div class='flushleft'>
+<!-- l. 500 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 501 --><p class='noindent'>
+<a id='x1-9005r5'></a>
+</p><!-- l. 504 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-6' cellspacing='0'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup><colgroup id='TBL-6-3g'><col id='TBL-6-3' /></colgroup><colgroup id='TBL-6-4g'><col id='TBL-6-4' /></colgroup><colgroup id='TBL-6-5g'><col id='TBL-6-5' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-1-1'>
+ <!-- l. 504 --><p class='noindent'>           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-1-2'>
+ <!-- l. 504 --><p class='noindent'><span class='cmbx-10'>#ids
+  </span><span class='cmbx-10'>=
+  </span><span class='cmbx-10'>0</span>                     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-1-3'>
+ <!-- l. 504 --><p class='noindent'><span class='cmbx-10'>all
+  </span><span class='cmbx-10'>tags
+  </span><span class='cmbx-10'>have
+  </span><span class='cmbx-10'>the
+  </span><span class='cmbx-10'>same
+  </span><span class='cmbx-10'>id
+  </span><span class='cmbx-10'>(=”bar”)
+  </span><span class='cmbx-10'>assigned</span>            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-1-4'>
+ <!-- l. 504 --><p class='noindent'><span class='cmbx-10'>all
+  </span><span class='cmbx-10'>tags
+  </span><span class='cmbx-10'>have
+  </span><span class='cmbx-10'>ids
+  </span><span class='cmbx-10'>assigned,
+  </span><span class='cmbx-10'>but
+  </span><span class='cmbx-10'>not
+  </span><span class='cmbx-10'>all
+  </span><span class='cmbx-10'>the
+  </span><span class='cmbx-10'>same</span>                </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-1-5'>
+ <!-- l. 504 --><p class='noindent'><span class='cmbx-10'>some
+  </span><span class='cmbx-10'>tags
+  </span><span class='cmbx-10'>have
+  </span><span class='cmbx-10'>ids
+  </span><span class='cmbx-10'>assigned,
+  </span><span class='cmbx-10'>some
+  </span><span class='cmbx-10'>not</span>                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-2-1'>
+ <!-- l. 507 --><p class='noindent'><span class='cmbx-10'>only
+  </span><span class='cmbx-10'>individual
+  </span><span class='cmbx-10'>pronoun
+  </span><span class='cmbx-10'>data
+  </span><span class='cmbx-10'>is
+  </span><span class='cmbx-10'>given
+  </span><span class='cmbx-10'>(=</span><span class='cmtt-10'>idpd</span><span class='cmbx-10'>)</span>    </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-2-2'>
+ <!-- l. 507 --><p class='noindent'>set
+  <span class='cmtt-10'>pronoun_data
+ </span><span class='cmtt-10'>=
+ </span><span class='cmsy-10'>{</span><span class='cmtt-10'>"usr":
+ </span><span class='cmtt-10'>idpd</span><span class='cmsy-10'>}</span>;
+  Assign
+  id
+  ”usr”
+  to
+  every
+  tag.                     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-2-3'>
+ <!-- l. 507 --><p class='noindent'>set
+  <span class='cmtt-10'>pronoun_data
+ </span><span class='cmtt-10'>=
+ </span><span class='cmsy-10'>{</span><span class='cmtt-10'>"bar":
+ </span><span class='cmtt-10'>idpd</span><span class='cmsy-10'>}</span>        </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-2-4'>
+ <!-- l. 507 --><p class='noindent'>raise
+  IdResolutionError  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-2-5'>
+ <!-- l. 507 --><p class='noindent'>raise
+  IdResolutionError  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-3-1'>
+ <!-- l. 510 --><p class='noindent'><span class='cmbx-10'>pronoun
+  </span><span class='cmbx-10'>data
+  </span><span class='cmbx-10'>is
+  </span><span class='cmbx-10'>given
+  </span><span class='cmbx-10'>for
+  </span><span class='cmbx-10'>one
+  </span><span class='cmbx-10'>id
+  </span><span class='cmbx-10'>(=”foo”)</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-3-2'>
+ <!-- l. 510 --><p class='noindent'>Assign
+  id
+  ”foo”
+  to
+  every
+  tag.                     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-3-3'>
+ <!-- l. 510 --><p class='noindent'>if
+  ”foo”
+  <span class='cmmi-10'>≠</span>
+  ”bar”:
+  raise
+  IdResolutionError  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-3-4'>
+ <!-- l. 510 --><p class='noindent'>raise
+  IdResolutionError  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-3-5'>
+ <!-- l. 510 --><p class='noindent'>raise
+  IdResolutionError  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-4-1'>
+ <!-- l. 513 --><p class='noindent'><span class='cmbx-10'>pronoun
+  </span><span class='cmbx-10'>data
+  </span><span class='cmbx-10'>is
+  </span><span class='cmbx-10'>given
+  </span><span class='cmbx-10'>for
+  </span><span class='cmbx-10'>n
+  </span><span class='cmbx-10'>(</span><span class='cmsy-10'>≥
+ </span><span class='cmbx-10'>1)
+  </span><span class='cmbx-10'>ids</span>           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-4-2'>
+ <!-- l. 513 --><p class='noindent'>raise
+  IdResolutionError  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-4-3'>
+ <!-- l. 513 --><p class='noindent'>if
+  ”bar”
+  is
+  not
+  an
+  id
+  in
+  the
+  pronoun
+  data:
+  raise
+  IdResolutionError  </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-4-4'>
+ <!-- l. 513 --><p class='noindent'><span class='cmti-10'>nothing
+  </span><span class='cmti-10'>to
+  </span><span class='cmti-10'>do
+  </span><span class='cmti-10'>here</span>                   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-4-5'>
+ <!-- l. 513 --><p class='noindent'>if
+  #ids
+  +
+  1
+  <span class='cmmi-10'>≠</span>
+  n:
+  raise
+  IdResolutionError
+  else:
+  assign
+  every
+  tag
+  without
+  an
+  id
+  the
+  id
+  in
+  the
+  pronoun
+  data
+  that
+  isn’t
+  assigned
+  to
+  any
+  tag.                     </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-6-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-5-1' colspan='3'></td>                 <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 5: </span><span class='content'>Id resolution</span></div><!-- tex4ht:label?: x1-9005r5  -->                                                         </div>                           <a id='x1-9006'></a>
+
+                                                                  
+</tr><tr style='vertical-align:baseline;' id='TBL-6-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-7-1'>
+ <!-- l. 516 --><p class='noindent'>           </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-6-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-8-1'>
+ <!-- l. 516 --><p class='noindent'>           </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-6-9-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-9-1'>            </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-9-2'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-9-3'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-9-4'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-6-9-5'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 520 --><p class='indent'>   After the instructions in this table are followed, every  gender*render -tag in the
+template will have an id, and the given pronoun data will be converte to actual
+gender*render -pronoun information instead of potentially being individual pronoun
+data. The only thing left to do in this step is recreating the set of ids used by
+the template and the set of ids used by the pronoun data and raising an
+<span class='cmtt-10'>IdResolutionError </span>if the ids in the template are not a subset of the ids in the
+pronoun data.<br class='newline' />
+</p><!-- l. 523 --><p class='indent'>   The third step does for the context-value of the tags what the second does for the
+id-value of the tags. It corresponds to the <span class='cmtt-10'>Missing-/DoubledInformation</span>-error like
+the second step corresponds to the the <span class='cmtt-10'>IdResolutionError</span>. This task is also finally
+the one that involves actually rendering the template.<br class='newline' />
+</p><!-- l. 527 --><p class='indent'>   Fist, the all individual pronoun data needs to be checked for doubled information.
+If any individual pronoun data uses multiple different property names to refer to one
+attribute, a <span class='cmtt-10'>DoubledInformationError </span>is raised; see table 1 and 2 for information
+about which properties refer to which attribute.<br class='newline' />
+</p><!-- l. 531 --><p class='indent'>   Then, the renderer iterates over all tags in the template, and for each tag, the
+tags context value and the individual pronoun data provided for the tags id value is
+taken, processed according to the following table, and the result then replaces the tag
+in the actual template. If an attribute is required for this yet not defined in the
+individual pronoun data, a <span class='cmtt-10'>MissingInformationError </span>must be risen risen. Note that
+we will refer to attributes of the individual pronoun data simply as ”attributes” in
+the following:
+</p>
+<div class='flushleft'>
+<!-- l. 535 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 536 --><p class='noindent'>
+<a id='x1-9007r6'></a>
+</p><!-- l. 539 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-7' cellspacing='0'><colgroup id='TBL-7-1g'><col id='TBL-7-1' /></colgroup><colgroup id='TBL-7-2g'><col id='TBL-7-2' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-1-1'>
+ <!-- l. 539 --><p class='noindent'>syntactic
+  context
+  of
+  the
+  gender*render
+  -tag                     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-1-2'>
+ <!-- l. 539 --><p class='noindent'>procedure                                                                         </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-2-1'>
+ <!-- l. 542 --><p class='noindent'>Every
+  direct-mapped
+  context
+  value
+  with
+  canonical
+  <span class='cmti-10'>foo</span>
+  <br class='newline' /><span class='cmr-5'>except
+   </span><span class='cmtt-8x-x-62'>address
+  </span><span class='cmr-5'>and
+   </span><span class='cmr-5'>its
+   </span><span class='cmr-5'>aliases</span>                            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-2-2'>
+ <!-- l. 542 --><p class='noindent'>The
+  tag
+  is
+  replaced
+  with
+  the
+  value
+  of
+  the
+  <span class='cmti-10'>foo</span>-attribute.                                                                    </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-3-1'>
+ <!-- l. 544 --><p class='noindent'>Form
+  of
+  Address
+  (context
+  value
+  with
+  canonical
+  <span class='cmtt-10'>address</span>)              </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-3-2'>
+ <!-- l. 544 --><p class='noindent'>If
+  the
+  <span class='cmtt-10'>gender-addressing</span>-attribute
+  is
+  set
+  to
+  false
+  (or
+  undefined),
+  the
+  tag
+  is
+  replaced
+  with
+  the
+  value
+  of
+  the
+  <span class='cmtt-10'>personal-name</span>-attribute.<br class='newline' />Otherwise,
+  it
+  is
+  handled
+  like
+  any
+  other
+  direct-mapped
+  context
+  value
+  (see
+  above).                                                                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-4-1'>
+ <!-- l. 546 --><p class='noindent'>Gender-specific
+  Noun                   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-4-2'>
+ <!-- l. 546 --><p class='noindent'>See
+  below.                                                                             </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-7-5-'><td style='white-space:nowrap; text-align:center;' class='td11' id='TBL-7-5-1' colspan='2'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 6: </span><span class='content'>Rendering procedures for each syntactic context</span></div><!-- tex4ht:label?: x1-9007r6  -->          </div>               <a id='x1-9008'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-7-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-7-1'>
+ <!-- l. 549 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-7-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-8-1'>
+ <!-- l. 549 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-7-9-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-9-1'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-7-9-2'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 553 --><p class='indent'>   As we can see, the only non-trivial case is correctly gendering gender-specific
+nouns, these being nouns that imply a specific natural gender of the person they refer
+to, or hyponyms for ”person”, to be precise. Depending on the value of the
+<span class='cmti-10'>Gender-specific Noun handling </span>attribute, such nouns, when given as the
+context value of a  gender*render -tag, will be replaced by their correct
+equivalent for the specified gender. How these equivalents are determined is
+intentionally left vague since the english language is constantly shifting and
+unambigiously defining every rule for this would require to curate extensive
+lists. However, the recommended approach would be to use a graph of
+nouns that links every noun that refers to a person (for example based on
+WordNet<span class='footnote-mark'><a href='#fn8x0' id='fn8x0-bk'><sup class='textsuperscript'>8</sup></a></span><a id='x1-9009f8'></a>) to their
+synonyms according the gender implied by the synonyms. There are (not necessarily complete)
+datasets available<span class='footnote-mark'><a href='#fn9x0' id='fn9x0-bk'><sup class='textsuperscript'>9</sup></a></span><a id='x1-9010f9'></a>
+that do exactly this. It might be a good idea to test these sets on whether they contain a
+gender-neutral version for every gendered noun, and if they have only a version ending with
+”-man” and one version ending with ”-women”, to manually insert a version ending with
+”person”.<span class='footnote-mark'><a href='#fn10x0' id='fn10x0-bk'><sup class='textsuperscript'>10</sup></a></span><a id='x1-9011f10'></a><br class='newline' />
+</p><!-- l. 560 --><p class='indent'>   If a word is given as a gendered noun which isn’t one according to the used data
+set, no error must be risen to ensure that every implementation terminates
+successfully for the same input data, but a (possibly suppressible) warning should be
+risen. If the implementation is also capable of determining if something is a
+word for a person a noun or a word at all, it may raise warnings for these as
+well.<br class='newline' />
+</p><!-- l. 563 --><p class='indent'>   After the string value a tag will be rendered to is determined, the capitalization
+option of the tag described by its <span class='cmtt-10'>capitalization</span>-value is applied to said value by
+capitalizing it according to the capitalization-example provided in the capitalization
+value table above. If a character does not have both a lowercase- and an
+uppercase-version, it is interpreted as already capitalized correctly by this process (an
+important distinction because another way to implement this would be to skip the
+character and proceed with the next character as if there had not been any character
+in between). The whole process leading up to this, from the parsing of the
+template’s context values and their semantic sugar to the capitalization of
+the final tag replacement, is referred to as the <span class='cmti-10'>global capitalization system</span>
+                                                                  
+
+                                                                  
+(”global” because it is indiscriminately applied to every tag at the end of its
+rendering process), a word which can be found all throughout the reference
+implementation.<br class='newline' />
+</p><!-- l. 567 --><p class='indent'>   After all of these steps are concluded, every  gender*render -tag in the template
+will be replaced with a correctly gendered and correctly capitalized word for it.
+Afterwards, the rest of the template (save for the rendered tags) must be unescaped
+to remove single backslashes and replace double backslashes with single ones. If the
+implementation does not operate on a mutable string object (like they exist in some
+languages), the result should then be returned or outputted in another way, though
+this is not a must since some implications might not be encapsulated into their own
+function or program.<br class='newline' />
+<a id='x1-9012r13'></a>
+</p>
+<h5 class='subsubsectionHead'><span class='titlemark'>4.3.2   </span> <a id='x1-100002'></a>Implementation guidelines</h5>
+<!-- l. 573 --><p class='noindent'>In addition to the ”must”s defined above, this sections lists some additional
+”should”s and guidelines for implementing  gender*render renderers. This
+completed the previous section in that the previous section is about the way
+gender*render -implementations must work internally, whilst this section is about the
+way  gender*render -implementation interfaces should be exposed to the
+outside, to encourage uniformity not only on the inside, but also on the
+outside.<br class='newline' />Renderers that follow all of these ”should”s can call themselves
+conforming to the  gender*render <span class='cmti-10'>implementation standard </span>(or, if they
+only follow the implementation standard for some of the extension
+specifications<span class='footnote-mark'><a href='#fn11x0' id='fn11x0-bk'><sup class='textsuperscript'>11</sup></a></span><a id='x1-10001f11'></a>
+they implement, specifically conforming to the implementation standards of the
+specifications whose implementation standards they follow).<br class='newline' />
+</p><!-- l. 577 --><p class='indent'>   In general, the purpose of this implementation standard is to define standardized
+interfaces and behaviors (function names, parameter names, additional behaviors and
+parameters, optional optimizations, test functions for the user to find potential
+caveats in their templates etc.) so that every user who is comfortable with one
+implementation of  gender*render is capable of using any implementation in any
+other language without having to refer to the documentation to get started. It
+is acceptable that not every implementaon might be able to follow these
+guidelines, though, and they are admittedly optimized for object-oriented
+languages, though they also contains alternate suggestions for non-object oriented
+languages.<br class='newline' />
+</p><!-- l. 580 --><p class='indent'>   In addition to being a guideline for other implementations, this standard served
+as a basic outline for writing the exemplary implementation that comes with this
+specification. Whilst said implementation strictly follows all of these guidelines, it
+should be mentioned that was written after the standard, so these guidelines are in
+                                                                  
+
+                                                                  
+no way based on the original implementation or, even worse, written to justify this
+implementations design choices.<br class='newline' />
+</p><!-- l. 583 --><p class='indent'>   The terms ”suggestions” and ”guidelines” are used interchangeably here.
+</p>
+<p><a id='x1-11000r18'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.1 <a id='x1-110011'></a>Naming Guidelines</h6>
+<!-- l. 587 --><p class='indent'>   All naming suggestions given in this section follow Python coding conventions,
+these being <span class='cmtt-10'>CamelCase </span>for classes, <span class='cmtt-10'>snake_case </span>for variables, functions, arguments
+and methods, and <span class='cmtt-10'>kebab-case </span>for package names. Whilst the names are part of these
+suggestions, their case is not, and every implementation should follow the naming
+conventions of its respective language depending on the type of things the names
+refer to.
+</p>
+<p><a id='x1-12000r19'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.2 <a id='x1-120012'></a>Object Orientation</h6>
+<!-- l. 592 --><p class='indent'>   The guidelines are mainly targeted towards object-oriented languages, since most
+high-level languages are object oriented and there is not much reason to
+implement  gender*render using a low-level language. However, they can and
+should be applied to non-object oriented languages as well, following the
+following table of analogies; in cases where the left-sided concept is available for
+use, it should be used, otherwise, the right-sided concept should replace
+it:
+</p>
+<div class='flushleft'>
+<!-- l. 596 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 597 --><p class='noindent'>
+<a id='x1-12002r7'></a>
+</p><!-- l. 600 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-8' cellspacing='0'><colgroup id='TBL-8-1g'><col id='TBL-8-1' /></colgroup><colgroup id='TBL-8-2g'><col id='TBL-8-2' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-1-1'>
+ <!-- l. 600 --><p class='noindent'>object-oriented
+  term                    </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-1-2'>
+ <!-- l. 600 --><p class='noindent'>not
+  object-oriented
+  equivalent                                                                         </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-2-1'>
+ <!-- l. 603 --><p class='noindent'>object
+  representing
+  a
+  foo                      </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-2-2'>
+ <!-- l. 603 --><p class='noindent'>data
+  structure
+  representing
+  a
+  foo                                                                                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-3-1'>
+ <!-- l. 605 --><p class='noindent'>class
+  constructor           </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-3-2'>
+ <!-- l. 605 --><p class='noindent'>function
+  that
+  returns
+  the
+  data
+  structure
+  that
+  compensates
+  for
+  the
+  object                                                                              </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-4-1'>
+ <!-- l. 607 --><p class='noindent'>method
+  of
+  an
+  object
+  representing
+  a
+  foo;
+  takes
+  e.g.
+  a,
+  b,
+  c
+  as
+  arguments            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-4-2'>
+ <!-- l. 607 --><p class='noindent'>function
+  that
+  manipulates
+  a
+  data
+  structure
+  representing
+  a
+  foo
+  or
+  returns
+  a
+  manipulated
+  version
+  of
+  it
+  (depending
+  on
+  whether
+  it
+  is
+  mutable
+  or
+  not);
+  takes
+  e.g.
+  the
+  data
+  structure,
+  a,
+  b,
+  c
+  as
+  arguments                                                                        </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-5-1'>
+ <!-- l. 609 --><p class='noindent'>function
+  that
+  mutates
+  foo                      </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-5-2'>
+ <!-- l. 609 --><p class='noindent'>function
+  that
+  returns
+  a
+  modified
+  copy
+  of
+  foo                                                                                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-6-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-6-1'>
+ <!-- l. 611 --><p class='noindent'>function
+  <span class='cmtt-10'>f</span>,
+  which
+  accepts
+  some
+  optional
+  arguments            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-6-2'>
+ <!-- l. 611 --><p class='noindent'>function
+  <span class='cmtt-10'>f_ext</span>
+ where
+  all
+  those
+  optional
+  arguments
+  are
+  required,
+  and
+  function
+  <span class='cmtt-10'>f</span>,
+  which
+  does
+  not
+  require
+  the
+  optional
+  arguments
+  and
+  internally
+  calls
+  <span class='cmtt-10'>f_ext</span>
+ with
+  the
+  default
+  values
+  for
+  the
+  omitted
+  arguments;
+  unless
+  there
+  is
+  a
+  standard
+  way
+  to
+  deal
+  with
+  issues
+  like
+  this
+  in
+  the
+  given
+  language,
+  which
+  should
+  then
+  be
+  preferred
+  to
+  this
+  approach.                                                                         </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-7-1'>
+ <!-- l. 613 --><p class='noindent'>boolean
+  type                    </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-7-2'>
+ <!-- l. 613 --><p class='noindent'>0
+  or
+  1
+  as
+  integers                                                                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-8-8-'><td style='white-space:nowrap; text-align:center;' class='td11' id='TBL-8-8-1' colspan='2'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 7: </span><span class='content'>OOP equivalents for low-level languages</span></div><!-- tex4ht:label?: x1-12002r7  -->                     </div>               <a id='x1-12003'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-8-10-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-10-1'>
+ <!-- l. 616 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-8-11-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-11-1'>
+ <!-- l. 616 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-8-12-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-12-1'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-8-12-2'></td></tr>
+</table></div>
+</div>
+</div>
+<p><a id='x1-13000r21'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.3 <a id='x1-130013'></a>Naming the package</h6>
+<!-- l. 622 --><p class='indent'>   Packages (as in, modules or libraries that can be installed via a package
+manager, be it language specific or general) should be called ”<span class='cmtt-10'>gender-render</span>” if
+they target the english language. If they target a different language, they
+should be extended with a hyphen and the corresponding language code (e.g.
+”<span class='cmtt-10'>gender-render-de</span>”). In case the implementation is highly language specific (e.g.
+intended to be used from within one specific language rather than as a tool
+via the command line), and the package manager it is uploaded to is not
+language-specific (unlike e.g. nvm or pypi), the package name should be
+extended with a hyphen and the common file extension of the language (e.g.
+”<span class='cmtt-10'>gender-render-js</span>” or ”<span class='cmtt-10'>gender-render-de-js</span>”). In cases where other
+packages of the same name already exist, a name should be chosen with good
+judgement.
+</p>
+<p><a id='x1-14000r22'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.4 <a id='x1-140014'></a>Naming the module/ library</h6>
+<!-- l. 629 --><p class='indent'>   Most languages support writing modules and libraries that can be imported,
+embedded or otherwise injected into any piece of code usg a simple statement that
+contains the name of the module somewhere in it (e.g. ”<span class='cmtt-10'>import gender-render</span>” or
+”<span class='cmtt-10'>#include &lt;gender_render&gt;</span>”). Whilst some languages come with their own packet
+manager, some don’t, and some that do support using different names for the package
+and the module that it installs. Therefore, a separate naming convention for module
+names is necessary.<br class='newline' />
+</p><!-- l. 633 --><p class='indent'>   Module names are formed like package names, except without the appendix
+for the language name, and using the case conventions for module names
+rather than package names. In cases where the package name differs from
+the scheme above, the module name should be based on the package name,
+but also without the additional information regarding the implementation
+language.
+</p>
+<p><a id='x1-15000r23'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.5 <a id='x1-150015'></a>Core functionality</h6>
+                                                                  
+
+                                                                  
+<!-- l. 638 --><p class='indent'>   This is the functionality that every  gender*render implementation should expose,
+if appropriate (within good judgement) its main namespace.<br class='newline' />
+     </p><dl class='description'><dt class='description'>
+<span class='cmbx-10'>class </span><span class='cmtt-10'>Template</span><span class='cmbx-10'>:</span> </dt><dd class='description'>A   class   representing   a   parsed,   but   not   yet   rendered,
+     gender*render  -template.  Its  constructor  takes  the  template-related
+     information that any  gender*render -renderer takes, parses and processes
+     it  as  far  as  possible,  and  an  additional  <span class='cmtt-10'>render</span>-method  accepts  the
+     pronoun-related  information  that  any    gender*render  -renderer  takes
+     and renders both, with the result then being returned. This practice of
+     implementing an object or data structure just for processing the template
+     and separating this process from the actual render is motivated by the
+     need for increased performance in case of multiple subsequent renders of
+     one identical template.<br class='newline' />The  constructor  accepts  one  positional  argument,  ”<span class='cmtt-10'>template</span>”,  which
+     accepts a string, and one optional argument ”<span class='cmtt-10'>takes_file_path</span>”, which
+     defaults to false and accepts a boolean. If <span class='cmtt-10'>takes_file_path is true</span>, the
+     <span class='cmtt-10'>template</span>-argument is interpreted as a file path to a <span class='cmtt-10'>.gr</span>-file containing the
+     template; otherwise, it is interpreted as a string containing the template.
+     </dd><dt class='description'>
+<span class='cmbx-10'>method </span><span class='cmtt-10'>render()</span><span class='cmbx-10'>:</span> </dt><dd class='description'>A  method  of  the  aforementioned  <span class='cmtt-10'>Template</span>-object.  It
+     accepts  a  piece  of  pronoun  data  and  returns  the  rendered  template.
+     Accepted  arguments  are  ”<span class='cmtt-10'>pronoun_data</span>”,  which  accepts  a  string,
+     and  one  optional  argument  ”<span class='cmtt-10'>takes_file_path</span>”,  which  defaults  to
+     false   and   accepts   a   boolean.   If   <span class='cmtt-10'>takes_file_path is true</span>,   the
+     <span class='cmtt-10'>pronoun_data</span>-argument  is  interpreted  as  a  file  path  to  a  <span class='cmtt-10'>.grpd</span>-  or
+     <span class='cmtt-10'>.gripd</span>-file containing the pronoun data; otherwise, it is interpreted as a
+     string containing the pronoun data. Implementations may write <span class='cmtt-10'>render</span>
+     as a method that accepts a JSON-like object (like a <span class='cmtt-10'>dict </span>in Python or an
+     object in Javascript) if it receives one instead of a string containing json.
+     </dd><dt class='description'>
+<span class='cmbx-10'>function </span><span class='cmtt-10'>render_template()</span><span class='cmbx-10'>:</span> </dt><dd class='description'><span class='cmtt-10'>render_template()</span>
+     is a shorthand for <span class='cmtt-10'>Template().render()</span>. Order in which arguments are
+     passed  to  <span class='cmtt-10'>render_plate() </span>is  first  required  arguments  for  Template(),
+     then required arguments for render(), then optional arguments shared by
+     Template(), then optional arguments for Template() and then optional
+     arguments for render().
+     </dd><dt class='description'>
+<span class='cmbx-10'>class </span><span class='cmtt-10'>PronounData</span><span class='cmbx-10'>:</span> </dt><dd class='description'>A class representing a parsed piece of individual pronoun
+     data, with all calculations that can be done before knowing which template
+     it will be inserted in already done. This type of object is accepted by every
+     function which accepts pronoun data, such as <span class='cmtt-10'>Template().render() </span>or
+     <span class='cmtt-10'>render_template() </span>wherever these functions accept a piece of pronoun
+     data (the <span class='cmtt-10'>pronoun _data</span>-argument). Its constructor accepts the same
+                                                                  
+
+                                                                  
+     arguments as the <span class='cmtt-10'>render()</span>-method as described in the preceding sections
+     of this list.</dd></dl>
+<p><a id='x1-16000r24'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.6 <a id='x1-160016'></a>Warnings</h6>
+<!-- l. 662 --><p class='indent'>   As in every program, there are multiple scenarios that can arise along the render
+process that might warrant raising a warning. This specification does not define any
+warnings that must be risen to comply with these standards; rather, it suggests some
+warnings that should be implemented if the architecture of the program warrants
+it, was well as guidelines on how to handle the disabling and enabling of
+warnings.<br class='newline' />
+</p><!-- l. 666 --><p class='indent'>   Every warning suggested by this section comes with a name that should, like
+every other name specified here, adjusted to the styleguides of the implementation
+language. All of the names of these warnings end on ”Warning” as a uniting factor in
+their names, but this uniting factor should be left out or replaced according to the
+coding guidelines of the respective language. If, for example, the suggested name
+is ”<span class='cmtt-10'>FooBarWarning</span>”, but the language and/or coding guidelines used for
+the implementation require warnings to be snake_case and to start with
+”potential_problem<span class='accentuml'>r</span>ather than ending with ”Warning”, the warning should be
+”<span class='cmtt-10'>potential_problem_foo_bar</span>”.<br class='newline' />
+</p><!-- l. 670 --><p class='indent'>   Which function should raise the warning is implementation dependent;
+however, every function suggested by this specification should have an
+<span class='cmtt-10'>warning_settings</span>-argument which takes a value defining which warnings should be
+enabled and which warnings should be enabled for the run. The syntax and type of
+this warning is up to the implementation; however, it should allow to individually
+enable and disable every warning, and there should be constant values for setting all
+warnings as enabled/ all warnings as disabled defined. If the implementation
+of this feature is string-based, e.g. the warning settings get passed as an
+array of strings describing warning types, the string names representing the
+warnings should be interpreted according to this specification and in snake_case,
+so ”<span class='cmtt-10'>FooBarWarning</span>” would be represented by ”<span class='cmtt-10'>foo_bar_warning</span>”. This
+ensures compatibility of values for the <span class='cmtt-10'>warning_settings</span>-argument across all
+implementations of  gender*render . The default value for the <span class='cmtt-10'>warning_settings</span>
+argument is up to the implementation, but should be chosen to comply with the
+warning sensitivity common in programs written in the respective language.
+The value of the argument should be passed from every function to every
+function it calls (assuming both functions are part of the program and have
+potential warnings to raise). <span class='cmtt-10'>render_template()</span>, for example, should pass
+the user’s warning preferences on to <span class='cmtt-10'>Template() </span>as well as its <span class='cmtt-10'>.render()</span>
+method.<br class='newline' />
+</p>
+<div class='flushleft'>
+<!-- l. 680 --><p class='noindent'>
+                                                                  
+
+                                                                  
+ </p>
+<div class='center'>
+<!-- l. 681 --><p class='noindent'>
+<a id='x1-16002r8'></a>
+</p><!-- l. 684 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-9' cellspacing='0'><colgroup id='TBL-9-1g'><col id='TBL-9-1' /></colgroup><colgroup id='TBL-9-2g'><col id='TBL-9-2' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-1-1'>
+ <!-- l. 684 --><p class='noindent'>warning
+  name                   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-1-2'>
+ <!-- l. 684 --><p class='noindent'>warning
+  meaning                                                                           </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-2-1'>
+ <!-- l. 686 --><p class='noindent'><span class='cmtt-10'>NotAWordWarning</span> </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-2-2'>
+ <!-- l. 686 --><p class='noindent'>The
+  value
+  of
+  a
+  Gendered
+  Noun-tag
+  is
+  not
+  a
+  word
+  known
+  in
+  the
+  english
+  (or
+  implementation-specific)
+  language.
+  Raising
+  this
+  warning
+  only
+  makes
+  sense
+  for
+  implementations
+  that
+  come
+  with
+  a
+  full
+  dict
+  of
+  the
+  english
+  language.                                                                         </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-3-1'>
+ <!-- l. 689 --><p class='noindent'><span class='cmtt-10'>NotANounWarning</span> </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-3-2'>
+ <!-- l. 689 --><p class='noindent'>The
+  same
+  as
+  above,
+  but
+  specifically
+  for
+  valid
+  words
+  that
+  are
+  not
+  nouns.                                                                             </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-4-1'>
+ <!-- l. 691 --><p class='noindent'><span class='cmtt-10'>NotAPersonNoun-
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-4-2'>
+ <!-- l. 691 --><p class='noindent'>The
+  same
+  as
+  above,
+  but
+  specifically
+  for
+  valid
+  nouns
+  that
+  do
+  not
+  refer
+  to
+  a
+  type
+  of
+  person
+  or
+  profession
+  and
+  are
+  thus
+  not
+  gendered
+  in
+  any
+  way.                                                                                </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-5-1'>
+ <!-- l. 693 --><p class='noindent'><span class='cmtt-10'>FreeUngendered-
+ </span><span class='cmtt-10'>PersonNoun-
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-5-2'>
+ <!-- l. 693 --><p class='noindent'>A
+  noun
+  that
+  refers
+  to
+  a
+  type
+  of
+  person
+  or
+  profession
+  was
+  found
+  outside
+  of
+  any
+  tag.                                                                                 </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-6-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-6-1'>
+ <!-- l. 695 --><p class='noindent'><span class='cmtt-10'>FreeGendered-
+ </span><span class='cmtt-10'>PersonNoun-
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-6-2'>
+ <!-- l. 695 --><p class='noindent'>The
+  same
+  as
+  above,
+  but
+  specifically
+  for
+  nouns
+  for
+  whom
+  more
+  than
+  a
+  single,
+  gender-neutral
+  form
+  exists.                                                                              </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-7-1'>
+ <!-- l. 697 --><p class='noindent'><span class='cmtt-10'>UnknownProperty-
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-7-2'>
+ <!-- l. 697 --><p class='noindent'>A
+  custom
+  property
+  in
+  a
+  piece
+  of
+  individual
+  pronoun
+  data
+  is
+  not
+  using
+  the
+  special
+  syntax
+  for
+  custom
+  properties
+  (”<span class='cmtt-10'>_</span><span class='cmti-10'>property_name</span>”
+  or
+  ”<span class='cmtt-10'>&lt;</span><span class='cmti-10'>property_name</span><span class='cmtt-10'>&gt;</span>”
+  rather
+  than
+  just
+  ”<span class='cmti-10'>property_name</span>”).
+  Using
+  the
+  special
+  syntax
+  is
+  preferable
+  to
+  ensure
+  that
+  the
+  custom
+  property
+  is
+  not
+  named
+  equal
+  to
+  a
+  property
+  introduced
+  in
+  a
+  later
+  version
+  or
+  addition
+  to
+  this
+  specification.                                                                     </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-8-1'>
+ <!-- l. 700 --><p class='noindent'><span class='cmtt-10'>FreePronoun-
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-8-2'>
+ <!-- l. 700 --><p class='noindent'>A
+  (non-neo)
+  pronoun
+  is
+  found
+  freely
+  outside
+  any
+  gender*render
+  -tag.                                                                                </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-9-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-9-1'>
+ <!-- l. 702 --><p class='noindent'><span class='cmtt-10'>UnexpectedFile-
+ </span><span class='cmtt-10'>FormatWarning</span>   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-9-2'>
+ <!-- l. 702 --><p class='noindent'>A
+  file
+  name
+  specified
+  to
+  Template()
+  or
+  Template().render()
+  does
+  not
+  follow
+  the
+  file
+  extension
+  naming
+  convention
+  of
+  this
+  specification.                                                                     </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-10-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-10-1'>
+ <!-- l. 704 --><p class='noindent'><span class='cmtt-10'>IdMatching-
+ </span><span class='cmtt-10'>NecessaryWarning</span></p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-10-2'>
+ <!-- l. 704 --><p class='noindent'>The
+  set
+  of
+  ids
+  specified
+  in
+  the
+  given
+  pronoun
+  data
+  was
+  not
+  equal
+  to
+  the
+  set
+  of
+  ids
+  used
+  in
+  the
+  given
+  template,
+  but
+  could
+  still
+  be
+  matched.
+  Since
+  this
+  might
+  happen
+  on
+  accident,
+  a
+  warning
+  should
+  be
+  present.                                                                            </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-9-11-'><td style='white-space:nowrap; text-align:center;' class='td11' id='TBL-9-11-1' colspan='2'>          <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 8: </span><span class='content'>Potential Warnings</span></div><!-- tex4ht:label?: x1-16002r8  -->                                                </div>               <a id='x1-16003'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-9-13-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-13-1'>
+ <!-- l. 708 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-9-14-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-14-1'>
+ <!-- l. 708 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-9-15-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-15-1'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-9-15-2'></td></tr>
+</table></div>
+</div>
+</div>
+<!-- l. 714 --><p class='indent'>   Not all of these warnings need to be implemented, and an arbitrary amount of
+additional warnings may be implemented in addition to them. Warnings should come
+with the information required to track them down to their cause (the rerence
+implementation might set a good example here).<br class='newline' />
+</p><!-- l. 717 --><p class='indent'>   The recommended approach to warnings about the presence of ungendered words
+of any form (these warnings all start with ”<span class='cmtt-10'>FreeUngendered</span>” in the table above)
+would be to split the text surrounding tags into words, with non-letter symbols
+serving as separators, and checking every word for presence in a dedicated list or
+other data structure of gendered words. Since not all letters are part of ASCII
+code, checking whether a character is part of the alphabet is not enough
+to check whether it is a letter in many languages; implementations should
+instead check whether a character is a ”Letter” according to the Unicode
+standard to determine whether it is part of a word or a separator between
+words<span class='footnote-mark'><a href='#fn12x0' id='fn12x0-bk'><sup class='textsuperscript'>12</sup></a></span><a id='x1-16004f12'></a>.<br class='newline' />
+</p><!-- l. 721 --><p class='indent'>   In addition to the warnings defined by this section of the specification,
+implementations may implement an arbitrary amount of additional warnings to give
+even more fine-grained feedback during the parsing and rendering process.
+These additional warnings can be disabled by default or enabled by default,
+depending on design decisions made by the implementation; the ability to
+suppress warnings that comes with  gender*render makes both decisions
+valid.<br class='newline' />
+</p><!-- l. 725 --><p class='indent'>   The following is a list of all additional warnings the  gender*render reference
+implementation uses (or used in previous versions) in addition to the ones
+specified above; they where never part of the specification, though, since their
+usefulness can be debated and/or is highly language dependant. The reason why
+there is still a section in this specification for them is because it might be of
+interest for other implementations to see which additional warnings where
+implemented in the reference implementation and why (if ever) they where
+removed:<br class='newline' />
+</p>
+<div class='flushleft'>
+                                                                  
+
+                                                                  
+<!-- l. 729 --><p class='noindent'>
+ </p>
+<div class='center'>
+<!-- l. 730 --><p class='noindent'>
+<a id='x1-16005r9'></a>
+</p><!-- l. 733 --><div class='longtable'> <table cellpadding='0' class='longtable' id='TBL-10' cellspacing='0'><colgroup id='TBL-10-1g'><col id='TBL-10-1' /></colgroup><colgroup id='TBL-10-2g'><col id='TBL-10-2' /></colgroup><colgroup id='TBL-10-3g'><col id='TBL-10-3' /></colgroup>
+                                                                  
+
+                                                                  
+<tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-10-1-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-1-1'>
+ <!-- l. 733 --><p class='noindent'>warning
+  name                   </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-1-2'>
+ <!-- l. 733 --><p class='noindent'>warning
+  meaning
+  (slightly
+  modified
+  from
+  the
+  docstring)                               </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-1-3'>
+ <!-- l. 733 --><p class='noindent'>reason
+  for
+  removal                                  </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-10-2-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-2-1'>
+ <!-- l. 735 --><p class='noindent'><span class='cmtt-10'>DefaultValue-
+ </span><span class='cmtt-10'>UsedWarning</span>     </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-2-2'>
+ <!-- l. 735 --><p class='noindent'>An
+  attribute
+  with
+  a
+  default
+  value
+  was
+  looked
+  up
+  in
+  a
+  piece
+  of
+  individual
+  pronoun
+  data,
+  but
+  not
+  found,
+  so
+  its
+  default
+  value
+  was
+  used.
+  This
+  is
+  in
+  itself
+  not
+  a
+  problem
+  and
+  perfectly
+  fine
+  behavior;
+  this
+  warning
+  is
+  only
+  raised
+  to
+  inform
+  the
+  user
+  in
+  case
+  they
+  forgot
+  to
+  define
+  the
+  property
+  or
+  pythonically
+  prefer
+  explicit
+  to
+  implicit.                                 </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-2-3'>
+ <!-- l. 738 --><p class='noindent'>N/A                                      </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-10-3-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-3-1'>
+ <!-- l. 740 --><p class='noindent'><span class='cmtt-10'>GenderedNouns-
+ </span><span class='cmtt-10'>BuildFromWeb-
+ </span><span class='cmtt-10'>Warning</span>         </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-3-2'>
+ <!-- l. 740 --><p class='noindent'>The
+  data
+  containing
+  the
+  gendered
+  and
+  especially
+  neutral
+  versions
+  of
+  all
+  english
+  hyponyms
+  for
+  ”person”
+  could
+  not
+  be
+  found;
+  therefore,
+  it
+  will
+  be
+  downloaded
+  and
+  saved
+  from
+  the
+  internet.
+  This
+  should
+  only
+  happen
+  once
+  per
+  installation
+  and
+  only
+  when
+  initializing
+  the
+  module
+  for
+  the
+  first
+  time,
+  and
+  it
+  should
+  not
+  happen
+  at
+  all
+  with
+  the
+  PyPi
+  installation.                            </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-3-3'>
+ <!-- l. 743 --><p class='noindent'>N/A                                      </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-10-4-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-4-1'>
+ <!-- l. 745 --><p class='noindent'><span class='cmtt-10'>NounGendering-
+ </span><span class='cmtt-10'>GuessingsWarning</span></p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-4-2'>
+ <!-- l. 745 --><p class='noindent'>Raised
+  if
+  a
+  noun
+  will
+  be
+  gendered,
+  but
+  based
+  on
+  automated
+  guesses
+  at
+  the
+  correctly
+  gendered
+  version
+  of
+  the
+  noun
+  rather
+  than
+  hardcoded
+  values.
+  This
+  warning
+  exists
+  because
+  the
+  data
+  used
+  by
+  the
+  implementation
+  to
+  find
+  the
+  correctly
+  gendered
+  version
+  of
+  every
+  word
+  had
+  holes,
+  missing
+  information
+  and
+  contradictions
+  in
+  the
+  hundreds,
+  all
+  of
+  whom
+  where
+  fixed
+  by
+  an
+  algorithm
+  and
+  not
+  yet
+  manually
+  checked
+  for
+  correctness.                             </p></td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-4-3'>
+ <!-- l. 747 --><p class='noindent'>N/A                                      </p></td>
+</tr><tr class='hline'><td><hr /></td><td><hr /></td><td><hr /></td></tr><tr style='vertical-align:baseline;' id='TBL-10-5-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-5-1' colspan='3'>            <div style='white-space:nowrap; text-align:center;' class='multicolumn'> <div class='caption'><span class='id'>Table 9: </span><span class='content'>Additional Warnings in the reference implementation,
+and why they where removed</span></div><!-- tex4ht:label?: x1-16005r9  -->                                                </div>                   <a id='x1-16006'></a>
+
+                                                                  
+</td></tr><tr style='vertical-align:baseline;' id='TBL-10-7-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-7-1'>
+ <!-- l. 750 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-10-8-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-8-1'>
+ <!-- l. 750 --><p class='noindent'>                </p></td>
+</tr><tr style='vertical-align:baseline;' id='TBL-10-9-'><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-9-1'>                  </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-9-2'>                             </td><td style='white-space:wrap; text-align:left;' class='td11' id='TBL-10-9-3'></td></tr>
+</table></div>
+</div>
+</div>
+<p><a id='x1-17000r27'></a></p>
+   <h6 class='subsubsubsection'>4.3.2.7 <a id='x1-170017'></a>Error Hierarchy</h6>
+<!-- l. 756 --><p class='indent'>   Some languages (mainly object-oriented languages such as Python and Java) have
+error hierarchies, where Error- and Exceptions Types can have sub-types, and
+catching an Exception catches all of its sub-exceptions as well (usually, that means
+that Errors and Exceptions are implemented as classes that just inherit
+from each other). For this reason, implementations in such languages (like
+the reference implementation) might want to define hierarchies between
+the  gender*render exceptions they define. This is in accordance to this
+specification, which does not forbid such behavior. Implementations may also add
+additional exceptions into their error hierarchies, and decide freely from which
+pre-existing exception they derive the exceptions defined by this specification; the
+only limitation is that catching an exception defined by this specification
+must always catch every issue that, as fined by this specification, raises said
+exception.<br class='newline' />
+</p><!-- l. 762 --><p class='indent'>   Some languages might not allow to check whether a caught exception is exactly
+the exception one tried to catch or an exception derived from this exception (so
+catching exception A does not allow one to determine whether exception A was risen
+or exception B when B is derived from A). Implementations in languages like this
+may not derive exceptions defined by this specification from other exceptions defined
+by this specification, since e.g. deriving <span class='cmtt-10'>DoubledInformationError </span>from
+<span class='cmtt-10'>InvalidPDError </span>in such a language would make it impossible to specifically catch
+<span class='cmtt-10'>InvalidPDError</span>.<br class='newline' />
+</p><!-- l. 765 --><p class='indent'>   The following graphic shows the (exemplary) error hierarchy used by the
+reference implementation, which might serve as a good example. Arrows go
+from parent exception to child exception, and exceptions in dashed lines are
+exceptions that the implementation added on top of the set of specified
+exceptions to allow for even more fine-grained error handling. Ultimately, the
+hierarchy between different exceptions is opinionated and the ideal error
+hierarchy might vary depending on the application area and language of the
+implementation, but the following hierarchy might still be of worth and
+work quite well for many implementations that qualify for using an error
+hierarchy:<br class='newline' />
+</p><!-- l. 769 --><p class='indent'>   <img src='../../images/hierarchy-errors.png' alt='PIC' /><br class='newline' />
+<a id='x1-17002r6'></a>
+</p>
+<h3 class='sectionHead'><span class='titlemark'>5   </span> <a id='x1-180005'></a>Specification developement</h3>
+<!-- l. 773 --><p class='noindent'>This section lays out some details of the way this extension is versioned and may be
+extended or developed in the future.<br class='newline' />
+</p><!-- l. 775 --><p class='indent'>   As it is now, this specification is nowhere near its full potential, yet it
+is usable and quite enough to be a valid proof of concept. I consider
+it to be enough to publish and share, but there will be imperfections
+or maybe even straight out design faults. Thus, issues and suggestions
+are very welcome in the GitHub repository where this specification is
+developed<span class='footnote-mark'><a href='#fn13x0' id='fn13x0-bk'><sup class='textsuperscript'>13</sup></a></span><a id='x1-18001f13'></a>.<br class='newline' />
+</p><!-- l. 779 --><p class='indent'>   Future development will go two paths in parallel: One path is the steady
+improvements of this specification in wording as well, if necessary, content.
+The other path is releasing <span class='cmti-10'>extension specifications</span>, these being additional
+specifications that introduce new rendering steps and attributes as well as further
+implementation suggestions to enhance  gender*render implementations
+with useful extra functions. The extension specifications will not extend the
+specification in that every implementation must follow each extension spec to be
+considered compliant with the main specification, but rather in that every
+implementation must follow the ”must”s defined by this specification and
+may follow an arbitrary amount of additional extension specifications. An
+implementation that follows extension specs Foo and Bar in addition to the main
+spec is therefore not more compliant with the main spec than any other
+implementation, but it can say of itself that it implements extension specs
+foo and bar in addition to the main spec, like a program coming with an
+add-on pre-installed; additional definitions on how to determine whether an
+implementation follows this standard or not can be found at the beginning of both
+subsections of the <span class='cmti-10'>Pronoun Renderer </span>section of this specification. The idea
+behind this is to be able to rapidly introduce new features without every
+implementation constantly having to adapt to these new features to ensure it doesn’t
+become obsolete, and to allow a more organic development of  gender*render
+driven by public response to its components rather than one person scribbling
+down their visions into a spec that becomes more and more bloated in the
+process.<br class='newline' />
+</p><!-- l. 786 --><p class='indent'>   In general, the amount of work and time I plan to put into maintenance and
+extension of this specification largely depends on the amount of reception it receives;
+however, issues will definitely be addressed as in any maintained project. Please also
+note that this specification is developed in the same repository as the exemplary
+implementation it comes with; but that its development does not depend on said
+                                                                  
+
+                                                                  
+implementation.<br class='newline' />
+</p><!-- l. 791 --><p class='indent'>   This specification uses a variation of semantic versioning, in which the major
+version increases through each backwards-incompatible change as per usual (this will,
+however, not happen once the project enters a staple state or after it establishes
+itself, if it does), the minor version with each feature added (which should usually be
+done via extension specs, though it might be necessary to merge extension specs into
+the main spec if it turns out to lack required functionality) and the ”bugfix”
+version with every change that does not affect its content, but its content’s
+wording.<br class='newline' />
+</p><!-- l. 793 --><p class='indent'>   The current versions major number is 0, since there might be need changes
+according to the feedback it receives. For as long as the major number remains zero
+and no notable adaption of the standard can be seen, minor breaking changes may
+occur without increasing the major version number.<br class='newline' />
+</p><!-- l. 796 --><p class='indent'>   Recent versions as well as their changelog will always be accessible
+via the specification download page of the project’s GitHub
+repository<span class='footnote-mark'><a href='#fn14x0' id='fn14x0-bk'><sup class='textsuperscript'>14</sup></a></span><a id='x1-18002f14'></a>,
+which is always where the latest version, future versions and extension specifications
+are and will be located.<br class='newline' />
+<a id='x1-18003r28'></a>
+</p>
+<h3 class='sectionHead'><span class='titlemark'>6   </span> <a id='x1-190006'></a>Exemplary Implementation</h3>
+<!-- l. 800 --><p class='noindent'>To illustrate the specification and approach it in a practical way as (1) the
+practical side of this proof of concept and (2) to ensure that there is a useful
+implementation that makes the spec reality, the specification comes with an
+exemplary implementation written in Python. This implementation is written
+according to the specification, not the other way around, not even chronologically.
+The example implementation also follows and demonstrates all the interface and
+implementation suggestions of this specification, and is well-equipped with
+automated testing.<br class='newline' />
+</p><!-- l. 804 --><p class='indent'>   Its documentation as well as installation instructions can be found in the GitHub
+repository of this project.<br class='newline' />
+<a id='x1-19001r29'></a>
+</p>
+<h3 class='sectionHead'><span class='titlemark'>7   </span> <a id='x1-200007'></a>Outlook</h3>
+<!-- l. 808 --><p class='noindent'>As our world as well as our perspective on society and gender evolves, queer identities
+and people who openly identify as non-binary genders will become far more common
+occurrence than they already are. As non-binary people will become less and less
+ignorable in politics, their ignorability in technology will decrease as well, and it is
+                                                                  
+
+                                                                  
+part of our responsibility as developers to not fail in following these social
+developments and overcome technical challenges they bring with them like any social
+development does. Developers and technicians have overcome an incredible amount of
+challenges and technical limitations in and of the past three decades, many of whom
+where caused by real-live developments and the natural striving of humans for
+self-fulfillment. It would be a disgrace to IT if we failed to keep up with social
+developments and proactively slowed them down for technical pretexts, and
+IT refusing to find solutions for correctly gendering <span class='cmti-10'>every person </span>in <span class='cmti-10'>every</span>
+automated text because of technological pretexts really puts a bad light on us;
+after all, our profession was involved in getting humans to the moon before
+we even knew we’d ever send an automated email, so how can we fail at
+making people feel accepted when we made people literally reach for the stars?
+<br class='newline' />
+</p><!-- l. 814 --><p class='indent'>   This projects goal is by no means to create the one only true way of automated
+email gendering, but rather to address an issue and demonstrate that solving it
+would not require sorcery. There will probably be a lot of projects, programs and
+specification to address the issue of correct automated gendering in the future, and
+I do not expect this specification to still be around when these take off.
+This project will hopefully sensibility some people for the issue, show them
+that and how it can be addressed, and it will hopefully only be the first
+step in a long line of similar projects great enough to make this one become
+forgotten.<br class='newline' />
+<a id='x1-20001r30'></a>
+</p>
+<h3 class='sectionHead'><span class='titlemark'>8   </span> <a id='x1-210008'></a>License</h3>
+<!-- l. 820 --><p class='noindent'>This version of the specification is licensed under <a href='http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0'>OWFa 1.0</a> by phseiff (contact:
+<a href='mailto:phseiff@phseiff.com'>phseiff@phseiff.com</a>).
+</p>
+   <div class='footnotes'><!-- l. 190 --><p class='indent'>    <span class='footnote-mark'><a href='#fn1x0-bk' id='fn1x0'><sup class='textsuperscript'>1</sup></a></span><span class='cmr-8'>”Whitespace” as defined by the </span><a href='https://infra.spec.whatwg.org/#ascii-whitespace'><span class='cmr-8'>HTML Living Standard</span></a><span class='cmr-8'>.</span></p>
+<!-- l. 226 --><p class='indent'>     <span class='footnote-mark'><a href='#fn2x0-bk' id='fn2x0'><sup class='textsuperscript'>2</sup></a></span><span class='cmr-8'>How tags correspond to individuals depends on their ”id”-value, which is explained in-depth
+</span><span class='cmr-8'>below.</span></p><!-- l. 232 --><p class='indent'> <span class='footnote-mark'><a href='#fn3x0-bk' id='fn3x0'><sup class='textsuperscript'>3</sup></a></span><span class='cmr-8'>refer to the </span><span class='cmti-8'>Specification Development </span><span class='cmr-8'>section to learn about extension specifications.</span></p>
+<!-- l. 319 --><p class='indent'>     <span class='footnote-mark'><a href='#fn4x0-bk' id='fn4x0'><sup class='textsuperscript'>4</sup></a></span><span class='cmr-8'>This uses the lower-casing algorithm described in section 3.13 of the Unicode
+</span><span class='cmr-8'>Standard.</span></p><!-- l. 329 --><p class='indent'> <span class='footnote-mark'><a href='#fn5x0-bk' id='fn5x0'><sup class='textsuperscript'>5</sup></a></span><span class='cmr-8'>See </span><a href='https://github.com/phseiff/gender-render/issues/2#issuecomment-798799367'><span class='cmr-8'>this comment on GitHub</span></a> <span class='cmr-8'>for discussion on this.</span></p>
+<!-- l. 419 --><p class='indent'>     <span class='footnote-mark'><a href='#fn6x0-bk' id='fn6x0'><sup class='textsuperscript'>6</sup></a></span><span class='cmr-8'>refer to the </span><span class='cmti-8'>Specification Development </span><span class='cmr-8'>section to learn about extension specifications.</span></p>
+<!-- l. 467 --><p class='indent'>     <span class='footnote-mark'><a href='#fn7x0-bk' id='fn7x0'><sup class='textsuperscript'>7</sup></a></span><span class='cmr-8'>Refer to the </span><span class='cmti-8'>Error Hierarchy </span><span class='cmr-8'>section for additional recommendations.</span></p>
+<!-- l. 556 --><p class='indent'>     <span class='footnote-mark'><a href='#fn8x0-bk' id='fn8x0'><sup class='textsuperscript'>8</sup></a></span><span class='cmr-8'>Princeton University ”About WordNet.” </span><a href='https://wordnet.princeton.edu/'><span class='cmr-8'>WordNet</span></a><span class='cmr-8'>. Princeton University. 2010.</span></p>
+<!-- l. 557 --><p class='indent'>     <span class='footnote-mark'><a href='#fn9x0-bk' id='fn9x0'><sup class='textsuperscript'>9</sup></a></span><span class='cmr-8'>for example </span><a href='https://github.com/ecmonsen/gendered_words' class='url'><span class='cmtt-8'>https://github.com/ecmonsen/gendered_words</span></a> <span class='cmr-8'>on GitHub, which is an
+</span><span class='cmr-8'>extension of the wordnet dataset, and is in turn extended by the data used by our reference
+</span><span class='cmr-8'>implementation.</span></p>
+<!-- l. 558 --><p class='indent'>     <span class='footnote-mark'><a href='#fn10x0-bk' id='fn10x0'><sup class='textsuperscript'>10</sup></a></span><span class='cmr-8'>This is what our reference implementation did with the data we used.</span></p>
+<!-- l. 575 --><p class='indent'>     <span class='footnote-mark'><a href='#fn11x0-bk' id='fn11x0'><sup class='textsuperscript'>11</sup></a></span><span class='cmr-8'>refer to the </span><span class='cmti-8'>Specification Development </span><span class='cmr-8'>section to learn about extension specifications.</span></p>
+<!-- l. 719 --><p class='indent'>     <span class='footnote-mark'><a href='#fn12x0-bk' id='fn12x0'><sup class='textsuperscript'>12</sup></a></span><span class='cmr-8'>Compare to how the </span><span class='cmtt-8'>str.isalpha()</span><span class='cmr-8'>-method works in the Python programming language,
+</span><span class='cmr-8'>for example.</span></p>
+<!-- l. 777 --><p class='indent'>     <span class='footnote-mark'><a href='#fn13x0-bk' id='fn13x0'><sup class='textsuperscript'>13</sup></a></span><a href='https://github.com/phseiff/gender-render/issues' class='url'><span class='cmtt-8'>https://github.com/phseiff/gender-render/issues</span></a></p>
+<!-- l. 796 --><p class='indent'>    <span class='footnote-mark'><a href='#fn14x0-bk' id='fn14x0'><sup class='textsuperscript'>14</sup></a></span><a href='https://github.com/phseiff/gender-render/\#download-specifications--changelog' class='url'><span class='cmtt-8'>https://github.com/phseiff/gender-render/\#download-specifications--changelog</span></a></p> </div>
+ 
+</body> 
+</html>

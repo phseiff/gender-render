@@ -305,6 +305,8 @@ To get started, you can download the <a href="https://phseiff.com/gender-render/
 <ul>
 <li>spec:</li>
 <li><a href="https://phseiff.com/gender-render/docs/specs/spec/latest.pdf">download latest</a></li>
+<li><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.6.0.pdf">v0.6.0</a>
+<sup><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.6.0.html">[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]</a></sup> - Add capitalization system, suggest error hierarchy, list implementation-specific warnings.</li>
 <li><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.5.0.pdf">v0.5.0</a>
 <sup><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.5.0.html">[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]</a></sup> - Add instructions for word splitting for ungendered-word-warnings to the specification.</li>
 <li><a href="https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf">v0.4.0</a>
@@ -462,11 +464,16 @@ def render_template(template, pronoun_data: typing.Union[str, GRPD, IDPD], takes
 <dl>
 <dt><code class="name"><a title="gender_render.errors" href="errors.html">gender_render.errors</a></code></dt>
 <dd>
-<div class="desc"><p>Custom error types, as defined by the gender*render specification.</p></div>
+<div class="desc"><p>Custom error types, as defined by the gender*render specification …</p></div>
 </dd>
 <dt><code class="name"><a title="gender_render.gender_nouns" href="gender_nouns.html">gender_render.gender_nouns</a></code></dt>
 <dd>
 <div class="desc"><p>Functions to gender nouns with gender bias correctly …</p></div>
+</dd>
+<dt><code class="name"><a title="gender_render.global_capitalization_system" href="global_capitalization_system.html">gender_render.global_capitalization_system</a></code></dt>
+<dd>
+<div class="desc"><p>Implementation of the <em>global capitalization system</em> (a concept explained in-depth in the specification), which
+analyses and understands …</p></div>
 </dd>
 <dt><code class="name"><a title="gender_render.handle_context_values" href="handle_context_values.html">gender_render.handle_context_values</a></code></dt>
 <dd>
@@ -506,7 +513,7 @@ This is the submodule where pronoun data and templates …</p></div>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="gender_render.render_template"><code class="name flex">
-<span>def <span class="ident">render_template</span></span>(<span>template, pronoun_data: Union[str, Dict[str, Dict[str, str]], Dict[str, str]], takes_file_path=False, warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]]] = frozenset({&lt;class &#x27;gender_render.warnings.UnexpectedFileFormatWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GRWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeGenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.IdMatchingNecessaryWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeUngenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreePronounFoundWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotANounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GenderedNounsBuildFromWebWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAWordWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnknownPropertyWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.DefaultValueUsedWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NounGenderingGuessingsWarning&#x27;&gt;}))</span>
+<span>def <span class="ident">render_template</span></span>(<span>template, pronoun_data: Union[str, Dict[str, Dict[str, str]], Dict[str, str]], takes_file_path=False, warning_settings: Union[Set[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]], FrozenSet[Type[Union[<a title="gender_render.warnings.GRWarning" href="warnings.html#gender_render.warnings.GRWarning">GRWarning</a>, <a title="gender_render.warnings.GRLogging" href="warnings.html#gender_render.warnings.GRLogging">GRLogging</a>]]]] = frozenset({&lt;class &#x27;gender_render.warnings.DefaultValueUsedWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnexpectedFileFormatWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.IdMatchingNecessaryWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.UnknownPropertyWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreePronounFoundWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NounGenderingGuessingsWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GRWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeGenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotANounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.GenderedNounsBuildFromWebWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.FreeUngenderedPersonNounWarning&#x27;&gt;, &lt;class &#x27;gender_render.warnings.NotAWordWarning&#x27;&gt;}))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Accepts a gender*render template as a string and a string or dict of pronoun data or, if <code>takes_file_path</code> is
@@ -568,6 +575,7 @@ Serves as a shortcut for Template(&hellip;).render(PronounData(&hellip;), &helli
 <ul>
 <li><code><a title="gender_render.errors" href="errors.html">gender_render.errors</a></code></li>
 <li><code><a title="gender_render.gender_nouns" href="gender_nouns.html">gender_render.gender_nouns</a></code></li>
+<li><code><a title="gender_render.global_capitalization_system" href="global_capitalization_system.html">gender_render.global_capitalization_system</a></code></li>
 <li><code><a title="gender_render.handle_context_values" href="handle_context_values.html">gender_render.handle_context_values</a></code></li>
 <li><code><a title="gender_render.parse_pronoun_data" href="parse_pronoun_data.html">gender_render.parse_pronoun_data</a></code></li>
 <li><code><a title="gender_render.parse_templates" href="parse_templates.html">gender_render.parse_templates</a></code></li>

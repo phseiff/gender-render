@@ -35,7 +35,7 @@ This is the submodule where pronoun data and templates finally come together.</p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L0-L179" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L0-L208" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 Contains the functions to render templates and pronoun data, bundled together in a class.
@@ -51,6 +51,7 @@ from . import warnings
 from . import errors
 from . import gender_nouns
 from .handle_context_values import ContextValues
+from . import global_capitalization_system
 
 
 class GRenderer:
@@ -172,28 +173,54 @@ class GRenderer:
         return new_template, new_grpd
 
     @staticmethod
-    def render_final_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
-                                    grpd: parse_pronoun_data.GRPD) -&gt; str:
+    def actually_render_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
+                                       grpd: parse_pronoun_data.GRPD) -&gt; (parse_templates.ParsedTemplateRefined,
+                                                                          parse_pronoun_data.GRPD):
+        &#34;&#34;&#34;Accepts a parsed template with a piece of gender\\*render pronoun data, both with matching id values and
+        already resolved addressing, and renders all context values, storing their values in the slot originally
+        intended for them.&#34;&#34;&#34;
+        new_template = copy.deepcopy(parsed_template)
+        new_grpd = copy.deepcopy(grpd)
+
+        for i in range(1, len(new_template), 2):
+            id_value = new_template[i][&#34;id&#34;]
+            context_value = new_template[i][&#34;context&#34;]
+
+            if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
+                # render tag by looking it up in the individual pronoun data of the individual:
+                new_template[i][&#34;context&#34;] = ContextValues.get_value(grpd, id_value, context_value)
+
+            else:  # type(context_value) is gender_nouns.GenderedNoun:
+                # render tag by correctly gendering the noun it represents.
+                gender = ContextValues.get_value(grpd, id_value, &#34;gender-nouns&#34;)
+                new_template[i][&#34;context&#34;] = context_value.render_noun(gender)
+
+        return new_template, new_grpd
+
+    @staticmethod
+    def apply_capitalization(parsed_template: parse_templates.ParsedTemplateRefined,
+                             grpd: parse_pronoun_data.GRPD) -&gt; (parse_templates.ParsedTemplateRefined,
+                                                                parse_pronoun_data.GRPD):
+        &#34;&#34;&#34;Capitalizes every tag&#39;s context value in accordance to its capitalization value.&#34;&#34;&#34;
+        new_template = copy.deepcopy(parsed_template)  # Test this!
+        new_grpd = copy.deepcopy(grpd)
+        for i in range(1, len(new_template), 2):
+            new_template[i][&#34;context&#34;] = global_capitalization_system.apply_capitalization_to_tag(new_template[i])
+        return new_template, new_grpd
+
+    @staticmethod
+    def convert_to_string(parsed_template: parse_templates.ParsedTemplateRefined,
+                          grpd: parse_pronoun_data.GRPD) -&gt; str:
         &#34;&#34;&#34;Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values,
         and returns the rendered template as a string.
         This should be the last step in the rendering pipeline.&#34;&#34;&#34;
-
         result = &#34;&#34;
+
         for i in range(len(parsed_template)):
             if not i % 2:  # &lt;- is a string
                 result += parsed_template[i]
             else:  # &lt;- is a tag
-                id_value = parsed_template[i][&#34;id&#34;]
-                context_value = parsed_template[i][&#34;context&#34;]
-
-                if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
-                    # render tag by looking it up in the individual pronoun data of the individual:
-                    result += ContextValues.get_value(grpd, id_value, context_value)
-
-                else:  # type(context_value) is gender_nouns.GenderedNoun:
-                    # render tag by correctly gendering the noun it represents.
-                    gender = ContextValues.get_value(grpd, id_value, &#34;gender-nouns&#34;)
-                    result += context_value.render_noun(gender)
+                result += parsed_template[i][&#34;context&#34;]
 
         return result
 
@@ -214,7 +241,9 @@ class GRenderer:
         parsed_template, grpd = GRenderer.id_resolution(parsed_template, ids_used_in_template,
                                                         template_contains_unspecified_ids, grpd)
         parsed_template, grpd = GRenderer.resolve_addressing(parsed_template, grpd)
-        result = GRenderer.render_final_context_values(parsed_template, grpd)
+        parsed_template, grpd = GRenderer.actually_render_context_values(parsed_template, grpd)
+        parsed_template, grpd = GRenderer.apply_capitalization(parsed_template, grpd)
+        result = GRenderer.convert_to_string(parsed_template, grpd)
 
         return result</code></pre>
 </details>
@@ -236,7 +265,7 @@ class GRenderer:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L17-L180" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L18-L209" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GRenderer:
     &#34;&#34;&#34;Bundles methods that are part of the rendering pipeline.&#34;&#34;&#34;
@@ -357,28 +386,54 @@ class GRenderer:
         return new_template, new_grpd
 
     @staticmethod
-    def render_final_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
-                                    grpd: parse_pronoun_data.GRPD) -&gt; str:
+    def actually_render_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
+                                       grpd: parse_pronoun_data.GRPD) -&gt; (parse_templates.ParsedTemplateRefined,
+                                                                          parse_pronoun_data.GRPD):
+        &#34;&#34;&#34;Accepts a parsed template with a piece of gender\\*render pronoun data, both with matching id values and
+        already resolved addressing, and renders all context values, storing their values in the slot originally
+        intended for them.&#34;&#34;&#34;
+        new_template = copy.deepcopy(parsed_template)
+        new_grpd = copy.deepcopy(grpd)
+
+        for i in range(1, len(new_template), 2):
+            id_value = new_template[i][&#34;id&#34;]
+            context_value = new_template[i][&#34;context&#34;]
+
+            if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
+                # render tag by looking it up in the individual pronoun data of the individual:
+                new_template[i][&#34;context&#34;] = ContextValues.get_value(grpd, id_value, context_value)
+
+            else:  # type(context_value) is gender_nouns.GenderedNoun:
+                # render tag by correctly gendering the noun it represents.
+                gender = ContextValues.get_value(grpd, id_value, &#34;gender-nouns&#34;)
+                new_template[i][&#34;context&#34;] = context_value.render_noun(gender)
+
+        return new_template, new_grpd
+
+    @staticmethod
+    def apply_capitalization(parsed_template: parse_templates.ParsedTemplateRefined,
+                             grpd: parse_pronoun_data.GRPD) -&gt; (parse_templates.ParsedTemplateRefined,
+                                                                parse_pronoun_data.GRPD):
+        &#34;&#34;&#34;Capitalizes every tag&#39;s context value in accordance to its capitalization value.&#34;&#34;&#34;
+        new_template = copy.deepcopy(parsed_template)  # Test this!
+        new_grpd = copy.deepcopy(grpd)
+        for i in range(1, len(new_template), 2):
+            new_template[i][&#34;context&#34;] = global_capitalization_system.apply_capitalization_to_tag(new_template[i])
+        return new_template, new_grpd
+
+    @staticmethod
+    def convert_to_string(parsed_template: parse_templates.ParsedTemplateRefined,
+                          grpd: parse_pronoun_data.GRPD) -&gt; str:
         &#34;&#34;&#34;Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values,
         and returns the rendered template as a string.
         This should be the last step in the rendering pipeline.&#34;&#34;&#34;
-
         result = &#34;&#34;
+
         for i in range(len(parsed_template)):
             if not i % 2:  # &lt;- is a string
                 result += parsed_template[i]
             else:  # &lt;- is a tag
-                id_value = parsed_template[i][&#34;id&#34;]
-                context_value = parsed_template[i][&#34;context&#34;]
-
-                if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
-                    # render tag by looking it up in the individual pronoun data of the individual:
-                    result += ContextValues.get_value(grpd, id_value, context_value)
-
-                else:  # type(context_value) is gender_nouns.GenderedNoun:
-                    # render tag by correctly gendering the noun it represents.
-                    gender = ContextValues.get_value(grpd, id_value, &#34;gender-nouns&#34;)
-                    result += context_value.render_noun(gender)
+                result += parsed_template[i][&#34;context&#34;]
 
         return result
 
@@ -399,7 +454,9 @@ class GRenderer:
         parsed_template, grpd = GRenderer.id_resolution(parsed_template, ids_used_in_template,
                                                         template_contains_unspecified_ids, grpd)
         parsed_template, grpd = GRenderer.resolve_addressing(parsed_template, grpd)
-        result = GRenderer.render_final_context_values(parsed_template, grpd)
+        parsed_template, grpd = GRenderer.actually_render_context_values(parsed_template, grpd)
+        parsed_template, grpd = GRenderer.apply_capitalization(parsed_template, grpd)
+        result = GRenderer.convert_to_string(parsed_template, grpd)
 
         return result</code></pre>
 </details>
@@ -417,7 +474,7 @@ No modifications are performed in-place.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L19-L115" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L20-L116" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def id_resolution(
@@ -528,7 +585,7 @@ already applied and the grpd.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L117-L133" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L118-L134" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def resolve_addressing(parsed_template: parse_templates.ParsedTemplateRefined,
@@ -549,8 +606,68 @@ def resolve_addressing(parsed_template: parse_templates.ParsedTemplateRefined,
     return new_template, new_grpd</code></pre>
 </details>
 </dd>
-<dt id="gender_render.render_pipeline.GRenderer.render_final_context_values"><code class="name flex">
-<span>def <span class="ident">render_final_context_values</span></span>(<span>parsed_template: List[Union[str, Dict[str, Union[str, List[str], <a title="gender_render.gender_nouns.GenderedNoun" href="gender_nouns.html#gender_render.gender_nouns.GenderedNoun">GenderedNoun</a>]]]], grpd: Dict[str, Dict[str, str]]) ‑> str</span>
+<dt id="gender_render.render_pipeline.GRenderer.actually_render_context_values"><code class="name flex">
+<span>def <span class="ident">actually_render_context_values</span></span>(<span>parsed_template: List[Union[str, Dict[str, Union[str, List[str], <a title="gender_render.gender_nouns.GenderedNoun" href="gender_nouns.html#gender_render.gender_nouns.GenderedNoun">GenderedNoun</a>]]]], grpd: Dict[str, Dict[str, str]]) ‑> (typing.List[typing.Union[str, typing.Dict[str, typing.Union[str, typing.List[str], <a title="gender_render.gender_nouns.GenderedNoun" href="gender_nouns.html#gender_render.gender_nouns.GenderedNoun">GenderedNoun</a>]]]], typing.Dict[str, typing.Dict[str, str]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values and
+already resolved addressing, and renders all context values, storing their values in the slot originally
+intended for them.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L136-L159" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def actually_render_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
+                                   grpd: parse_pronoun_data.GRPD) -&gt; (parse_templates.ParsedTemplateRefined,
+                                                                      parse_pronoun_data.GRPD):
+    &#34;&#34;&#34;Accepts a parsed template with a piece of gender\\*render pronoun data, both with matching id values and
+    already resolved addressing, and renders all context values, storing their values in the slot originally
+    intended for them.&#34;&#34;&#34;
+    new_template = copy.deepcopy(parsed_template)
+    new_grpd = copy.deepcopy(grpd)
+
+    for i in range(1, len(new_template), 2):
+        id_value = new_template[i][&#34;id&#34;]
+        context_value = new_template[i][&#34;context&#34;]
+
+        if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
+            # render tag by looking it up in the individual pronoun data of the individual:
+            new_template[i][&#34;context&#34;] = ContextValues.get_value(grpd, id_value, context_value)
+
+        else:  # type(context_value) is gender_nouns.GenderedNoun:
+            # render tag by correctly gendering the noun it represents.
+            gender = ContextValues.get_value(grpd, id_value, &#34;gender-nouns&#34;)
+            new_template[i][&#34;context&#34;] = context_value.render_noun(gender)
+
+    return new_template, new_grpd</code></pre>
+</details>
+</dd>
+<dt id="gender_render.render_pipeline.GRenderer.apply_capitalization"><code class="name flex">
+<span>def <span class="ident">apply_capitalization</span></span>(<span>parsed_template: List[Union[str, Dict[str, Union[str, List[str], <a title="gender_render.gender_nouns.GenderedNoun" href="gender_nouns.html#gender_render.gender_nouns.GenderedNoun">GenderedNoun</a>]]]], grpd: Dict[str, Dict[str, str]]) ‑> (typing.List[typing.Union[str, typing.Dict[str, typing.Union[str, typing.List[str], <a title="gender_render.gender_nouns.GenderedNoun" href="gender_nouns.html#gender_render.gender_nouns.GenderedNoun">GenderedNoun</a>]]]], typing.Dict[str, typing.Dict[str, str]])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Capitalizes every tag's context value in accordance to its capitalization value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L161-L170" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@staticmethod
+def apply_capitalization(parsed_template: parse_templates.ParsedTemplateRefined,
+                         grpd: parse_pronoun_data.GRPD) -&gt; (parse_templates.ParsedTemplateRefined,
+                                                            parse_pronoun_data.GRPD):
+    &#34;&#34;&#34;Capitalizes every tag&#39;s context value in accordance to its capitalization value.&#34;&#34;&#34;
+    new_template = copy.deepcopy(parsed_template)  # Test this!
+    new_grpd = copy.deepcopy(grpd)
+    for i in range(1, len(new_template), 2):
+        new_template[i][&#34;context&#34;] = global_capitalization_system.apply_capitalization_to_tag(new_template[i])
+    return new_template, new_grpd</code></pre>
+</details>
+</dd>
+<dt id="gender_render.render_pipeline.GRenderer.convert_to_string"><code class="name flex">
+<span>def <span class="ident">convert_to_string</span></span>(<span>parsed_template: List[Union[str, Dict[str, Union[str, List[str], <a title="gender_render.gender_nouns.GenderedNoun" href="gender_nouns.html#gender_render.gender_nouns.GenderedNoun">GenderedNoun</a>]]]], grpd: Dict[str, Dict[str, str]]) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values,
@@ -559,31 +676,21 @@ This should be the last step in the rendering pipeline.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L135-L159" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L172-L186" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
-def render_final_context_values(parsed_template: parse_templates.ParsedTemplateRefined,
-                                grpd: parse_pronoun_data.GRPD) -&gt; str:
+def convert_to_string(parsed_template: parse_templates.ParsedTemplateRefined,
+                      grpd: parse_pronoun_data.GRPD) -&gt; str:
     &#34;&#34;&#34;Accepts a parsed template with a piece of gender*render pronoun data, both with matching id values,
     and returns the rendered template as a string.
     This should be the last step in the rendering pipeline.&#34;&#34;&#34;
-
     result = &#34;&#34;
+
     for i in range(len(parsed_template)):
         if not i % 2:  # &lt;- is a string
             result += parsed_template[i]
         else:  # &lt;- is a tag
-            id_value = parsed_template[i][&#34;id&#34;]
-            context_value = parsed_template[i][&#34;context&#34;]
-
-            if ContextValues.property_maps_directly_between_template_and_pronoun_data(context_value):
-                # render tag by looking it up in the individual pronoun data of the individual:
-                result += ContextValues.get_value(grpd, id_value, context_value)
-
-            else:  # type(context_value) is gender_nouns.GenderedNoun:
-                # render tag by correctly gendering the noun it represents.
-                gender = ContextValues.get_value(grpd, id_value, &#34;gender-nouns&#34;)
-                result += context_value.render_noun(gender)
+            result += parsed_template[i][&#34;context&#34;]
 
     return result</code></pre>
 </details>
@@ -599,7 +706,7 @@ Returns the rendered template.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L161-L180" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/render_pipeline.py#L188-L209" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def render_with_full_rendering_pipeline(
@@ -618,7 +725,9 @@ def render_with_full_rendering_pipeline(
     parsed_template, grpd = GRenderer.id_resolution(parsed_template, ids_used_in_template,
                                                     template_contains_unspecified_ids, grpd)
     parsed_template, grpd = GRenderer.resolve_addressing(parsed_template, grpd)
-    result = GRenderer.render_final_context_values(parsed_template, grpd)
+    parsed_template, grpd = GRenderer.actually_render_context_values(parsed_template, grpd)
+    parsed_template, grpd = GRenderer.apply_capitalization(parsed_template, grpd)
+    result = GRenderer.convert_to_string(parsed_template, grpd)
 
     return result</code></pre>
 </details>
@@ -651,7 +760,9 @@ def render_with_full_rendering_pipeline(
 <ul class="">
 <li><code><a title="gender_render.render_pipeline.GRenderer.id_resolution" href="#gender_render.render_pipeline.GRenderer.id_resolution">id_resolution</a></code></li>
 <li><code><a title="gender_render.render_pipeline.GRenderer.resolve_addressing" href="#gender_render.render_pipeline.GRenderer.resolve_addressing">resolve_addressing</a></code></li>
-<li><code><a title="gender_render.render_pipeline.GRenderer.render_final_context_values" href="#gender_render.render_pipeline.GRenderer.render_final_context_values">render_final_context_values</a></code></li>
+<li><code><a title="gender_render.render_pipeline.GRenderer.actually_render_context_values" href="#gender_render.render_pipeline.GRenderer.actually_render_context_values">actually_render_context_values</a></code></li>
+<li><code><a title="gender_render.render_pipeline.GRenderer.apply_capitalization" href="#gender_render.render_pipeline.GRenderer.apply_capitalization">apply_capitalization</a></code></li>
+<li><code><a title="gender_render.render_pipeline.GRenderer.convert_to_string" href="#gender_render.render_pipeline.GRenderer.convert_to_string">convert_to_string</a></code></li>
 <li><code><a title="gender_render.render_pipeline.GRenderer.render_with_full_rendering_pipeline" href="#gender_render.render_pipeline.GRenderer.render_with_full_rendering_pipeline">render_with_full_rendering_pipeline</a></code></li>
 </ul>
 </li>

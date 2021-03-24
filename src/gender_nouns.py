@@ -656,8 +656,6 @@ class GenderedNoun:
 
         # save the full word, but lookup the word in lowercase:
         self.word = word
-        word = word.lower()
-        # ToDo: Maye warn if the word has upper-case letters after the first one? If so, what kind of warning?
 
         # raise warnings if the word is not a word/ noun/ person noun:
         if word not in GENDER_DICT:
@@ -677,23 +675,17 @@ class GenderedNoun:
                                                   warnings.NounGenderingGuessingsWarning)
             # ToDo: Maybe only print those warnings that contain `"\"" + word + "\""` in them? This would require
             #  reviewing all warnings attached to words by this modules code, to be sure this actually prints all
-            #  relevant warnings, as well as injecting some trivial code here and generalyl discussign this idea in an
+            #  relevant warnings, as well as injecting some trivial code here and generally discussing this idea in an
             #  issue.
             #  See also the comment in test/test_gender_nouns in test_create_full_graph_from_web.
 
     def render_noun(self, gender: GeneratedDataGender) -> str:
-        """Returns the correctly gendered version of itself as a string. g must be either "male", "female" or
-        "neutral".
-        Capitalisation of the first letter is identical between out- and input."""
-        # remember if the first letter of the word is uppercase:
-        if self.word[0].isupper():  # ToDo: Maybe add support for all-caps-writing? What about words with "_"in them?
-            uppercase = True
-        else:
-            uppercase = False
+        """Returns the correctly gendered version of itself as a string. gender must be either "male", "female" or
+        "neutral"."""  # ToDo: Re-test this since capitalization is no longer supported.
 
         # return the correctly gendered version of the word:
-        if self.word.lower() in GENDER_DICT:
-            word = self.word.lower()
+        word = self.word
+        if word in GENDER_DICT:
             word_data = GENDER_DICT[word]
             # look for the neutral version if there is no version of the given gender:
             if gender not in set(word_data["gender_map"].keys()) | {word_data["gender"]}:
@@ -704,9 +696,6 @@ class GenderedNoun:
             # otherwise, return the correctly gendered version from the gender_map:
             else:
                 result = word_data["gender_map"][gender]
-            # make the first letter of the result uppercase in case we had to lowercase it before:
-            if uppercase:
-                result = result[0].upper() + result[1:]
         else:
             result = self.word
         return result.replace("_", " ")

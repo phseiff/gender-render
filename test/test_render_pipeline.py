@@ -364,46 +364,77 @@ class TestGRenderer(unittest.TestCase):
             # make sure the default value used warning was raised:
             self.assertTrue(len(w) == 1 and issubclass(w[-1].category, ws.DefaultValueUsedWarning))
 
-    def test_render_final_context_values(self):
+    def test_actually_render_context_values(self):
         # render tag with canonical properties:
-        self.assertEqual(GRenderer.render_final_context_values(
-            ["test ", {"id": "foo", "context": "subject"}, " text"],
-            {"foo": {"subject": "they", "object": "them"}, "bar": {"object": "zen"}}),
-            "test they text")
+        grpd = {"foo": {"subject": "they", "object": "them"}, "bar": {"object": "zen"}}
+        self.assertEqual(GRenderer.actually_render_context_values(
+            ["test ", {"id": "foo", "context": "subject"}, " text"], grpd),
+            (["test ", {"id": "foo", "context": "they"}, " text"], grpd))
 
         # render tag with custom properties:
-        self.assertEqual(GRenderer.render_final_context_values(
-            ["test ", {"id": "foo", "context": "<wawawa>"}, " text"],
-            {"foo": {"<wawawa>": "they", "object": "them"}, "bar": {"object": "zen"}}),
-            "test they text")
+        grpd = {"foo": {"<wawawa>": "they", "object": "them"}, "bar": {"object": "zen"}}
+        self.assertEqual(GRenderer.actually_render_context_values(
+            ["test ", {"id": "foo", "context": "<wawawa>"}, " text"], grpd),
+            (["test ", {"id": "foo", "context": "they"}, " text"], grpd))
 
         # render tag with noun to gender:
-        self.assertEqual(GRenderer.render_final_context_values(
-            ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text"],
-            {"foo": {"gender-nouns": "female", "object": "them"}, "bar": {"object": "zen"}}),
-            "test actress text")
+        grpd = {"foo": {"gender-nouns": "female", "object": "them"}, "bar": {"object": "zen"}}
+        self.assertEqual(GRenderer.actually_render_context_values(
+            ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text"], grpd),
+            (["test ", {"id": "foo", "context": "actress"}, " text"], grpd))
 
         # render tag with noun to gender, but no preferred gendering:
         with warnings.catch_warnings(record=True) as w:
-            self.assertEqual(GRenderer.render_final_context_values(
-                ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text"],
-                {"foo": {"object": "them"}, "bar": {"object": "zen"}}),
-                "test actor text")
+            grpd = {"foo": {"object": "them"}, "bar": {"object": "zen"}}
+            self.assertEqual(GRenderer.actually_render_context_values(
+                ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text"], grpd),
+                (["test ", {"id": "foo", "context": "actor"}, " text"], grpd))
             self.assertTrue(len(w) == 1 and issubclass(w[-1].category, ws.DefaultValueUsedWarning))
 
         # render tag with a mixture of these:
-        self.assertEqual(GRenderer.render_final_context_values(
+        grpd = {"foo": {"gender-nouns": "female", "object": "them"}, "bar": {"object": "zen", "<wuwuwu>": "wawa"}}
+        self.assertEqual(GRenderer.actually_render_context_values(
             ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text ",
-             {"id": "bar", "context": "object"}, " test ", {"id": "bar", "context": "<wuwuwu>"}, " test"],
-            {"foo": {"gender-nouns": "female", "object": "them"}, "bar": {"object": "zen", "<wuwuwu>": "wawa"}}),
-            "test actress text zen test wawa test")
+             {"id": "bar", "context": "object"}, " test ", {"id": "bar", "context": "<wuwuwu>"}, " test"], grpd),
+            (["test ", {"id": "foo", "context": "actress"}, " text ",
+             {"id": "bar", "context": "zen"}, " test ", {"id": "bar", "context": "wawa"}, " test"], grpd))
+
+    def test_apply_capitalization(self):
+        # test all capitalization types, that capitalization is really changed, and that non-capitalizable letters are
+        # skipped (and that it is okay if nothing changes at all, and if the word that needs to be capitalized is
+        # empty):
+        inp = ["test ",
+               {"context": "foo", "capitalization": "lower-case"}, " test2 ",
+               {"context": "bAr", "capitalization": "capitalized"}, " test3 ",
+               {"context": "Foo", "capitalization": "all-caps"}, " test4 ",
+               {"context": "b1rr", "capitalization": "studly-caps"}, " test5 ",
+               {"context": "4o0oo", "capitalization": "alt-studly-caps"}, " test6 ",
+               {"context": "", "capitalization": "capitalized"}, " test7"]
+        out = ["test ",
+               {"context": "foo", "capitalization": "lower-case"}, " test2 ",
+               {"context": "Bar", "capitalization": "capitalized"}, " test3 ",
+               {"context": "FOO", "capitalization": "all-caps"}, " test4 ",
+               {"context": "B1Rr", "capitalization": "studly-caps"}, " test5 ",
+               {"context": "4O0Oo", "capitalization": "alt-studly-caps"}, " test6 ",
+               {"context": "", "capitalization": "capitalized"}, " test7"]
+        self.assertEqual((out, dict()), GRenderer.apply_capitalization(inp, dict()))
+
+    def test_convert_to_string(self):
+        # test fusing rendered templates into a string, including tags with whitespace as a context value
+        # and tags with additional sections that aren't actually needed.
+        inp = ["test ",
+               {"context": "foo", "bar": "baz"}, " test2 ",
+               {"context": "  "}, " test3"]
+        out = "test foo test2    test3"
+        self.assertEqual(out, GRenderer.convert_to_string(inp, dict()))
 
     def test_render_with_full_rendering_pipeline(self):
         # test to confirm that id matching is properly done:
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(GRenderer.render_with_full_rendering_pipeline(
-                ["test ", {"id": "foo", "context": "subject"}, " text ", {"id": "foo", "context": "subject"}, " test ",
-                 {"context": "object"}, " foo"],
+                ["test ", {"id": "foo", "context": "subject", "capitalization": "lower-case"}, " text ",
+                 {"id": "foo", "context": "subject", "capitalization": "lower-case"}, " test ",
+                 {"context": "object", "capitalization": "lower-case"}, " foo"],
                 frozenset({"foo"}), True, {"foo": {"subject": "they"}, "bar": {"object": "them"}}),
                 "test they text they test them foo")
             self.assertTrue(len(w) == 1 and issubclass(w[-1].category, ws.IdMatchingNecessaryWarning))
@@ -411,28 +442,45 @@ class TestGRenderer(unittest.TestCase):
         # test to confirm that addressing is done correctly (one tag):
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(GRenderer.render_with_full_rendering_pipeline(
-                ["test ", {"id": "foo", "context": "address"}, " text"],
+                ["test ", {"id": "foo", "context": "address", "capitalization": "lower-case"}, " text"],
                 frozenset({"foo"}), False, {"foo": {"gender-addressing": "f", "personal-name": "Eberhard"}}),
-                "test Eberhard text")
+                "test eberhard text")
             self.assertTrue(len(w) == 0)
 
         # test to confirm that context values are rendered correctly (three tags; see test above):
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(GRenderer.render_with_full_rendering_pipeline(
-                ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text ",
-                 {"id": "bar", "context": "object"}, " test ", {"id": "bar", "context": "<wuwuwu>"}, " test"],
+                ["test ",
+                 {"id": "foo", "context": gn.GenderedNoun("actor"), "capitalization": "lower-case"}, " text ",
+                 {"id": "bar", "context": "object", "capitalization": "lower-case"}, " test ",
+                 {"id": "bar", "context": "<wuwuwu>", "capitalization": "lower-case"}, " test"],
                 frozenset({"foo", "bar"}), False,
                 {"foo": {"gender-nouns": "female", "object": "them"}, "bar": {"object": "zen", "<wuwuwu>": "wawa"}}),
                 "test actress text zen test wawa test")
             self.assertTrue(len(w) == 0)
 
+        # confirm that capitalization works correctly:
+        with warnings.catch_warnings(record=True) as w:
+            self.assertEqual(GRenderer.render_with_full_rendering_pipeline(
+                ["test ",
+                 {"id": "foo", "context": "subject", "capitalization": "lower-case"}, " text ",
+                 {"id": "bar", "context": "<wuwuwu>", "capitalization": "alt-studly-caps"}, " test",
+                 {"id": "bar", "context": "subject", "capitalization": "alt-studly-caps"}, ""],
+                frozenset({"foo", "bar"}), False,
+                {"foo": {"subject": "Phii"}, "bar": {"object": "zen", "<wuwuwu>": "w11a", "subject": ""}}),
+                "test phii text w11A test")
+            self.assertTrue(len(w) == 0)
+
         # test to confirm that all three work correctly together (four tags):
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(GRenderer.render_with_full_rendering_pipeline(
-                ["test ", {"id": "foo", "context": gn.GenderedNoun("actor")}, " text ", {"context": "address"}, " wawa ",
-                 {"id": "bar", "context": "object"}, " test ", {"id": "bar", "context": "<wuwuwu>"}, " test"],
+                ["test ",
+                 {"id": "foo", "context": gn.GenderedNoun("actor"), "capitalization": "lower-case"}, " text ",
+                 {"context": "address", "capitalization": "lower-case"}, " wawa ",
+                 {"id": "bar", "context": "object", "capitalization": "studly-caps"}, " test ",
+                 {"id": "bar", "context": "<wuwuwu>", "capitalization": "lower-case"}, " test"],
                 frozenset({"foo", "bar"}), True,
                 {"foo": {"gender-nouns": "female", "object": "them"}, "bar": {"object": "zen", "<wuwuwu>": "wawa"},
                  "baz": {"gender-addressing": "f", "personal-name": "Avery"}}),
-                "test actress text Avery wawa zen test wawa test")
+                "test actress text avery wawa ZeN test wawa test")
             self.assertTrue(len(w) == 1 and issubclass(w[-1].category, ws.IdMatchingNecessaryWarning))

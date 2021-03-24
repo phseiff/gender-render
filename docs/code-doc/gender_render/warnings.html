@@ -131,9 +131,9 @@ class FreeGenderedPersonNounWarning(FreeUngenderedPersonNounWarning):
 
 class NounGenderingGuessingsWarning(GRWarning):
     &#34;&#34;&#34;Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
-    rather than hardcoded values.
-    This warning type is not listed in the specification since it is highly implementation-dependant and should not
-    be necessary in a perfect implementation.&#34;&#34;&#34;
+    rather than hardcoded values.&#34;&#34;&#34;
+    # This warning is not part of the specification since it is too specific of a design decision to expect every
+    #  implementation to follow it.
     pass
 
 
@@ -494,9 +494,7 @@ This is probably harmfull if this noun refers to a person whose gender should be
 </code></dt>
 <dd>
 <div class="desc"><p>Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
-rather than hardcoded values.
-This warning type is not listed in the specification since it is highly implementation-dependant and should not
-be necessary in a perfect implementation.</p></div>
+rather than hardcoded values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -504,9 +502,9 @@ be necessary in a perfect implementation.</p></div>
 </summary>
 <pre><code class="python">class NounGenderingGuessingsWarning(GRWarning):
     &#34;&#34;&#34;Raised if a noun will be gendered, but based on automated guesses at the correctly gendered version of the noun
-    rather than hardcoded values.
-    This warning type is not listed in the specification since it is highly implementation-dependant and should not
-    be necessary in a perfect implementation.&#34;&#34;&#34;
+    rather than hardcoded values.&#34;&#34;&#34;
+    # This warning is not part of the specification since it is too specific of a design decision to expect every
+    #  implementation to follow it.
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>

@@ -21,6 +21,8 @@ docs/images/external-link-black.svg
 docs/images/external-link-blue.svg
 docs/images/header-icon.png~
 docs/images/header-logo.png
+docs/images/hierarchy-errors.drawio
+docs/images/hierarchy-errors.png
 docs/images/icon-black.inkspace.svg
 docs/images/icon-black.pdf
 docs/images/icon.inkspace.svg
@@ -55,6 +57,8 @@ docs/specs/spec/spec-v0.4.0.pdf
 docs/specs/spec/spec-v0.4.0.tex
 docs/specs/spec/spec-v0.5.0.pdf
 docs/specs/spec/spec-v0.5.0.tex
+docs/specs/spec/spec-v0.6.0.pdf
+docs/specs/spec/spec-v0.6.0.tex
 docs/specs/spec/versions.txt
 docs/template-dir/head.mako
 docs/template-dir/html.mako
@@ -71,6 +75,7 @@ gender_render.egg-info/top_level.txt
 src/__init__.py
 src/errors.py
 src/gender_nouns.py
+src/global_capitalization_system.py
 src/handle_context_values.py
 src/parse_pronoun_data.py
 src/parse_templates.py
@@ -80,8 +85,10 @@ src/template_interface.py
 src/warnings.py
 test/__init__.py
 test/check_type.py
+test/no-unittest-needed-list.txt
 test/test__init__.py
 test/test_gender_nouns.py
+test/test_global_capitalization_system.py
 test/test_handle_context_values.py
 test/test_parse_pronoun_data.py
 test/test_parse_templates.py
