@@ -12,8 +12,6 @@ capitalized     | Foobar
 all-caps        | FOOBAR
 studly-caps     | FoObAR
 alt-studly-caps | fOoBaR
-
-ToDo: Thoroughly test this module (best to start with this).
 """
 
 from collections import namedtuple, OrderedDict

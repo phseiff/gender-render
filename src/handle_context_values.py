@@ -34,7 +34,6 @@ class ContextValues:
         ["address", "mr_s", "mr", "mrs"],
         ["surname", "doe", "name", "family-names"],
         ["personal-name", "jean", "first-name"],
-        # ToDo: Change this in the spec as well
 
         # properties of individual pronoun data:
         ["gender-addressing"],

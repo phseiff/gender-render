@@ -130,7 +130,7 @@ def list_classes(file):
     return out
 
 
-def all_functions_are_tested_properly() -> int:  # <-- returns # of untested functions/modules/etc
+def number_of_things_without_unittest() -> int:  # <-- returns # of untested functions/modules/etc
     # get list of modules we need to test:
     gr_submodules_file_names = [("src/" + f) for f in os.listdir("src") if f.endswith(".py")]
     gr_test_modules_file_names = [("test/" + f) for f in os.listdir("test") if f.endswith(".py")]
@@ -400,7 +400,7 @@ if __name__ == "__main__":
     if "make-html" in sys.argv:
         make_html_for_all_specs()
     elif "check-test-coverage" in sys.argv:
-        if not all_functions_are_tested_properly():
+        if number_of_things_without_unittest() > 0:
             # Apparently, not all methods and functions have their own testing equivalent.
             sys.exit(1)
     else:

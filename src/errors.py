@@ -15,8 +15,6 @@ class SyntaxError(SyntaxError):
 class SyntaxPostprocessingError(SyntaxError):
     """A more specific type of SyntaxError that is raised when errors occur in template parsing outside of the rules set
     by the finite state machine."""
-    # ToDo: Maybe actually include this in the spec? Might be contra-productive for languages without an error
-    #  hierarchy.
     pass
 
 
