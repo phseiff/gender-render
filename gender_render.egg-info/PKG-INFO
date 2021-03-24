@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: gender-render
-Version: 1.0.0
+Version: 1.1.0
 Summary: Template-system and proof-of-concept for rendering gender-neutral text- and email-templates with the correct pronouns of all people involved.
 Home-page: https://github.com/phseiff/gender-render/
 Author: phseiff

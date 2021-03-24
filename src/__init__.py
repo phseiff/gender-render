@@ -19,7 +19,7 @@ To find out how to enable and disable warnings, refer to the documentation of `g
 """
 
 __author__ = "phseiff"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 import typing
 from .handle_context_values import GRPD, IDPD
