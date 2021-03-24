@@ -2,7 +2,8 @@
 
 from setuptools import setup
 
-import src as gr  # <- read author, version and build the gendered nouns.
+import src as gr  # <- read author and version.
+from src import gender_nouns  # <- build the gendered nouns.
 
 setup(
     name='gender_render',
