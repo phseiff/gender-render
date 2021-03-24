@@ -79,7 +79,7 @@ jobs:
           cp docs/code-doc/gender_render/* .
 
           # upload code to pypi:
-          mv -v gender_render/* src
+          mv -v gender_render/*.py src
           python3 setup.py sdist
           twine upload -r pypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
 
