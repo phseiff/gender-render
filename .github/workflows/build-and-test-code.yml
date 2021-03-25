@@ -78,6 +78,8 @@ jobs:
           cp docs/code-doc/gender_render/* .
 
           # upload code to pypi:
+          [ -e gender_render.egg-info ] && rm -r gender_render.egg-info
+          [ -e dist ]                   && rm -r dist
           python3 setup.py sdist
           twine upload -r testpypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
 
