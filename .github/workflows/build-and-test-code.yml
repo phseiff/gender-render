@@ -57,7 +57,7 @@ jobs:
           python3 -m nltk.downloader words
 
           # run tests:
-          sudo python3 setup.py install  # <- make sure the gendered-noun-data is generated
+          pip3 install .  # <- make sure all dependencies are properly installed
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
           coverage report --fail-under=100 --skip-covered -m
