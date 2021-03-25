@@ -79,7 +79,7 @@ jobs:
 
           # upload code to pypi:
           python3 setup.py sdist
-          twine upload -r pypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
+          twine upload -r testpypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
