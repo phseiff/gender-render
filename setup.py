@@ -10,7 +10,7 @@ setup(
     version=gr.__version__,
     description="Template-system and proof-of-concept for rendering gender-neutral text- and email-templates with \
 the correct pronouns of all people involved.",
-    long_description=open('README.md', "r", encoding="utf-8").read(),
+    long_description=open('README.md', "r").read(),
     long_description_content_type="text/markdown",
     keywords="template-engine template-language specification gender-equality gender pronouns grammatical-gender",
     author=gr.__author__,
@@ -20,7 +20,7 @@ the correct pronouns of all people involved.",
     package_dir={'gender_render': 'src'},
     package_data={'gender_render': ['*']},
     include_package_data=True,
-    install_requires=open("requirements.txt", "r", encoding="utf-8").read().splitlines(),
+    install_requires=open("requirements.txt", "r").read().splitlines(),
     license="MIT\n(limited to python-files that are actually part of the package installation,\
     which excludes data sets and documentation/specifications that come with the software;\
     refer to the `LICENSE-implementation.txt`-file that comes with this version of the software on PyPi for the full\
