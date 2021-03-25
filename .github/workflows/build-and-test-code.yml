@@ -58,12 +58,20 @@ jobs:
           python3 -m nltk.downloader words
 
           # run tests:
-          echo "Installing"
           pip3 install .  # <- make sure the gendered-noun-data is generated!
           echo "Installed"
+          echo "src:"
           ls src/*
+          echo "rest:"
+          ls ./
+          echo "that was it"
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
+                                                                            echo "src:"
+                                                                            ls src/*
+                                                                            echo "rest:"
+                                                                            ls ./
+                                                                            echo "that was it"
           coverage report --fail-under=100 --skip-covered -m
           ./build_and_push.py check-test-coverage
 
