@@ -35,7 +35,6 @@ jobs:
           git clone https://github.com/michal-h21/make4ht.git
           cd make4ht
           make justinstall
-          echo "justinstall worked fine!"
           cd ../gender-render
 
           # create html files:
@@ -90,7 +89,6 @@ jobs:
           cp docs/code-doc/gender_render/* .
 
           # upload code to pypi:
-          mv -v gender_render/*.py src
           python3 setup.py sdist
           twine upload -r pypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
 
