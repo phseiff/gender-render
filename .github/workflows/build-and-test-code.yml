@@ -41,15 +41,15 @@ jobs:
           python3 ./build_and_push.py make-html
 
           # install Python dependencies:
-          sudo pip3 install setuptools
-          sudo pip3 install wheel
-          sudo pip3 install setuptools_scm
-          sudo pip3 install vulture
-          sudo pip3 install coverage
-          sudo pip3 install typing_extensions
-          sudo pip3 install deepdiff[murmur]
-          sudo pip3 install pdoc3
-          sudo pip3 install twine
+          sudo pip3 install --upgrade setuptools
+          sudo pip3 install --upgrade wheel
+          sudo pip3 install --upgrade setuptools_scm
+          sudo pip3 install --upgrade vulture
+          sudo pip3 install --upgrade coverage
+          sudo pip3 install --upgrade typing_extensions
+          sudo pip3 install --upgrade deepdiff[murmur]
+          sudo pip3 install --upgrade pdoc3
+          sudo pip3 install --upgrade twine
 
           # install optional dependencies of gender-render:
           sudo pip3 install nltk
