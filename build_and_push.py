@@ -10,9 +10,6 @@ import os
 import pathlib
 import shutil
 import json
-import inspect
-import pkgutil
-import test
 
 try:
     from wheezy.template.engine import Engine
