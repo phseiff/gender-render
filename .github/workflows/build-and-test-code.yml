@@ -41,6 +41,7 @@ jobs:
           python3 ./build_and_push.py make-html
 
           # install Python dependencies:
+          sudo pip3 inatall --upgrade pip
           sudo pip3 install --upgrade setuptools
           sudo pip3 install --upgrade wheel
           sudo pip3 install --upgrade setuptools_scm
