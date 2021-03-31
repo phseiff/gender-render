@@ -5,8 +5,7 @@ Summary: Template-system and proof-of-concept for rendering gender-neutral text-
 Home-page: https://github.com/phseiff/gender-render/
 Author: phseiff
 Author-email: phseiff@phseiff.com
-License: MIT
-(limited to python-files that are actually part of the package installation,    which excludes data sets and documentation/specifications that come with the software;    refer to the `LICENSE-implementation.txt`-file that comes with this version of the software on PyPi for the full    definition of what is covered by this license and what is not.)
+License: MIT (limited to python-files that are actually part of the package installation, which excludes data sets and documentation/specifications that come with the software; refer to the `LICENSE-implementation.txt`-file that comes with this version of the software on PyPi for the full definition of what is covered by this license and what is not.)
 Description: <p align="center"><!--<a href="https://github.com/phseiff"><img src="https://phseiff.com/images/brought-to-you-by-phseiff.svg" alt="brought to you by phseiff:"></a>-->
         <img src="https://phseiff.com/gender-render/docs/images/title.svg" alt="{gender*render}"></p>
         
