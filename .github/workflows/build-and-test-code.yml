@@ -84,8 +84,9 @@ jobs:
           # upload code to pypi:
           [ -e gender_render.egg-info ] && rm -r gender_render.egg-info
           [ -e dist ]                   && rm -r dist
-          pip3 freeze
-          sudo pip3 freeze
+          pip3 freeze --all
+          echo "---"
+          sudo pip3 freeze --all
           python3 setup.py sdist
           #                                                                     echo "in src:"
           #                                                                     ls src
