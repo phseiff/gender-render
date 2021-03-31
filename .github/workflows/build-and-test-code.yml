@@ -61,6 +61,9 @@ jobs:
           pip3 install .  # <- make sure all dependencies are properly installed
           python3 -m vulture src/* test/vulture_whitelist.py
           coverage run --branch --source=./src -m unittest discover -s test/
+          #                                                                   echo "in src:"
+          #                                                                   ls src
+          #                                                                   echo "end"
           coverage report --fail-under=100 --skip-covered -m
           ./build_and_push.py check-test-coverage
 
@@ -81,7 +84,14 @@ jobs:
           # upload code to pypi:
           [ -e gender_render.egg-info ] && rm -r gender_render.egg-info
           [ -e dist ]                   && rm -r dist
+          pip3 freeze
+          sudo pip3 freeze
           python3 setup.py sdist
+          #                                                                     echo "in src:"
+          #                                                                     ls src
+          #                                                                     echo "in dist/src:"
+          #                                                                     ls dist/src
+          #                                                                     echo "end"
           twine upload -r testpypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
 
       - name: Deploy 🚀
