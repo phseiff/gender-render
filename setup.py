@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+import glob
 
 import src as gr  # <- read author and version.
 
@@ -18,9 +19,14 @@ the correct pronouns of all people involved.",
     url='https://github.com/phseiff/gender-render/',
     packages=['gender_render'],
     package_dir={'gender_render': 'src'},
-    package_data={'gender_render': ['*']},
+    data_files=[
+        ('src/data', glob.glob("src/data/*")),
+    ],
+    package_data={'gender_render': ['*', 'src/*']},
     include_package_data=True,
-    install_requires=open("requirements.txt", "r").read().splitlines(),
+    install_requires=[
+        "requests~=2.25.1"
+    ],
     license="MIT (limited to python-files that are actually part of the package installation,\
  which excludes data sets and documentation/specifications that come with the software;\
  refer to the `LICENSE-implementation.txt`-file that comes with this version of the software on PyPi for the full\

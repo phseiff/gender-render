@@ -93,7 +93,7 @@ jobs:
           #                                                                     echo "in dist/src:"
           #                                                                     ls dist/src
           #                                                                     echo "end"
-          twine upload -r testpypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
+          twine upload -r pypi -u phseiff -p ${{ secrets.PYPI_PASSWORD }} dist/* || true
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3

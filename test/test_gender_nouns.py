@@ -116,7 +116,7 @@ class TestCreateNewNounData(unittest.TestCase):
         # create copy and reload module:
         old_gender_dict = copy.deepcopy(gn.GENDER_DICT)
         pipeline_output = GenderNounDataHandler.create_full_graph_from_web()
-        os.remove("src/gendered-nouns.gdn")
+        os.remove("src/data/gendered-nouns.gdn")
         with self.assertWarns(ws.GenderedNounsBuildFromWebWarning):
             importlib.reload(sys.modules["src.gender_nouns"])
 

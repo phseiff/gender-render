@@ -169,32 +169,39 @@ class GenderNounDataHandler:
                 else:
                     result[word["word"]]["gender"] = grammatical_genders[word["gender"]]
             else:
-                lwarn("\"" + word["word"] + "\" ignored because it is not part of wordnet and therefore not a hyponym "
+                lwarn("\"" + word["word"] + "\" ignored because it is not part of wordnet and therefore not a hyponyms "
                       + "for a person.")
 
         lwarn(len(result), "words found.")
         return result
 
     @staticmethod
-    def load_from_disk(file_name: str) -> GeneratedGenderNounData:
+    def load_from_disk(file_name: str) -> (GeneratedGenderNounData, Dict[str, str]):
         """Loads the gendered nouns from a piece of json data contained in the given file.
-        Returns it as a dictionary, with the only change being that the `warnings`-attribute of every noun is converted
-        from a list to a set.
-        This assumes the data in the given file to be of the same type as the data used throughout all the other methods
+        The json object in this file must have a data-attribute, which contains the actual gendered noun data, and may
+        contain an arbitrary amount of meta data in the form of strings mapped to strings, which will be returned as a
+        dict as the second return value.
+        The first return value is the actual gendered noun data, with the only change being that the
+        `warnings`-attribute of every noun is converted from a list to a set.
+        This assumes the gendered noun data to be of the same type as the data used throughout all the other methods
         of this class, NOT the format of the repository from which `load_from_web` loads its data."""
         with open(file_name, "r") as f:
             code = f.read()
-        code_as_a_dict = json.loads(code)
-        for word_data in code_as_a_dict.values():
+        meta_data = json.loads(code)
+        actual_data = meta_data["data"]
+        del meta_data["data"]
+
+        for word_data in actual_data.values():
             if "warning" in word_data:
                 word_data["warning"] = set(word_data["warning"])
-        return code_as_a_dict
+        return actual_data, meta_data
 
     @staticmethod
-    def save_to_disk(graph: GeneratedGenderNounData, file_name: str) -> None:
+    def save_to_disk(graph: GeneratedGenderNounData, file_name: str, **meta_data: Dict[str, str]) -> None:
         """Saves the given gendered nouns data to the given file as json. The data is saved without any modifications,
         except for the `warnings`-attribute of all noun data, which is converted from a set to a list to be compatible
-        with standard json format.
+        with standard json format, in the data-attribute of the resulting json file.
+        `meta_data` may be used to describe additional meta data in the form of strings of the resulting file.
         This assumes the given data to be of the same type as the data used throughout all the other methods of this
         class, NOT the format of the repository from which `load_from_web` loads its data.
         The data saved with this method can be read again with `load_from_disk`, so that `save_to_disk(data, file_name)`
@@ -205,8 +212,10 @@ class GenderNounDataHandler:
             if "warning" in word_data:
                 word_data["warning"] = list(word_data["warning"])
                 word_data["warning"].sort()
+        resulting_data: dict = copy.deepcopy(meta_data)
+        resulting_data["data"] = graph_copy
         with open(file_name, "w") as f:
-            json.dump(graph_copy, f, indent=4, sort_keys=True)
+            json.dump(resulting_data, f, indent=4, sort_keys=True)
 
     @staticmethod
     def remove_words_that_are_not_nouns(graph: GeneratedGenderNounData) -> GeneratedGenderNounData:
@@ -636,14 +645,31 @@ class GenderNounDataHandler:
 
 # the final dict:
 
-save_as = os.path.join(__file__.rsplit(os.sep, 1)[0], "gendered-nouns.gdn")
+# !!! The following lines of code (or, to say it pythonic, the following dict) contain license information.
+# This licesne information is part of this code in that it is processed by the code and then written into a different
+# file, alongside the runtime-generated content it refers to. IT DOES NOT, HOWEVER; REFER TO THE CONTENT OF THE FILE YOU
+# FOUND IT IN, IF YOU FOUND IT ALONGSIDE THIS DISCLAIMER.
+GDN_META_DATA = {
+    "license": '\
+Most parts of the contents of this file were created based on WordNet content, which is licensed under the WordNet\
+ license (https://wordnet.princeton.edu/license-and-commercial-use), by GitHub-user ecmonson\
+ (https://github.com/ecmonsen), who applied modifications to it licensed under the Creative Commons Attribution 3.0\
+ (https://creativecommons.org/licenses/by/3.0/us/), as explained here\
+ (https://github.com/ecmonsen/gendered_words#license).\
+ The dataset was then taken by GitHub-user phseiff (https://phseiff.com), who converted it into a different format,\
+ effectively stripping all WordNet content but the selection of hyponyms for "person" from it, and closed some holes in\
+ it, as outlines in this (https://github.com/ecmonsen/gendered_words/issues/1) issue.\
+ Contributions by phseiff are licensed under Creative Commons Attribution 3.0 as well.'
+}
+noun_data_location = os.path.join(__file__.rsplit(os.sep, 1)[0], "data/gendered-nouns.gdn")
+GENDER_DICT: GeneratedGenderNounData
 try:
-    GENDER_DICT: GeneratedGenderNounData = GenderNounDataHandler.load_from_disk(save_as)
+    GENDER_DICT, _ = GenderNounDataHandler.load_from_disk(noun_data_location)
 except FileNotFoundError:
     warnings.WarningManager.raise_warning(None, warnings.GenderedNounsBuildFromWebWarning)
     g = GenderNounDataHandler.create_full_graph_from_web()
-    GenderNounDataHandler.save_to_disk(g, save_as)
-    GENDER_DICT: GeneratedGenderNounData = GenderNounDataHandler.load_from_disk(save_as)
+    GenderNounDataHandler.save_to_disk(g, noun_data_location, **GDN_META_DATA)
+    GENDER_DICT, _ = GenderNounDataHandler.load_from_disk(noun_data_location)
 
 
 # Representation of a not-yet correctly gendered noun:
