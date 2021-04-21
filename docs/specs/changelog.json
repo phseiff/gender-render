@@ -3,7 +3,7 @@
         "0.1.0": "Initial release",
         "0.1.1": "Mention RGB-dialogues as a possible use case.",
         "0.2.0": "Add the concept of canonical context values and direct-mapped context values to the specification.",
-        "0.3.0": "Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.",
+        "0.3.0": "Extend on how to determine whether an implementation follows the standard or not regarding the extension specs.",
         "0.4.0": "Change \"gripd\" to \"idpd\".",
         "0.5.0": "Add instructions for word splitting for ungendered-word-warnings to the specification.",
         "0.6.0": "Add capitalization system, suggest error hierarchy, list implementation-specific warnings."
