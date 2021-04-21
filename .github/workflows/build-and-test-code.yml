@@ -32,7 +32,7 @@ jobs:
 
           # install make4ht:
           cd ../
-          git clone https://github.com/michal-h21/make4ht.git
+          git clone --depth 1 --branch v0.3f https://github.com/michal-h21/make4ht.git
           cd make4ht
           make justinstall
           cd ../gender-render
