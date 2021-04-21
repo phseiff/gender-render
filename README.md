@@ -390,7 +390,7 @@ Clicking a version number downloads the specification as a pdf file, whilst the 
   * [v0.4.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.pdf)
     <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.4.0.html)</sup> - Change "gripd" to "idpd".
   * [v0.3.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.pdf)
-    <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.html)</sup> - Extend on how to determine whether a implementation follows the standard or not regarding the extension specs.
+    <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.3.0.html)</sup> - Extend on how to determine whether an implementation follows the standard or not regarding the extension specs.
   * [v0.2.0](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.pdf)
     <sup>[[html<img alt="↗" src="docs/images/external-link-blue.svg" height="10em">]](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.2.0.html)</sup> - Add the concept of canonical context values and direct-mapped context values to the specification.
   * [v0.1.1](https://phseiff.com/gender-render/docs/specs/spec/spec-v0.1.1.pdf)
@@ -442,6 +442,9 @@ In addition to being devoted to its mission, this project is also committed to u
 Specification and implementation are licensed separately.
 For the specification, see [here](LICENSE-specification.txt) (OWFa 1.0).
 For the implementation, see [here](LICENSE-implementation.txt) (MIT).
+
+For the data sets (e.g. of gendered nouns) that gender\*render uses, refer to the individual licenses included in the files in the `src/data` directory in the TAR-ball from PyPi;
+these data sets are all licensed under permissive licenses, but might require different forms of attributions to different people in case you want to modify or redistribute them.
 
 ## Development & Contributing
 

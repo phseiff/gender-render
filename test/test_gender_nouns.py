@@ -116,7 +116,7 @@ class TestCreateNewNounData(unittest.TestCase):
         # create copy and reload module:
         old_gender_dict = copy.deepcopy(gn.GENDER_DICT)
         pipeline_output = GenderNounDataHandler.create_full_graph_from_web()
-        os.remove("src/gendered-nouns.gdn")
+        os.remove("src/data/gendered-nouns.gdn")
         with self.assertWarns(ws.GenderedNounsBuildFromWebWarning):
             importlib.reload(sys.modules["src.gender_nouns"])
 
@@ -282,9 +282,9 @@ class TestGenderNounDataHandler(unittest.TestCase):
         inp = {"wuwu": {"warning": ["warning1", "warning2"]}}
         out = {"wuwu": {"warning": {"warning1", "warning2"}}}
         with open("test.gdn", "w") as test_file:
-            test_file.write(json.dumps(inp))
+            test_file.write(json.dumps({"data": inp}))
         # test if it loads as expected:
-        self.assertEqual(GenderNounDataHandler.load_from_disk("test.gdn"), out)
+        self.assertEqual(GenderNounDataHandler.load_from_disk("test.gdn"), (out, dict()))
 
         # test for dict without warning:
 
@@ -292,9 +292,9 @@ class TestGenderNounDataHandler(unittest.TestCase):
         inp = {"wuwu": {"fufu": "wawa"}}
         out = inp
         with open("test.gdn", "w") as test_file:
-            test_file.write(json.dumps(inp))
+            test_file.write(json.dumps({"data": inp}))
         # test if it loads directly:
-        self.assertEqual(GenderNounDataHandler.load_from_disk("test.gdn"), out)
+        self.assertEqual(GenderNounDataHandler.load_from_disk("test.gdn"), (out, dict()))
 
         # test for a mixture:
 
@@ -302,9 +302,9 @@ class TestGenderNounDataHandler(unittest.TestCase):
         inp = {"wuwu": {"warning": ["warning1", "warning2"]}, "wawa": {"fufu": "wawa"}}
         out = {"wuwu": {"warning": {"warning1", "warning2"}}, "wawa": {"fufu": "wawa"}}
         with open("test.gdn", "w") as test_file:
-            test_file.write(json.dumps(inp))
+            test_file.write(json.dumps({"data": inp}))
         # test if it loads as expected:
-        self.assertEqual(GenderNounDataHandler.load_from_disk("test.gdn"), out)
+        self.assertEqual(GenderNounDataHandler.load_from_disk("test.gdn"), (out, dict()))
 
         # finally delete the file:
         os.remove("test.gdn")
@@ -317,7 +317,7 @@ class TestGenderNounDataHandler(unittest.TestCase):
         data_loaded = {"wuwu": {"warning": {"warning1", "warning2"}}}
         GenderNounDataHandler.save_to_disk(data_loaded, "test.gdn")
         with open("test.gdn", "r") as test_file:
-            self.assertEqual(json.loads(test_file.read()), data_in_file)
+            self.assertEqual(json.loads(test_file.read()), {"data": data_in_file})
 
         # test for dict without warning:
 
@@ -326,7 +326,7 @@ class TestGenderNounDataHandler(unittest.TestCase):
         data_loaded = data_in_file
         GenderNounDataHandler.save_to_disk(data_loaded, "test.gdn")
         with open("test.gdn", "r") as test_file:
-            self.assertEqual(json.loads(test_file.read()), data_in_file)
+            self.assertEqual(json.loads(test_file.read()), {"data": data_in_file})
 
         # test for a mixture:
 
@@ -335,7 +335,7 @@ class TestGenderNounDataHandler(unittest.TestCase):
         data_loaded = {"wuwu": {"warning": {"warning1", "warning2"}}, "wawa": {"fufu": "wawa"}}
         GenderNounDataHandler.save_to_disk(data_loaded, "test.gdn")
         with open("test.gdn", "r") as test_file:
-            self.assertEqual(json.loads(test_file.read()), data_in_file)
+            self.assertEqual(json.loads(test_file.read()), {"data": data_in_file})
 
         # finally delete the file:
         os.remove("test.gdn")
@@ -346,26 +346,32 @@ class TestGenderNounDataHandler(unittest.TestCase):
         # save a file to disk to test it:
         data = {"wuwu": {"warning": {"warning1", "warning2"}}}
         GenderNounDataHandler.save_to_disk(data, "test.gdn")
-        self.assertEqual(data, GenderNounDataHandler.load_from_disk("test.gdn"))
+        self.assertEqual((data, dict()), GenderNounDataHandler.load_from_disk("test.gdn"))
 
         # test for dict without warning:
 
         # save a file to disk to test it:
         data = {"wuwu": {"fufu": "wawa"}}
         GenderNounDataHandler.save_to_disk(data, "test.gdn")
-        self.assertEqual(data, GenderNounDataHandler.load_from_disk("test.gdn"))
+        self.assertEqual((data, dict()), GenderNounDataHandler.load_from_disk("test.gdn"))
 
         # test for words with underscores:
         data = {"fu_fu": {"wawa": "wuwu"}}
         GenderNounDataHandler.save_to_disk(data, "test.gdn")
-        self.assertEqual(data, GenderNounDataHandler.load_from_disk("test.gdn"))
+        self.assertEqual((data, dict()), GenderNounDataHandler.load_from_disk("test.gdn"))
 
         # test for a mixture:
 
         # save a file to disk to test it:
         data = {"wuwu": {"warning": {"warning1", "warning2"}}, "wa_wa": {"fufu": "wawa"}}
         GenderNounDataHandler.save_to_disk(data, "test.gdn")
-        self.assertEqual(data, GenderNounDataHandler.load_from_disk("test.gdn"))
+        self.assertEqual((data, dict()), GenderNounDataHandler.load_from_disk("test.gdn"))
+
+        # test for data with meta data:
+        data = {"wuwu": {"warning": {"warning1", "warning2"}}, "wa_wa": {"fufu": "wawa"}}
+        meta_data = {"foo": "bar", "a": "b"}
+        GenderNounDataHandler.save_to_disk(data, "test.gdn", **meta_data)
+        self.assertEqual((data, meta_data), GenderNounDataHandler.load_from_disk("test.gdn"))
 
         # finally delete the file:
         os.remove("test.gdn")

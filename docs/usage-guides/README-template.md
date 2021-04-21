@@ -89,6 +89,9 @@ Specification and implementation are licensed separately.
 For the specification, see [here](LICENSE-specification.txt) (OWFa 1.0).
 For the implementation, see [here](LICENSE-implementation.txt) (MIT).
 
+For the data sets (e.g. of gendered nouns) that gender\*render uses, refer to the individual licenses included in the files in the `src/data` directory in the TAR-ball from PyPi;
+these data sets are all licensed under permissive licenses, but might require different forms of attributions to different people in case you want to modify or redistribute them.
+
 ## Development & Contributing
 
 Questions, suggestions and issues as well as pre-discussed pull requests are welcome.

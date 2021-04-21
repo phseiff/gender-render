@@ -296,8 +296,22 @@ def main():
                 print("file:", file_name)
                 print("old version:", old_version)
                 print("new version:", new_version)
-                if aspect == "implementation" and input("modify implementation version? >> ") != "yes":
-                    sys.exit(0)
+                if aspect == "implementation":
+                    if input("modify implementation version? >> ") != "yes":
+                        sys.exit(0)
+                    else:
+                        # make sure our testing pipeline passes:
+                        for command in [
+                            ["python3", "-m", "vulture", "src/*", "test/vulture_whitelist.py"],
+                            ["coverage", "run", "--branch", "--source=./src", "-m", "unittest", "discover", "-s",
+                             "test/"],
+                            ["coverage", "report", "--fail-under=100", "--skip-covered", "-m"],
+                            ["./build_and_push.py", "check-test-coverage"]
+                        ]:
+                            subprocess.check_output(command)
+                        # make a new release tag:
+                        subprocess.check_output(("git tag -a v1.1.0 -m " + text).split())
+
                 f.write(file_content)
 
                 if aspect != "implementation":

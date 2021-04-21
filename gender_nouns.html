@@ -34,7 +34,7 @@ and licensed under MIT according to https://github.com/tholman/github-corners/bl
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L0-L707" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L0-L733" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 Functions to gender nouns with gender bias correctly.
@@ -207,32 +207,39 @@ class GenderNounDataHandler:
                 else:
                     result[word[&#34;word&#34;]][&#34;gender&#34;] = grammatical_genders[word[&#34;gender&#34;]]
             else:
-                lwarn(&#34;\&#34;&#34; + word[&#34;word&#34;] + &#34;\&#34; ignored because it is not part of wordnet and therefore not a hyponym &#34;
+                lwarn(&#34;\&#34;&#34; + word[&#34;word&#34;] + &#34;\&#34; ignored because it is not part of wordnet and therefore not a hyponyms &#34;
                       + &#34;for a person.&#34;)
 
         lwarn(len(result), &#34;words found.&#34;)
         return result
 
     @staticmethod
-    def load_from_disk(file_name: str) -&gt; GeneratedGenderNounData:
+    def load_from_disk(file_name: str) -&gt; (GeneratedGenderNounData, Dict[str, str]):
         &#34;&#34;&#34;Loads the gendered nouns from a piece of json data contained in the given file.
-        Returns it as a dictionary, with the only change being that the `warnings`-attribute of every noun is converted
-        from a list to a set.
-        This assumes the data in the given file to be of the same type as the data used throughout all the other methods
+        The json object in this file must have a data-attribute, which contains the actual gendered noun data, and may
+        contain an arbitrary amount of meta data in the form of strings mapped to strings, which will be returned as a
+        dict as the second return value.
+        The first return value is the actual gendered noun data, with the only change being that the
+        `warnings`-attribute of every noun is converted from a list to a set.
+        This assumes the gendered noun data to be of the same type as the data used throughout all the other methods
         of this class, NOT the format of the repository from which `load_from_web` loads its data.&#34;&#34;&#34;
         with open(file_name, &#34;r&#34;) as f:
             code = f.read()
-        code_as_a_dict = json.loads(code)
-        for word_data in code_as_a_dict.values():
+        meta_data = json.loads(code)
+        actual_data = meta_data[&#34;data&#34;]
+        del meta_data[&#34;data&#34;]
+
+        for word_data in actual_data.values():
             if &#34;warning&#34; in word_data:
                 word_data[&#34;warning&#34;] = set(word_data[&#34;warning&#34;])
-        return code_as_a_dict
+        return actual_data, meta_data
 
     @staticmethod
-    def save_to_disk(graph: GeneratedGenderNounData, file_name: str) -&gt; None:
+    def save_to_disk(graph: GeneratedGenderNounData, file_name: str, **meta_data: Dict[str, str]) -&gt; None:
         &#34;&#34;&#34;Saves the given gendered nouns data to the given file as json. The data is saved without any modifications,
         except for the `warnings`-attribute of all noun data, which is converted from a set to a list to be compatible
-        with standard json format.
+        with standard json format, in the data-attribute of the resulting json file.
+        `meta_data` may be used to describe additional meta data in the form of strings of the resulting file.
         This assumes the given data to be of the same type as the data used throughout all the other methods of this
         class, NOT the format of the repository from which `load_from_web` loads its data.
         The data saved with this method can be read again with `load_from_disk`, so that `save_to_disk(data, file_name)`
@@ -243,8 +250,10 @@ class GenderNounDataHandler:
             if &#34;warning&#34; in word_data:
                 word_data[&#34;warning&#34;] = list(word_data[&#34;warning&#34;])
                 word_data[&#34;warning&#34;].sort()
+        resulting_data: dict = copy.deepcopy(meta_data)
+        resulting_data[&#34;data&#34;] = graph_copy
         with open(file_name, &#34;w&#34;) as f:
-            json.dump(graph_copy, f, indent=4, sort_keys=True)
+            json.dump(resulting_data, f, indent=4, sort_keys=True)
 
     @staticmethod
     def remove_words_that_are_not_nouns(graph: GeneratedGenderNounData) -&gt; GeneratedGenderNounData:
@@ -674,14 +683,31 @@ class GenderNounDataHandler:
 
 # the final dict:
 
-save_as = os.path.join(__file__.rsplit(os.sep, 1)[0], &#34;gendered-nouns.gdn&#34;)
+# !!! The following lines of code (or, to say it pythonic, the following dict) contain license information.
+# This licesne information is part of this code in that it is processed by the code and then written into a different
+# file, alongside the runtime-generated content it refers to. IT DOES NOT, HOWEVER; REFER TO THE CONTENT OF THE FILE YOU
+# FOUND IT IN, IF YOU FOUND IT ALONGSIDE THIS DISCLAIMER.
+GDN_META_DATA = {
+    &#34;license&#34;: &#39;\
+Most parts of the contents of this file were created based on WordNet content, which is licensed under the WordNet\
+ license (https://wordnet.princeton.edu/license-and-commercial-use), by GitHub-user ecmonson\
+ (https://github.com/ecmonsen), who applied modifications to it licensed under the Creative Commons Attribution 3.0\
+ (https://creativecommons.org/licenses/by/3.0/us/), as explained here\
+ (https://github.com/ecmonsen/gendered_words#license).\
+ The dataset was then taken by GitHub-user phseiff (https://phseiff.com), who converted it into a different format,\
+ effectively stripping all WordNet content but the selection of hyponyms for &#34;person&#34; from it, and closed some holes in\
+ it, as outlines in this (https://github.com/ecmonsen/gendered_words/issues/1) issue.\
+ Contributions by phseiff are licensed under Creative Commons Attribution 3.0 as well.&#39;
+}
+noun_data_location = os.path.join(__file__.rsplit(os.sep, 1)[0], &#34;data/gendered-nouns.gdn&#34;)
+GENDER_DICT: GeneratedGenderNounData
 try:
-    GENDER_DICT: GeneratedGenderNounData = GenderNounDataHandler.load_from_disk(save_as)
+    GENDER_DICT, _ = GenderNounDataHandler.load_from_disk(noun_data_location)
 except FileNotFoundError:
     warnings.WarningManager.raise_warning(None, warnings.GenderedNounsBuildFromWebWarning)
     g = GenderNounDataHandler.create_full_graph_from_web()
-    GenderNounDataHandler.save_to_disk(g, save_as)
-    GENDER_DICT: GeneratedGenderNounData = GenderNounDataHandler.load_from_disk(save_as)
+    GenderNounDataHandler.save_to_disk(g, noun_data_location, **GDN_META_DATA)
+    GENDER_DICT, _ = GenderNounDataHandler.load_from_disk(noun_data_location)
 
 
 # Representation of a not-yet correctly gendered noun:
@@ -1069,7 +1095,7 @@ Please note that this pipeline is tested only in environments with nltk installe
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L133-L634" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L133-L643" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GenderNounDataHandler:
     &#34;&#34;&#34;Bundles several static methods to handle and create data that describes the differently gendered versions of
@@ -1110,32 +1136,39 @@ Please note that this pipeline is tested only in environments with nltk installe
                 else:
                     result[word[&#34;word&#34;]][&#34;gender&#34;] = grammatical_genders[word[&#34;gender&#34;]]
             else:
-                lwarn(&#34;\&#34;&#34; + word[&#34;word&#34;] + &#34;\&#34; ignored because it is not part of wordnet and therefore not a hyponym &#34;
+                lwarn(&#34;\&#34;&#34; + word[&#34;word&#34;] + &#34;\&#34; ignored because it is not part of wordnet and therefore not a hyponyms &#34;
                       + &#34;for a person.&#34;)
 
         lwarn(len(result), &#34;words found.&#34;)
         return result
 
     @staticmethod
-    def load_from_disk(file_name: str) -&gt; GeneratedGenderNounData:
+    def load_from_disk(file_name: str) -&gt; (GeneratedGenderNounData, Dict[str, str]):
         &#34;&#34;&#34;Loads the gendered nouns from a piece of json data contained in the given file.
-        Returns it as a dictionary, with the only change being that the `warnings`-attribute of every noun is converted
-        from a list to a set.
-        This assumes the data in the given file to be of the same type as the data used throughout all the other methods
+        The json object in this file must have a data-attribute, which contains the actual gendered noun data, and may
+        contain an arbitrary amount of meta data in the form of strings mapped to strings, which will be returned as a
+        dict as the second return value.
+        The first return value is the actual gendered noun data, with the only change being that the
+        `warnings`-attribute of every noun is converted from a list to a set.
+        This assumes the gendered noun data to be of the same type as the data used throughout all the other methods
         of this class, NOT the format of the repository from which `load_from_web` loads its data.&#34;&#34;&#34;
         with open(file_name, &#34;r&#34;) as f:
             code = f.read()
-        code_as_a_dict = json.loads(code)
-        for word_data in code_as_a_dict.values():
+        meta_data = json.loads(code)
+        actual_data = meta_data[&#34;data&#34;]
+        del meta_data[&#34;data&#34;]
+
+        for word_data in actual_data.values():
             if &#34;warning&#34; in word_data:
                 word_data[&#34;warning&#34;] = set(word_data[&#34;warning&#34;])
-        return code_as_a_dict
+        return actual_data, meta_data
 
     @staticmethod
-    def save_to_disk(graph: GeneratedGenderNounData, file_name: str) -&gt; None:
+    def save_to_disk(graph: GeneratedGenderNounData, file_name: str, **meta_data: Dict[str, str]) -&gt; None:
         &#34;&#34;&#34;Saves the given gendered nouns data to the given file as json. The data is saved without any modifications,
         except for the `warnings`-attribute of all noun data, which is converted from a set to a list to be compatible
-        with standard json format.
+        with standard json format, in the data-attribute of the resulting json file.
+        `meta_data` may be used to describe additional meta data in the form of strings of the resulting file.
         This assumes the given data to be of the same type as the data used throughout all the other methods of this
         class, NOT the format of the repository from which `load_from_web` loads its data.
         The data saved with this method can be read again with `load_from_disk`, so that `save_to_disk(data, file_name)`
@@ -1146,8 +1179,10 @@ Please note that this pipeline is tested only in environments with nltk installe
             if &#34;warning&#34; in word_data:
                 word_data[&#34;warning&#34;] = list(word_data[&#34;warning&#34;])
                 word_data[&#34;warning&#34;].sort()
+        resulting_data: dict = copy.deepcopy(meta_data)
+        resulting_data[&#34;data&#34;] = graph_copy
         with open(file_name, &#34;w&#34;) as f:
-            json.dump(graph_copy, f, indent=4, sort_keys=True)
+            json.dump(resulting_data, f, indent=4, sort_keys=True)
 
     @staticmethod
     def remove_words_that_are_not_nouns(graph: GeneratedGenderNounData) -&gt; GeneratedGenderNounData:
@@ -1621,7 +1656,7 @@ def load_from_web() -&gt; GeneratedGenderNounData:
             else:
                 result[word[&#34;word&#34;]][&#34;gender&#34;] = grammatical_genders[word[&#34;gender&#34;]]
         else:
-            lwarn(&#34;\&#34;&#34; + word[&#34;word&#34;] + &#34;\&#34; ignored because it is not part of wordnet and therefore not a hyponym &#34;
+            lwarn(&#34;\&#34;&#34; + word[&#34;word&#34;] + &#34;\&#34; ignored because it is not part of wordnet and therefore not a hyponyms &#34;
                   + &#34;for a person.&#34;)
 
     lwarn(len(result), &#34;words found.&#34;)
@@ -1629,42 +1664,52 @@ def load_from_web() -&gt; GeneratedGenderNounData:
 </details>
 </dd>
 <dt id="gender_render.gender_nouns.GenderNounDataHandler.load_from_disk"><code class="name flex">
-<span>def <span class="ident">load_from_disk</span></span>(<span>file_name: str) ‑> Dict[str, <a title="gender_render.gender_nouns.GeneratedDataWord" href="#gender_render.gender_nouns.GeneratedDataWord">GeneratedDataWord</a>]</span>
+<span>def <span class="ident">load_from_disk</span></span>(<span>file_name: str) ‑> (typing.Dict[str, <a title="gender_render.gender_nouns.GeneratedDataWord" href="#gender_render.gender_nouns.GeneratedDataWord">GeneratedDataWord</a>], typing.Dict[str, str])</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Loads the gendered nouns from a piece of json data contained in the given file.
-Returns it as a dictionary, with the only change being that the <code>warnings</code>-attribute of every noun is converted
-from a list to a set.
-This assumes the data in the given file to be of the same type as the data used throughout all the other methods
+The json object in this file must have a data-attribute, which contains the actual gendered noun data, and may
+contain an arbitrary amount of meta data in the form of strings mapped to strings, which will be returned as a
+dict as the second return value.
+The first return value is the actual gendered noun data, with the only change being that the
+<code>warnings</code>-attribute of every noun is converted from a list to a set.
+This assumes the gendered noun data to be of the same type as the data used throughout all the other methods
 of this class, NOT the format of the repository from which <code>load_from_web</code> loads its data.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L178-L191" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L178-L197" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
-def load_from_disk(file_name: str) -&gt; GeneratedGenderNounData:
+def load_from_disk(file_name: str) -&gt; (GeneratedGenderNounData, Dict[str, str]):
     &#34;&#34;&#34;Loads the gendered nouns from a piece of json data contained in the given file.
-    Returns it as a dictionary, with the only change being that the `warnings`-attribute of every noun is converted
-    from a list to a set.
-    This assumes the data in the given file to be of the same type as the data used throughout all the other methods
+    The json object in this file must have a data-attribute, which contains the actual gendered noun data, and may
+    contain an arbitrary amount of meta data in the form of strings mapped to strings, which will be returned as a
+    dict as the second return value.
+    The first return value is the actual gendered noun data, with the only change being that the
+    `warnings`-attribute of every noun is converted from a list to a set.
+    This assumes the gendered noun data to be of the same type as the data used throughout all the other methods
     of this class, NOT the format of the repository from which `load_from_web` loads its data.&#34;&#34;&#34;
     with open(file_name, &#34;r&#34;) as f:
         code = f.read()
-    code_as_a_dict = json.loads(code)
-    for word_data in code_as_a_dict.values():
+    meta_data = json.loads(code)
+    actual_data = meta_data[&#34;data&#34;]
+    del meta_data[&#34;data&#34;]
+
+    for word_data in actual_data.values():
         if &#34;warning&#34; in word_data:
             word_data[&#34;warning&#34;] = set(word_data[&#34;warning&#34;])
-    return code_as_a_dict</code></pre>
+    return actual_data, meta_data</code></pre>
 </details>
 </dd>
 <dt id="gender_render.gender_nouns.GenderNounDataHandler.save_to_disk"><code class="name flex">
-<span>def <span class="ident">save_to_disk</span></span>(<span>graph: Dict[str, <a title="gender_render.gender_nouns.GeneratedDataWord" href="#gender_render.gender_nouns.GeneratedDataWord">GeneratedDataWord</a>], file_name: str) ‑> NoneType</span>
+<span>def <span class="ident">save_to_disk</span></span>(<span>graph: Dict[str, <a title="gender_render.gender_nouns.GeneratedDataWord" href="#gender_render.gender_nouns.GeneratedDataWord">GeneratedDataWord</a>], file_name: str, **meta_data: Dict[str, str]) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Saves the given gendered nouns data to the given file as json. The data is saved without any modifications,
 except for the <code>warnings</code>-attribute of all noun data, which is converted from a set to a list to be compatible
-with standard json format.
+with standard json format, in the data-attribute of the resulting json file.
+<code>meta_data</code> may be used to describe additional meta data in the form of strings of the resulting file.
 This assumes the given data to be of the same type as the data used throughout all the other methods of this
 class, NOT the format of the repository from which <code>load_from_web</code> loads its data.
 The data saved with this method can be read again with <code>load_from_disk</code>, so that <code>save_to_disk(data, file_name)</code>
@@ -1673,13 +1718,14 @@ This method is guaranteed to not change the given data in-place.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L193-L209" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L199-L218" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
-def save_to_disk(graph: GeneratedGenderNounData, file_name: str) -&gt; None:
+def save_to_disk(graph: GeneratedGenderNounData, file_name: str, **meta_data: Dict[str, str]) -&gt; None:
     &#34;&#34;&#34;Saves the given gendered nouns data to the given file as json. The data is saved without any modifications,
     except for the `warnings`-attribute of all noun data, which is converted from a set to a list to be compatible
-    with standard json format.
+    with standard json format, in the data-attribute of the resulting json file.
+    `meta_data` may be used to describe additional meta data in the form of strings of the resulting file.
     This assumes the given data to be of the same type as the data used throughout all the other methods of this
     class, NOT the format of the repository from which `load_from_web` loads its data.
     The data saved with this method can be read again with `load_from_disk`, so that `save_to_disk(data, file_name)`
@@ -1690,8 +1736,10 @@ def save_to_disk(graph: GeneratedGenderNounData, file_name: str) -&gt; None:
         if &#34;warning&#34; in word_data:
             word_data[&#34;warning&#34;] = list(word_data[&#34;warning&#34;])
             word_data[&#34;warning&#34;].sort()
+    resulting_data: dict = copy.deepcopy(meta_data)
+    resulting_data[&#34;data&#34;] = graph_copy
     with open(file_name, &#34;w&#34;) as f:
-        json.dump(graph_copy, f, indent=4, sort_keys=True)</code></pre>
+        json.dump(resulting_data, f, indent=4, sort_keys=True)</code></pre>
 </details>
 </dd>
 <dt id="gender_render.gender_nouns.GenderNounDataHandler.remove_words_that_are_not_nouns"><code class="name flex">
@@ -1708,7 +1756,7 @@ this function ensures that changes of that feature don't break this code.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L211-L236" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L220-L245" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def remove_words_that_are_not_nouns(graph: GeneratedGenderNounData) -&gt; GeneratedGenderNounData:
@@ -1746,7 +1794,7 @@ def remove_words_that_are_not_nouns(graph: GeneratedGenderNounData) -&gt; Genera
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L238-L256" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L247-L265" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def make_sure_all_referenced_words_exist(graph: GeneratedGenderNounData) -&gt; GeneratedGenderNounData:
@@ -1781,7 +1829,7 @@ This is relevant for <code>make_all_links_two_sided</code>, for example (see doc
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L258-L285" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L267-L294" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def choose_better_word(option1, option2, log=False):
@@ -1835,7 +1883,7 @@ it's linked to.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L287-L428" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L296-L437" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def make_all_links_two_sided(graph: GeneratedGenderNounData, log_clashs=False)\
@@ -1991,7 +2039,7 @@ This method returns a version of the given graph where A links to B as its gende
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L430-L448" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L439-L457" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def create_extra_links_to_gender_ambiguous_words(graph: GeneratedGenderNounData) -&gt; GeneratedGenderNounData:
@@ -2025,7 +2073,7 @@ beginning removed, and that it doesn't create "empty" words.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L450-L555" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L459-L564" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def create_gendered_versions_for_words_that_end_with_gender_indicators(graph: GeneratedGenderNounData)\
@@ -2145,7 +2193,7 @@ if there is no male one.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L557-L606" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L566-L615" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def find_words_with_no_neutral_form(graph: GeneratedGenderNounData) -&gt; GeneratedGenderNounData:
@@ -2208,7 +2256,7 @@ and automatically fill all holes this graph has left open.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L608-L634" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L617-L643" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@staticmethod
 def create_full_graph_from_web() -&gt; GeneratedGenderNounData:
@@ -2251,7 +2299,7 @@ def create_full_graph_from_web() -&gt; GeneratedGenderNounData:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L651-L708" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L677-L734" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class GenderedNoun:
     &#34;&#34;&#34;A representation of a gendered noun, with methods to get gendered equivalents of it.&#34;&#34;&#34;
@@ -2323,7 +2371,7 @@ def create_full_graph_from_web() -&gt; GeneratedGenderNounData:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L682-L701" class="git-link">Browse git</a>
+<a href="https://github.com/phseiff/gender-render/tree/gh-pages/gender_render/gender_nouns.py#L708-L727" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def render_noun(self, gender: GeneratedDataGender) -&gt; str:
     &#34;&#34;&#34;Returns the correctly gendered version of itself as a string. gender must be either &#34;male&#34;, &#34;female&#34; or

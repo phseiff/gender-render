@@ -5,11 +5,11 @@ LICENSE-implementation.txt
 LICENSE-specification.txt
 README.md
 build_and_push.py
-requirements.txt
 setup.cfg
 setup.py
 .github/workflows/build-and-test-code.yml
 .github/workflows/cla.yml
+.github/workflows/make-release-on-tag-push.yml
 docs/CLA.md
 docs/config.cfg
 docs/spec-styling.css
@@ -83,6 +83,8 @@ src/pronoun_data_interface.py
 src/render_pipeline.py
 src/template_interface.py
 src/warnings.py
+src/data/data-here
+src/data/gendered-nouns.gdn
 test/__init__.py
 test/check_type.py
 test/no-unittest-needed-list.txt
